@@ -1,5 +1,8 @@
+import './Explore.css';
+import Navigation from '../../components/navigation/Navigation';
+
 const Explore = () => {
-  return <h1>Explore</h1>;
+  return <Navigation />;
 };
 
 export default Explore;

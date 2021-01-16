@@ -2,137 +2,142 @@
   box-sizing: border-box;
 }
 
-.navigation {
-  background-color: #74c7b8;
-  padding: 4px 10px;
-}
-
-/*APP LOGO*/
-.appLogoSection {
+/*MOBILE NAVIGATION*/
+.navigationListMobile {
   display: inline-block;
-  background-color: rgb(156, 212, 156);
-  border-radius: 70%;
-  margin-left: 30%;
 }
 
-.appLogo {
-  font-size: 2.7rem;
-  height: 100%;
+/*NAVIGATION BAR STYLES*/
+.navigation {
+  background-color: antiquewhite;
+  padding: 10px 4px;
   width: 100%;
-  text-decoration: none;
-  margin: 1rem;
-  color: rgb(139, 19, 19);
-  font-weight: bolder;
+}
+
+.navigationList {
+  display: none;
+}
+
+/*APP LOGO STYLES*/
+.appLogoSection {
+  height: 70px;
+  width: 70px;
+  display: inline-block;
   vertical-align: middle;
 }
 
-/*NAV LINKS LOGIC FOR DESKTOP*/
-
-.navigationList {
-  margin: 0px;
-  display: none;
-  padding: 0px;
-  margin-left: 40vw;
-}
-
-.navlinksContainer {
-  display: inline;
-  text-decoration: none;
-  list-style: none;
-  margin-right: 30px;
-}
-
-.navLinks {
-  text-decoration: none;
-  color: black;
-  font-family: 'Abel', sans-serif;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-/*NAVIGATION LIST FOR MOBILE*/
-.navigationListMobile {
-  height: 100%;
-  width: 70%;
-  position: fixed;
-  background-color: rgb(201, 92, 92, 1);
-  border-right: 3px solid white;
-}
-
-.navLinksMobile {
-  margin: auto;
-  padding: 80px;
-  margin-top: 80px;
-  text-align: center;
-  border-radius: 30px;
-  width: 90%;
-  background-color: white;
-}
-
-.navLinksMobileContainer {
-  list-style: none;
-  width: 100%;
-  margin: 30px auto;
-}
-
-.backdrop {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  background: rgb(0, 0, 0, 0.9);
-}
-
-/*HAMBURGER BUTTON*/
-
+/*HAMBURGER BUTTON STYLES*/
 .hamburgerSection {
-  width: 2.6rem;
+  position: fixed;
+  top: 18px;
+  left: 83%;
+  width: 3rem;
   background: transparent;
   border: none;
   cursor: pointer;
   padding-top: 0;
   padding-bottom: 0;
   vertical-align: middle;
-}
-
-.hamburgerSection:focus {
   outline: none;
 }
 
 .hamburgerLine {
   width: 100%;
   height: 0.2rem;
-  background: #ef4f4f;
+  background: black;
   display: block;
   margin: 0.6rem 0;
 }
 
-@media (max-width: 476px) {
-  .navLinksMobile {
-    margin: auto;
-    padding: 80px;
-    margin-top: 30px;
-    text-align: center;
-    border-radius: 30px;
-    width: 90%;
-    background-color: white;
+.backdrop {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+  background-color: rgb(12, 11, 11, 0.4);
+}
+
+.navigationListMobile {
+  position: fixed;
+  z-index: 200;
+  height: 100vh;
+  width: 70%;
+  background-color: #dfe0df;
+  border-right: 3px solid white;
+}
+
+.navLinksMobileList {
+  padding: 0px;
+  margin: 0px;
+  margin: 90px;
+}
+
+.navLinksMobileContainer {
+  list-style: none;
+  width: 100%;
+  text-align: center;
+  margin: 40px 0px;
+}
+
+.navLinks {
+  font-size: 1.1rem;
+  text-decoration: none;
+  color: #433520;
+}
+
+.signUpLink {
+  color: #00917c;
+}
+
+.navLinks:hover,
+.navLinks:active {
+  border-bottom: 3px solid white;
+}
+
+@media (min-width: 725px) and (orientation: landscape) {
+  .hamburgerSection {
+    left: 90%;
   }
+
+  .navLinksMobileList {
+    margin: 150px 90px;
+  }
+
   .navLinks {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
 }
 
-@media (min-width: 330px) and (max-width: 699px) {
-  .appLogoSection {
-    margin-left: 35%;
-  }
+/*------------------------------------------------------------------------------------------------*/
+/*DESKTOP NAVIGATION*/
+* {
+  box-sizing: border-box;
 }
+@media (min-width: 725px) and (orientation: landscape) {
+  .navigationListMobile,
+  .hamburgerSection {
+    display: none;
+  }
 
-@media (min-width: 507px) {
-  .navLinks:hover,
-  .navLinks:active {
-    background-color: black;
-    color: white;
+  .navigationList {
+    display: inline-block;
+    width: 90%;
+    text-align: right;
+  }
+
+  .navlinksContainer {
+    display: inline-block;
+    list-style: none;
+    margin-right: 30px;
+  }
+
+  .navLinks {
+    font-size: 1.15rem;
     padding: 10px;
+  }
+
+  .navLinks:hover {
+    background-color: white;
     border-radius: 10px;
   }
 }
