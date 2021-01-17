@@ -3,6 +3,8 @@ import React from 'react';
 import './Homepage.css';
 import Navigation from '../../components/navigation/Navigation';
 
+//Will complete this at the end so that we can attach some videos of the app working in real time
+
 const Homepage = () => {
   return (
     <React.Fragment>
@@ -10,9 +12,7 @@ const Homepage = () => {
         <Navigation />
       </div>
       <div className='homepageMain'>
-        <div className='homepageTitle'>
-          <h1>title</h1>
-        </div>
+        <h1 className='homepageTitle'>Hungry Panda!</h1>
         <div className='homepageFeatures'>
           <h1>features</h1>
         </div>

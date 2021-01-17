@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+.homepageTitle {
+  font-size: 2.1rem;
+  font-family: 'Proza Libre', sans-serif;
+  text-align: center;
+  margin: 30px 0px;
+  color: #433520;
+}

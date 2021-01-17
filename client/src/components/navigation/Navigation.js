@@ -32,6 +32,25 @@ class Navigation extends React.Component {
     this.setState({ backdrop: false, showmenu: false });
   };
 
+  componentDidMount() {
+    this.scrollBackground = document.addEventListener('scroll', (e) => {
+      let scrolled = document.scrollingElement.scrollTop;
+      let element = document.querySelector('.navigation');
+      let appLogo = document.querySelector('.appLogoSection');
+      if (scrolled >= 120) {
+        element.style.backgroundColor = 'transparent';
+        element.style.boxShadow = 'none';
+        appLogo.style.height = '40px';
+        appLogo.style.width = '40px';
+      } else {
+        element.style.backgroundColor = '#faebd7';
+        element.style.boxShadow = '0px 0px 11px 0px rgba(0, 0, 0, 0.76)';
+        appLogo.style.height = '70px';
+        appLogo.style.width = '70px';
+      }
+    });
+  }
+
   render() {
     let showButtonMenu = null;
     let backD = <div className='backdrop' onClick={this.closeBackdrop}></div>;
@@ -131,7 +150,7 @@ class Navigation extends React.Component {
         {menu}
         <div className='navigation'>
           <div className='appLogoSection'>
-            <a href='/'>
+            <a href='/myrecipes'>
               <img src={PandaLogo} alt='pic of panda' />
             </a>
           </div>
