@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlus,
@@ -10,6 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './Navigation.css';
+import NavigationLink from './NavigationLink/NavigationLink';
 import PandaLogo from '../../assets/images/panda.svg';
 
 /*
@@ -67,76 +67,45 @@ class Navigation extends React.Component {
     let menu = (
       <div className='navigationListMobile'>
         <ul className='navLinksMobileList'>
-          <li className='navLinksMobileContainer'>
-            <NavLink
-              to='/add-recipes'
-              className='navLinks'
-              activeStyle={{
-                color: 'saddlebrown',
-                backgroundColor: 'wheat',
-                borderRadius: '10px',
-                padding: '10px',
-              }}
-            >
-              <FontAwesomeIcon icon={faPlus} /> Add
-            </NavLink>
-          </li>
-          <li className='navLinksMobileContainer'>
-            <NavLink
-              to='/explore'
-              className='navLinks'
-              activeStyle={{
-                color: 'saddlebrown',
-                backgroundColor: 'wheat',
-                borderRadius: '10px',
-                padding: '10px',
-              }}
-            >
-              <FontAwesomeIcon icon={faCompass} /> Explore
-            </NavLink>
-          </li>
-          <li className='navLinksMobileContainer'>
-            <NavLink
-              to='/profile'
-              className='navLinks'
-              activeStyle={{
-                color: 'saddlebrown',
-                backgroundColor: 'wheat',
-                borderRadius: '10px',
-                padding: '10px',
-              }}
-            >
-              <FontAwesomeIcon icon={faUserCircle} /> My Profile
-            </NavLink>
-          </li>
-          <li className='navLinksMobileContainer'>
-            <NavLink
-              to='/logout'
-              className='navLinks'
-              activeStyle={{
-                color: 'saddlebrown',
-                backgroundColor: 'wheat',
-                borderRadius: '10px',
-                padding: '10px',
-              }}
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-            </NavLink>
-          </li>
-          <li className='navLinksMobileContainer'>
-            <NavLink
-              to='/signup'
-              className='navLinks signUpLink'
-              activeStyle={{
-                color: 'saddlebrown',
-                backgroundColor: 'wheat',
-                borderRadius: '10px',
-                padding: '10px',
-              }}
-            >
-              <FontAwesomeIcon icon={faUserPlus} /> Sign Up
-            </NavLink>
-          </li>
+          <NavigationLink
+            listClass='navLinksMobileContainer'
+            destination='/add-recipes'
+            classValue='navLinks'
+          >
+            <FontAwesomeIcon icon={faPlus} /> Add
+          </NavigationLink>
+
+          <NavigationLink
+            listClass='navLinksMobileContainer'
+            destination='/explore'
+            classValue='navLinks'
+          >
+            <FontAwesomeIcon icon={faCompass} /> Explore
+          </NavigationLink>
+
+          <NavigationLink
+            listClass='navLinksMobileContainer'
+            destination='/profile'
+            classValue='navLinks'
+          >
+            <FontAwesomeIcon icon={faUserCircle} /> My Profile
+          </NavigationLink>
+
+          <NavigationLink
+            listClass='navLinksMobileContainer'
+            destination='/logout'
+            classValue='navLinks'
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+          </NavigationLink>
+
+          <NavigationLink
+            listClass='navLinksMobileContainer'
+            destination='/signup'
+            classValue='navLinks'
+          >
+            <FontAwesomeIcon icon={faUserPlus} /> Sign Up
+          </NavigationLink>
         </ul>
       </div>
     );
@@ -156,72 +125,45 @@ class Navigation extends React.Component {
           </div>
           {showButtonMenu}
           <ul className='navigationList'>
-            <li className='navlinksContainer'>
-              <NavLink
-                to='/add-recipes'
-                className='navLinks'
-                activeStyle={{
-                  color: 'saddlebrown',
-                  backgroundColor: 'wheat',
-                  borderRadius: '10px',
-                }}
-              >
-                <FontAwesomeIcon icon={faPlus} /> Add
-              </NavLink>
-            </li>
-            <li className='navlinksContainer'>
-              <NavLink
-                to='/explore'
-                className='navLinks'
-                activeStyle={{
-                  color: 'saddlebrown',
-                  backgroundColor: 'wheat',
-                  borderRadius: '10px',
-                }}
-              >
-                <FontAwesomeIcon icon={faCompass} /> Explore
-              </NavLink>
-            </li>
-            <li className='navlinksContainer'>
-              <NavLink
-                to='/profile'
-                className='navLinks'
-                activeStyle={{
-                  color: 'saddlebrown',
-                  backgroundColor: 'wheat',
-                  borderRadius: '10px',
-                }}
-              >
-                <FontAwesomeIcon icon={faUserCircle} /> My Profile
-              </NavLink>
-            </li>
-            <li className='navlinksContainer'>
-              <NavLink
-                to='/logout'
-                className='navLinks'
-                activeStyle={{
-                  color: 'saddlebrown',
-                  backgroundColor: 'wheat',
-                  borderRadius: '10px',
-                }}
-              >
-                <FontAwesomeIcon icon={faSignOutAlt} /> Logout
-              </NavLink>
-            </li>
+            <NavigationLink
+              listClass='navlinksContainer'
+              destination='/add-recipes'
+              classValue='navLinks'
+            >
+              <FontAwesomeIcon icon={faPlus} /> Add
+            </NavigationLink>
 
-            <li className='navlinksContainer'>
-              <NavLink
-                to='/signup'
-                className='navLinks signUpLink'
-                activeStyle={{
-                  color: 'saddlebrown',
-                  backgroundColor: 'wheat',
-                  borderRadius: '10px',
-                }}
-              >
-                <FontAwesomeIcon icon={faUserPlus} /> Sign Up
-              </NavLink>
-            </li>
+            <NavigationLink
+              listClass='navlinksContainer'
+              destination='/explore'
+              classValue='navLinks'
+            >
+              <FontAwesomeIcon icon={faCompass} /> Explore
+            </NavigationLink>
+
+            <NavigationLink
+              listClass='navlinksContainer'
+              destination='/profile'
+              classValue='navLinks'
+            >
+              <FontAwesomeIcon icon={faUserCircle} /> My Profile
+            </NavigationLink>
+
+            <NavigationLink
+              listClass='navlinksContainer'
+              destination='/logout'
+              classValue='navLinks'
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+            </NavigationLink>
+
+            <NavigationLink
+              listClass='navlinksContainer'
+              destination='/signup'
+              classValue='navLinks'
+            >
+              <FontAwesomeIcon icon={faUserPlus} /> Sign Up
+            </NavigationLink>
           </ul>
         </div>
       </React.Fragment>
