@@ -37,7 +37,7 @@ class Navigation extends React.Component {
       let scrolled = document.scrollingElement.scrollTop;
       let element = document.querySelector('.navigation');
       let appLogo = document.querySelector('.appLogoSection');
-      if (scrolled >= 120) {
+      if (scrolled >= 70) {
         element.style.backgroundColor = 'transparent';
         element.style.boxShadow = 'none';
         appLogo.style.height = '40px';

@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faClock } from '@fortawesome/free-solid-svg-icons';
 
 import './recipesCard.css';
 import Button from '../Button/Button';
@@ -34,12 +34,25 @@ const RecipesCard = (props) => {
       </div>
     </ul>
   );
+
+  const timeValue =
+    props.cooktime.hours > 0
+      ? props.cooktime.hours === 1
+        ? props.cooktime.hours + ' h '
+        : props.cooktime.hours + ' hrs '
+      : null;
+
   return (
     <div className='recipeCard'>
       <div className='recipeImageContainer'>
         <img src={props.imageUrl} alt={props.name} className='recipeImage' />
       </div>
       <div className='mainCardContent'>
+        <h3 className='recipeTitle'>{props.name}</h3>
+        <p className='cookingTime'>
+          <FontAwesomeIcon icon={faClock} /> {timeValue}
+          {props.cooktime.mins} minutes
+        </p>
         <h3 className='recipeDescription'>{props.desc}</h3>
         {ingreds}
         <div className='actionButtons'>

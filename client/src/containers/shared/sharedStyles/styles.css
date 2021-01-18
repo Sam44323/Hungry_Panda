@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1b151;
+}
+
+.recipesCardSection {
+  margin-top: 10rem;
+}
+
+/*LAYOUR FOR THE DESKTOP*/
+@media (min-width: 325px) and (orientation: landscape) {
+  .recipesCardSection {
+    display: flex;
+    justify-content: flex-start;
+  }
+}

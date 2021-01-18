@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import './userPage.css';
+import '../shared/sharedStyles/styles.css';
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
 
@@ -14,6 +15,10 @@ class UserPage extends Component {
         recipeName: 'burritos',
         recipeDescription: "This is one of the best buritto you'll ever try",
         keyIngred: ['beaf', 'black-beans', 'sour cream', 'taco'],
+        cookingTime: {
+          hours: 1,
+          mins: 14,
+        },
         loves: 3,
         creator: 'Sam Henrick',
       },
@@ -25,27 +30,30 @@ class UserPage extends Component {
         recipeDescription:
           'The Indian legendary dish that everyone should try!',
         keyIngred: ['yoghurt', 'lemon juice', 'fresh ginger', 'black pepper'],
+        cookingTime: {
+          hours: 0,
+          mins: 45,
+        },
         loves: 1,
         creator: 'Max Schwarz',
       },
     ],
   };
   render() {
-    const recipesCard = this.state.recipes.map((recipe) => {
-      return (
-        <RecipesCard
-          key={recipe.id}
-          id={recipe.id}
-          name={recipe.recipeName}
-          imageUrl={recipe.recipeImage}
-          keyIngrd={recipe.keyIngred}
-          kIngredLength={recipe.keyIngred.length}
-          desc={recipe.recipeDescription}
-          loves={recipe.loves}
-          creator={recipe.creator}
-        />
-      );
-    });
+    const recipesCard = this.state.recipes.map((recipe) => (
+      <RecipesCard
+        key={recipe.id}
+        id={recipe.id}
+        name={recipe.recipeName}
+        cooktime={recipe.cookingTime}
+        imageUrl={recipe.recipeImage}
+        keyIngrd={recipe.keyIngred}
+        kIngredLength={recipe.keyIngred.length}
+        desc={recipe.recipeDescription}
+        loves={recipe.loves}
+        creator={recipe.creator}
+      />
+    ));
     return (
       <React.Fragment>
         <Navigation />
