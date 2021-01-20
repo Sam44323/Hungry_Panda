@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './ProfileForm.css';
 import Input from '../ProfileForm/ProfileInput/ProfileInput';
 
-class ProfileForm extends Component {
+class ProfileForm extends React.Component {
   render() {
     return '';
   }
