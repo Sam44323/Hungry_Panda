@@ -13,6 +13,39 @@
   overflow: hidden;
 }
 
+.ingredientsSection {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.ingTitle {
+  margin: 4px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.ingValueDivision {
+  display: inline-block;
+}
+
+.ingValueStyle {
+  margin: 4px;
+  text-align: center;
+  text-transform: capitalize;
+  color: white;
+  padding: 4px;
+  border-radius: 10px;
+  background-color: brown;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.ingValueSection {
+  border: 3px solid brown;
+  margin: 10px 0px;
+  border-radius: 10px;
+}
+
 .numberSection {
   text-align: center;
 }

@@ -101,7 +101,7 @@ class Navigation extends React.Component {
 
           <NavigationLink
             listClass='navLinksMobileContainer'
-            destination='/signup'
+            destination='/auth/signup'
             classValue='navLinks'
           >
             <FontAwesomeIcon icon={faUserPlus} /> Sign Up
@@ -159,7 +159,7 @@ class Navigation extends React.Component {
 
             <NavigationLink
               listClass='navlinksContainer'
-              destination='/signup'
+              destination='/auth/signup'
               classValue='navLinks'
             >
               <FontAwesomeIcon icon={faUserPlus} /> Sign Up

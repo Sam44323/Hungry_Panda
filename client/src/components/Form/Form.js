@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import './Form.css';
 import Input from './InputFields/Input';
 import Button from '../Button/Button';
+import Ingredients from '../IngredientsTODO/Ingredients';
 
+let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
   state = {
     textFieldName: [
@@ -32,14 +36,6 @@ class Form extends Component {
         message: 'Give some recipe description!',
       },
       {
-        name: 'Ingredients',
-        type: 'textarea',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter the ingredients for the recipes!',
-      },
-      {
         name: 'Procedure',
         type: 'textarea',
         value: '',
@@ -60,8 +56,23 @@ class Form extends Component {
         touched: false,
       },
     ],
+    ingredients: {
+      ing: [],
+      message: 'Enter a valid ingredient!',
+      isValid: true,
+    },
     formIsValid: false,
   };
+
+  //FOR DELETING THE INGREDIENT VALUE
+
+  removeIngredients = (ingId) => {
+    let ings = { ...this.state.ingredients };
+    ings.ing = ings.ing.filter((item) => item.id !== ingId);
+    this.setState({ ingredients: ings });
+  };
+
+  //FOR CHANGING THE VALUES OF THE INPUTS
 
   changeValueHandler = (name, type, value) => {
     let valueArray = [];
@@ -89,6 +100,8 @@ class Form extends Component {
     }
   };
 
+  //FOR CHECKING THE VALIDATION OF THE FORM
+
   checkFormValidation = () => {
     let c = 0;
     for (let item of this.state.textFieldName) {
@@ -98,6 +111,23 @@ class Form extends Component {
     }
     return c === 5 ? true : false;
   };
+
+  //METHOD FOR SETTING THE INGREDIENTS TO THE INGREDIENTS ARRAY OF THE STATE
+
+  setIngredients = (value) => {
+    const ingObject = { ...this.state.ingredients };
+    console.log(typeof value);
+    if (value.trim() === '') {
+      ingObject.isValid = false;
+      this.setState({ ingredients: ingObject });
+      return;
+    }
+    ingObject.ing.push({ id: ingConst++, value: value.trim() });
+    ingObject.isValid = true;
+    this.setState({ ingredients: ingObject });
+  };
+
+  //METHOD FOR SUBMITTNG THE FORM AND ADDING A NEW RECIPE
 
   submitForm = () => {
     if (
@@ -131,6 +161,7 @@ class Form extends Component {
 
   render() {
     let c = 0;
+    //STORING THE INPUTS FOR THE TEXTS
     const textInputs = this.state.textFieldName.map((item) => (
       <Input
         key={++c}
@@ -144,6 +175,7 @@ class Form extends Component {
         message={item.message}
       />
     ));
+    //STORING THE INPUTS FOR THE NUMBERS
     const numberInputs = (
       <div className='numberSection'>
         {this.state.numberFieldName.map((item) => (
@@ -163,11 +195,36 @@ class Form extends Component {
         ))}
       </div>
     );
-    let disabled = !this.checkFormValidation();
+    //FOR STORING THE INGREDIENTS IN A STYLED INPUT
+    const ingrd = this.state.ingredients.ing.map((item) => (
+      <div key={Math.random()} className='ingValueDivision'>
+        <h1 className='ingValueStyle'>
+          {item.value}{' '}
+          <Button
+            class='ingsButton'
+            clickAction={() => this.removeIngredients(item.id)}
+          >
+            <FontAwesomeIcon icon={faTimesCircle} />
+          </Button>
+        </h1>
+      </div>
+    ));
+    let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>
         {numberInputs}
         {textInputs}
+        <div className='ingredientsSection'>
+          <h1 className='ingTitle'>Ingredients</h1>
+          <Ingredients
+            submitIngredients={this.setIngredients}
+            validCondition={this.state.ingredients.isValid}
+            message={this.state.ingredients.message}
+          />
+          {ingrd.length > 0 ? (
+            <div className='ingValueSection'>{ingrd}</div>
+          ) : null}
+        </div>
         <div className='formBtnSection'>
           <Button
             class='SuccessBtn'
