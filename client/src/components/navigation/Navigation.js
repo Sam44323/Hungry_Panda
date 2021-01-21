@@ -1,16 +1,9 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPlus,
-  faCompass,
-  faUserCircle,
-  faSignOutAlt,
-  faUserPlus,
-} from '@fortawesome/free-solid-svg-icons';
 
 import './Navigation.css';
 import NavigationLink from './NavigationLink/NavigationLink';
 import PandaLogo from '../../assets/images/panda.svg';
+import FAICON from '../FontAwesome/FontAwesome';
 
 /*
 Logout will be a form with a button for posting a post request with the hidden input value of the user id
@@ -72,7 +65,7 @@ class Navigation extends React.Component {
             destination='/add-recipes'
             classValue='navLinks'
           >
-            <FontAwesomeIcon icon={faPlus} /> Add
+            <FAICON iconName='faPlus' color='brown' /> Add
           </NavigationLink>
 
           <NavigationLink
@@ -80,7 +73,8 @@ class Navigation extends React.Component {
             destination='/explore'
             classValue='navLinks'
           >
-            <FontAwesomeIcon icon={faCompass} /> Explore
+            <FAICON iconName='faCompass' color='brown' />
+            Explore
           </NavigationLink>
 
           <NavigationLink
@@ -88,7 +82,7 @@ class Navigation extends React.Component {
             destination='/profile'
             classValue='navLinks'
           >
-            <FontAwesomeIcon icon={faUserCircle} /> My Profile
+            <FAICON iconName='faUserCircle' color='brown' /> My Profile
           </NavigationLink>
 
           <NavigationLink
@@ -96,7 +90,7 @@ class Navigation extends React.Component {
             destination='/logout'
             classValue='navLinks'
           >
-            <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+            <FAICON iconName='faSignOutAlt' color='brown' /> Logout
           </NavigationLink>
 
           <NavigationLink
@@ -104,7 +98,7 @@ class Navigation extends React.Component {
             destination='/auth/signup'
             classValue='navLinks'
           >
-            <FontAwesomeIcon icon={faUserPlus} /> Sign Up
+            <FAICON iconName='faUserPlus' color='brown' /> Sign Up
           </NavigationLink>
         </ul>
       </div>
@@ -130,7 +124,7 @@ class Navigation extends React.Component {
               destination='/add-recipes'
               classValue='navLinks'
             >
-              <FontAwesomeIcon icon={faPlus} /> Add
+              <FAICON iconName='faPlus' color='brown' /> Add
             </NavigationLink>
 
             <NavigationLink
@@ -138,7 +132,7 @@ class Navigation extends React.Component {
               destination='/explore'
               classValue='navLinks'
             >
-              <FontAwesomeIcon icon={faCompass} /> Explore
+              <FAICON iconName='faCompass' color='brown' /> Explore
             </NavigationLink>
 
             <NavigationLink
@@ -146,7 +140,7 @@ class Navigation extends React.Component {
               destination='/profile'
               classValue='navLinks'
             >
-              <FontAwesomeIcon icon={faUserCircle} /> My Profile
+              <FAICON iconName='faUserCircle' color='brown' /> My Profile
             </NavigationLink>
 
             <NavigationLink
@@ -154,7 +148,7 @@ class Navigation extends React.Component {
               destination='/logout'
               classValue='navLinks'
             >
-              <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+              <FAICON iconName='faSignOutAlt' color='brown' /> Logout
             </NavigationLink>
 
             <NavigationLink
@@ -162,7 +156,7 @@ class Navigation extends React.Component {
               destination='/auth/signup'
               classValue='navLinks'
             >
-              <FontAwesomeIcon icon={faUserPlus} /> Sign Up
+              <FAICON iconName='faUserPlus' color='brown' /> Sign Up
             </NavigationLink>
           </ul>
         </div>

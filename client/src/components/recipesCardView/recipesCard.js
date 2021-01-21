@@ -1,9 +1,8 @@
 import { Fragment } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faClock } from '@fortawesome/free-solid-svg-icons';
 
 import './recipesCard.css';
 import Button from '../Button/Button';
+import FAICON from '../FontAwesome/FontAwesome';
 
 const RecipesCard = (props) => {
   let c = 0;
@@ -12,7 +11,7 @@ const RecipesCard = (props) => {
     likedValue = (
       <Fragment>
         <h3 className='loveTitle'>{props.loves}</h3>
-        <FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} />
+        <FAICON iconName='faHeart' color='red' />
       </Fragment>
     );
   }
@@ -50,7 +49,7 @@ const RecipesCard = (props) => {
       <div className='mainCardContent'>
         <h3 className='recipeTitle'>{props.name}</h3>
         <p className='cookingTime'>
-          <FontAwesomeIcon icon={faClock} /> {timeValue}
+          <FAICON iconName='faClock' color='white' /> {timeValue}{' '}
           {props.cooktime.mins} minutes
         </p>
         <h3 className='recipeDescription'>{props.desc}</h3>

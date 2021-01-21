@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import './Form.css';
 import Input from './InputFields/Input';
 import Button from '../Button/Button';
 import Ingredients from '../IngredientsTODO/Ingredients';
+import FAICON from '../FontAwesome/FontAwesome';
 
 let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
@@ -109,7 +108,7 @@ class Form extends Component {
         c++;
       }
     }
-    return c === 5 ? true : false;
+    return c === 4 ? true : false;
   };
 
   //METHOD FOR SETTING THE INGREDIENTS TO THE INGREDIENTS ARRAY OF THE STATE
@@ -131,10 +130,11 @@ class Form extends Component {
 
   submitForm = () => {
     if (
-      this.state.numberFieldName[0].value === 0 &&
-      this.state.numberFieldName[1].value === 0
+      (this.state.numberFieldName[0].value === 0 &&
+        this.state.numberFieldName[1].value === 0) ||
+      this.state.ingredients.ing.length === 0
     ) {
-      alert('Enter the cooking time of the recipe');
+      alert('Please fill all the details');
       return;
     }
     alert('Successfully created a new recipe!');
@@ -204,11 +204,12 @@ class Form extends Component {
             class='ingsButton'
             clickAction={() => this.removeIngredients(item.id)}
           >
-            <FontAwesomeIcon icon={faTimesCircle} />
+            <FAICON iconName='faTimesCircle' color='black' />
           </Button>
         </h1>
       </div>
     ));
+    console.log(this.checkFormValidation());
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>

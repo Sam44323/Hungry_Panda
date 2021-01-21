@@ -7,7 +7,7 @@ import './editAdd.css';
 import Navigation from '../../components/navigation/Navigation';
 import Form from '../../components/Form/Form';
 
-const EditAdd = (props) => {
+const EditAdd = () => {
   return (
     <Fragment>
       <Navigation />

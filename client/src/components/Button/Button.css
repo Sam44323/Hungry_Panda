@@ -46,5 +46,5 @@
   background-color: grey;
   color: white;
   box-shadow: none;
-  cursor: no-drop;
+  cursor: not-allowed;
 }
