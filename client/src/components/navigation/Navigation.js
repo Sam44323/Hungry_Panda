@@ -4,12 +4,12 @@ import './Navigation.css';
 import NavigationLink from './NavigationLink/NavigationLink';
 import PandaLogo from '../../assets/images/panda.svg';
 import FAICON from '../FontAwesome/FontAwesome';
+import * as constants from '../Constants/uiconstants';
 
 /*
 Logout will be a form with a button for posting a post request with the hidden input value of the user id
 we'll fix it later
 */
-
 class Navigation extends React.Component {
   state = {
     backdrop: false,
@@ -17,32 +17,54 @@ class Navigation extends React.Component {
     showMenuButton: true,
   };
 
+  //for opening the backdrop and the sidebar
   openBackdrop = () => {
     this.setState({ backdrop: true, showmenu: true, showMenuButton: true });
   };
 
+  //for closing the backdrop and the sidebar
   closeBackdrop = () => {
     this.setState({ backdrop: false, showmenu: false });
   };
 
+  changeElementStyle = (color, shadow, height, width) => {
+    let element = document.querySelector('.navigation');
+    let appLogo = document.querySelector('.appLogoSection');
+    element.style.backgroundColor = color;
+    element.style.boxShadow = shadow;
+    appLogo.style.height = height;
+    appLogo.style.width = width;
+  };
+
   componentDidMount() {
+    //for editing the size and the visibility of the navigation items according the scrolling position of the user
     this.scrollBackground = document.addEventListener('scroll', (e) => {
       let scrolled = document.scrollingElement.scrollTop;
-      let element = document.querySelector('.navigation');
-      let appLogo = document.querySelector('.appLogoSection');
+
       if (scrolled >= 70) {
-        element.style.backgroundColor = 'transparent';
-        element.style.boxShadow = 'none';
-        appLogo.style.height = '40px';
-        appLogo.style.width = '40px';
+        this.changeElementStyle('transparent', 'none', '40px', '40px');
       } else {
-        element.style.backgroundColor = '#faebd7';
-        element.style.boxShadow = '0px 0px 11px 0px rgba(0, 0, 0, 0.76)';
-        appLogo.style.height = '70px';
-        appLogo.style.width = '70px';
+        this.changeElementStyle(
+          '#faebd7',
+          '0px 0px 11px 0px rgba(0, 0, 0, 0.76)',
+          '70px',
+          '70px'
+        );
       }
     });
   }
+
+  createNavLink = (classname, destinationName, linkname, iconName) => {
+    return (
+      <NavigationLink
+        listClass={classname}
+        destination={destinationName}
+        classValue='navLinks'
+      >
+        <FAICON iconName={iconName} color='brown' /> {linkname}
+      </NavigationLink>
+    );
+  };
 
   render() {
     let showButtonMenu = null;
@@ -60,46 +82,36 @@ class Navigation extends React.Component {
     let menu = (
       <div className='navigationListMobile'>
         <ul className='navLinksMobileList'>
-          <NavigationLink
-            listClass='navLinksMobileContainer'
-            destination='/add-recipes'
-            classValue='navLinks'
-          >
-            <FAICON iconName='faPlus' color='brown' /> Add
-          </NavigationLink>
-
-          <NavigationLink
-            listClass='navLinksMobileContainer'
-            destination='/explore'
-            classValue='navLinks'
-          >
-            <FAICON iconName='faCompass' color='brown' />
-            Explore
-          </NavigationLink>
-
-          <NavigationLink
-            listClass='navLinksMobileContainer'
-            destination='/profile'
-            classValue='navLinks'
-          >
-            <FAICON iconName='faUserCircle' color='brown' /> My Profile
-          </NavigationLink>
-
-          <NavigationLink
-            listClass='navLinksMobileContainer'
-            destination='/logout'
-            classValue='navLinks'
-          >
-            <FAICON iconName='faSignOutAlt' color='brown' /> Logout
-          </NavigationLink>
-
-          <NavigationLink
-            listClass='navLinksMobileContainer'
-            destination='/auth/signup'
-            classValue='navLinks'
-          >
-            <FAICON iconName='faUserPlus' color='brown' /> Sign Up
-          </NavigationLink>
+          {this.createNavLink(
+            constants.MOBILE_CLASS,
+            '/add-recipes',
+            'Add',
+            constants.FAPLUS
+          )}
+          {this.createNavLink(
+            constants.MOBILE_CLASS,
+            '/explore',
+            'Explore',
+            constants.FACOMPASS
+          )}
+          {this.createNavLink(
+            constants.MOBILE_CLASS,
+            '/profile',
+            'My Profile',
+            constants.FAUSERCIRCLE
+          )}
+          {this.createNavLink(
+            constants.MOBILE_CLASS,
+            '/logout',
+            'Logout',
+            constants.FASIGNALTOUT
+          )}
+          {this.createNavLink(
+            constants.MOBILE_CLASS,
+            '/auth/signup',
+            'Sign Up',
+            constants.FAUSERPLUS
+          )}
         </ul>
       </div>
     );
@@ -119,50 +131,40 @@ class Navigation extends React.Component {
           </div>
           {showButtonMenu}
           <ul className='navigationList'>
-            <NavigationLink
-              listClass='navlinksContainer'
-              destination='/add-recipes'
-              classValue='navLinks'
-            >
-              <FAICON iconName='faPlus' color='brown' /> Add
-            </NavigationLink>
-
-            <NavigationLink
-              listClass='navlinksContainer'
-              destination='/explore'
-              classValue='navLinks'
-            >
-              <FAICON iconName='faCompass' color='brown' /> Explore
-            </NavigationLink>
-
-            <NavigationLink
-              listClass='navlinksContainer'
-              destination='/profile'
-              classValue='navLinks'
-            >
-              <FAICON iconName='faUserCircle' color='brown' /> My Profile
-            </NavigationLink>
-
-            <NavigationLink
-              listClass='navlinksContainer'
-              destination='/logout'
-              classValue='navLinks'
-            >
-              <FAICON iconName='faSignOutAlt' color='brown' /> Logout
-            </NavigationLink>
-
-            <NavigationLink
-              listClass='navlinksContainer'
-              destination='/auth/signup'
-              classValue='navLinks'
-            >
-              <FAICON iconName='faUserPlus' color='brown' /> Sign Up
-            </NavigationLink>
+            {this.createNavLink(
+              constants.DESKTOP_CLASS,
+              '/add-recipes',
+              'Add',
+              constants.FAPLUS
+            )}
+            {this.createNavLink(
+              constants.DESKTOP_CLASS,
+              '/explore',
+              'Explore',
+              constants.FACOMPASS
+            )}
+            {this.createNavLink(
+              constants.DESKTOP_CLASS,
+              '/profile',
+              'My Profile',
+              constants.FAUSERCIRCLE
+            )}
+            {this.createNavLink(
+              constants.DESKTOP_CLASS,
+              '/logout',
+              'Logout',
+              constants.FASIGNALTOUT
+            )}
+            {this.createNavLink(
+              constants.DESKTOP_CLASS,
+              '/auth/signup',
+              'Sign Up',
+              constants.FAUSERPLUS
+            )}
           </ul>
         </div>
       </React.Fragment>
     );
   }
 }
-
 export default Navigation;

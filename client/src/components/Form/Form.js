@@ -5,6 +5,7 @@ import Input from './InputFields/Input';
 import Button from '../Button/Button';
 import Ingredients from '../IngredientsTODO/Ingredients';
 import FAICON from '../FontAwesome/FontAwesome';
+import * as constants from '../Constants/uiconstants';
 
 let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
@@ -60,7 +61,6 @@ class Form extends Component {
       message: 'Enter a valid ingredient!',
       isValid: true,
     },
-    formIsValid: false,
   };
 
   //FOR DELETING THE INGREDIENT VALUE
@@ -115,7 +115,6 @@ class Form extends Component {
 
   setIngredients = (value) => {
     const ingObject = { ...this.state.ingredients };
-    console.log(typeof value);
     if (value.trim() === '') {
       ingObject.isValid = false;
       this.setState({ ingredients: ingObject });
@@ -124,21 +123,6 @@ class Form extends Component {
     ingObject.ing.push({ id: ingConst++, value: value.trim() });
     ingObject.isValid = true;
     this.setState({ ingredients: ingObject });
-  };
-
-  //METHOD FOR SUBMITTNG THE FORM AND ADDING A NEW RECIPE
-
-  submitForm = () => {
-    if (
-      (this.state.numberFieldName[0].value === 0 &&
-        this.state.numberFieldName[1].value === 0) ||
-      this.state.ingredients.ing.length === 0
-    ) {
-      alert('Please fill all the details');
-      return;
-    }
-    alert('Successfully created a new recipe!');
-    this.resetValue();
   };
 
   resetValue = () => {
@@ -155,8 +139,22 @@ class Form extends Component {
     this.setState({
       textFieldName: textField,
       numberFieldName: numberField,
-      formIsValid: false,
     });
+  };
+
+  //METHOD FOR SUBMITTNG THE FORM AND ADDING A NEW RECIPE
+
+  submitForm = () => {
+    if (
+      (this.state.numberFieldName[0].value === 0 &&
+        this.state.numberFieldName[1].value === 0) ||
+      this.state.ingredients.ing.length === 0
+    ) {
+      alert('Please fill all the details');
+      return;
+    }
+    alert('Successfully created a new recipe!');
+    this.resetValue();
   };
 
   render() {
@@ -187,7 +185,6 @@ class Form extends Component {
             classValue='numberInput'
             value={item.value}
             actionHandler={this.changeValueHandler}
-            numberClass='numberClass'
             isValid={item.isValid}
             touched={item.touched}
             message={item.message}
@@ -204,12 +201,11 @@ class Form extends Component {
             class='ingsButton'
             clickAction={() => this.removeIngredients(item.id)}
           >
-            <FAICON iconName='faTimesCircle' color='black' />
+            <FAICON iconName={constants.FATIMESCIRCLE} color='black' />
           </Button>
         </h1>
       </div>
     ));
-    console.log(this.checkFormValidation());
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>

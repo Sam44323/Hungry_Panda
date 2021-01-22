@@ -41,7 +41,6 @@ const Input = (props) => {
               props.actionHandler(props.name, props.type, event.target.value)
             }
             required={props.required}
-            className={props.numberClass && props.numberClass}
           />
           {props.touched && !props.isValid ? (
             <p className='messageSection'>{props.message}</p>
