@@ -1,12 +1,10 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
+const apiKeys = require('../config');
 
 const app = express();
 app.use(bodyparser.json({ extended: false }));
-
-const MONGODB_URI =
-  'mongodb+srv://suranjan_mern:suranjan_mern@cluster0.ncbfj.mongodb.net/hungryPanda?retryWrites=true&w=majority';
 
 const recipesRoutes = require('./routes/recipes-routes');
 const usersRoutes = require('./routes/user-routes');
@@ -23,7 +21,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(apiKeys.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log('Connected to the database');
     app.listen(5000, () => {
