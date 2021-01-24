@@ -10,11 +10,12 @@ router.get('/myprofile/:id', userController.getUserData);
 router.post(
   '/signup',
   [
-    check('name').notEmpty(),
+    check('name').notEmpty().isString(),
     check('email').normalizeEmail().isEmail(),
-    check('age').notEmpty().isNumeric(),
+    check('userName').notEmpty().isString(),
+    check('age').isNumeric(),
     check('socialMedia').isArray(),
-    check('location').notEmpty(),
+    check('location').isString().isLength({ min: 1 }),
   ],
   userController.addNewUser
 );
@@ -23,17 +24,15 @@ router.post(
 router.patch(
   '/editprofile/:id',
   [
-    check('name').notEmpty(),
+    check('name').notEmpty().isString(),
     check('email').normalizeEmail().isEmail(),
-    check('age').notEmpty().isNumeric(),
+    check('userName').notEmpty().isString(),
+    check('age').isNumeric(),
     check('socialMedia').isArray(),
-    check('location').notEmpty(),
+    check('location').isString(),
   ],
   userController.editUserData
 );
-
-//UPDATING THE LIKES TO THE USER LIKE VALUE
-router.patch('/likevalue/update/:id', userController.updateLikeValue);
 
 //LOGGING OUT AN USER
 router.post('/logout', userController.logUserOut);

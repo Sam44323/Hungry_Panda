@@ -5,6 +5,7 @@ const recipeSchema = new Schema({
   name: {
     type: String,
     required: true,
+    minlength: 1,
   },
   image: {
     type: String,
@@ -13,40 +14,54 @@ const recipeSchema = new Schema({
   cookTime: {
     hours: {
       type: Number,
+      required: true,
     },
     minutes: {
       type: Number,
       required: true,
     },
   },
-  desc: {
+  description: {
     type: String,
     required: true,
+    minlength: 5,
   },
-  ingredients: {
-    ingArray: [
-      {
-        name: {
-          type: String,
-          required: true,
-        },
-        qty: {
-          type: String,
-          required: true,
-        },
+  keyIngred: [
+    {
+      type: String,
+      minlength: 1,
+    },
+  ],
+  ingredients: [
+    {
+      _id: 0, // for switching off the _id property in the ingredients array
+      name: {
+        type: String,
+        required: true,
       },
-    ],
-  },
+      qty: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   procedure: {
     type: String,
     required: true,
+    minlength: 10,
   },
   likes: {
     type: Number,
   },
+  likedBy: [
+    {
+      type: String,
+    },
+  ],
   creatorId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
+    type: String,
     required: true,
   },
 });
+
+module.exports = mongoose.model('Recipe', recipeSchema);

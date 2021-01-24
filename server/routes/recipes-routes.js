@@ -17,11 +17,13 @@ router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
 router.post(
   '/addrecipe',
   [
-    check('image').not().isEmpty(),
-    check('name').not().isEmpty(),
+    check('image').notEmpty(),
+    check('name').notEmpty(),
     check('description').isLength({ min: 6 }),
-    check('kIngrd').isArray({ min: 1 }),
-    check('creator').not().isEmpty(),
+    check('keyIngred').isArray({ min: 1 }),
+    check('ingredients').isArray({ min: 1 }),
+    check('procedure').notEmpty(),
+    check('cookTime').notEmpty(),
   ],
   recipesControllers.addNewRecipe
 );
@@ -30,20 +32,19 @@ router.post(
 router.patch(
   '/updateRecipe/:id',
   [
-    check('image').not().isEmpty(),
-    check('name').not().isEmpty(),
+    check('image').notEmpty(),
+    check('name').notEmpty(),
     check('description').isLength({ min: 6 }),
-    check('kIngrd').isArray({ min: 1 }),
-    check('creator').not().isEmpty(),
+    check('keyIngred').isArray({ min: 1 }),
+    check('ingredients').isArray({ min: 1 }),
+    check('procedure').notEmpty(),
+    check('cookTime').notEmpty(),
   ],
   recipesControllers.updateRecipe
 );
 
-//INCREASING THE LIKE COUNTER FOR A RECIPE
-router.patch('/updatelike/incr/:id', recipesControllers.increaseLikeValue);
-
-//DECREASING THE LIKE COUNTER FOR A RECIPE
-router.patch('/updatelike/decr/:id', recipesControllers.decreaseLikeValue);
+//UPDATING THE LIKE COUNTER FOR A RECIPE
+router.patch('/updatelike/:id', recipesControllers.updateLikeValue);
 
 //DELETING A RECIPE
 router.delete('/deleterecipe/:id', recipesControllers.deleteRecipe);
