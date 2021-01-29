@@ -24,7 +24,7 @@ class Ingredients extends Component {
         <div className='addButtonSection'>
           <Button
             clickAction={() => {
-              this.props.submitIngredients(this.state.value);
+              this.props.submitIngredients(this.state.value, this.props.type);
               this.setState({ value: '' });
             }}
             class='SuccessBtn'

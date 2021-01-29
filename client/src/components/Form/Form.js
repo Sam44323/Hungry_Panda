@@ -6,6 +6,7 @@ import Button from '../Button/Button';
 import Ingredients from '../IngredientsTODO/Ingredients';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
+import axios from '../../axios-instance';
 
 let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
@@ -13,6 +14,7 @@ class Form extends Component {
     textFieldName: [
       {
         name: 'Recipe Name',
+        dbName: 'name',
         type: 'text',
         value: '',
         touched: false,
@@ -21,6 +23,7 @@ class Form extends Component {
       },
       {
         name: 'Image',
+        dbName: 'image',
         type: 'text',
         value: '',
         touched: false,
@@ -29,6 +32,7 @@ class Form extends Component {
       },
       {
         name: 'Description',
+        dbName: 'description',
         type: 'textarea',
         value: '',
         touched: false,
@@ -37,6 +41,7 @@ class Form extends Component {
       },
       {
         name: 'Procedure',
+        dbName: 'procedure',
         type: 'textarea',
         value: '',
         touched: false,
@@ -61,14 +66,23 @@ class Form extends Component {
       message: 'Enter a valid ingredient!',
       isValid: true,
     },
+    keyingredients: {
+      ing: [],
+      message: 'Enter a valid ingredient!',
+      isValid: true,
+    },
   };
 
   //FOR DELETING THE INGREDIENT VALUE
 
-  removeIngredients = (ingId) => {
-    let ings = { ...this.state.ingredients };
+  removeIngredients = (type, ingId) => {
+    let ings = { ...this.state[type] };
     ings.ing = ings.ing.filter((item) => item.id !== ingId);
-    this.setState({ ingredients: ings });
+    if (type === 'ingredients') {
+      this.setState({ ingredients: ings });
+    } else {
+      this.setState({ keyingredients: ings });
+    }
   };
 
   //FOR CHANGING THE VALUES OF THE INPUTS
@@ -77,6 +91,10 @@ class Form extends Component {
     let valueArray = [];
     if (type === 'number') {
       valueArray = [...this.state.numberFieldName];
+      if (name === 'Minutes' && value > 59) {
+        alert('Plese enter a valid time');
+        return;
+      }
     } else {
       valueArray = [...this.state.textFieldName];
     }
@@ -113,8 +131,8 @@ class Form extends Component {
 
   //METHOD FOR SETTING THE INGREDIENTS TO THE INGREDIENTS ARRAY OF THE STATE
 
-  setIngredients = (value) => {
-    const ingObject = { ...this.state.ingredients };
+  setIngredients = (value, type) => {
+    const ingObject = { ...this.state[type] };
     if (value.trim() === '') {
       ingObject.isValid = false;
       this.setState({ ingredients: ingObject });
@@ -122,7 +140,11 @@ class Form extends Component {
     }
     ingObject.ing.push({ id: ingConst++, value: value.trim() });
     ingObject.isValid = true;
-    this.setState({ ingredients: ingObject });
+    if (type === 'ingredients') {
+      this.setState({ ingredients: ingObject });
+    } else {
+      this.setState({ keyingredients: ingObject });
+    }
   };
 
   resetValue = () => {
@@ -136,9 +158,16 @@ class Form extends Component {
     for (let item of numberField) {
       item.value = 0;
     }
+    let resetIngs = {
+      ing: [],
+      message: 'Enter a valid ingredient!',
+      isValid: true,
+    };
     this.setState({
       textFieldName: textField,
       numberFieldName: numberField,
+      ingredients: resetIngs,
+      keyingredients: resetIngs,
     });
   };
 
@@ -153,8 +182,41 @@ class Form extends Component {
       alert('Please fill all the details');
       return;
     }
-    alert('Successfully created a new recipe!');
-    this.resetValue();
+    const recipesDetails = {};
+    for (let item of this.state.textFieldName) {
+      recipesDetails[item.dbName] = item.value;
+    }
+    recipesDetails.cookTime = {
+      hours: this.state.numberFieldName[0].value,
+      minutes: this.state.numberFieldName[1].value,
+    };
+    recipesDetails.keyIngred = [...this.state.keyingredients.ing];
+    recipesDetails.ingredients = [...this.state.ingredients.ing];
+    axios
+      .post('hungrypandaAPI/recipes/addrecipe', recipesDetails)
+      .then(() => {
+        alert('Successfully created a new recipe!');
+        this.resetValue();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  returnIngredArray = (type) => {
+    return this.state[type].ing.map((item) => (
+      <div key={Math.random()} className='ingValueDivision'>
+        <h1 className='ingValueStyle'>
+          {item.value}{' '}
+          <Button
+            class='ingsButton'
+            clickAction={() => this.removeIngredients(type, item.id)}
+          >
+            <FAICON iconName={constants.FATIMESCIRCLE} color='black' />
+          </Button>
+        </h1>
+      </div>
+    ));
   };
 
   render() {
@@ -192,28 +254,31 @@ class Form extends Component {
         ))}
       </div>
     );
+
     //FOR STORING THE INGREDIENTS IN A STYLED INPUT
-    const ingrd = this.state.ingredients.ing.map((item) => (
-      <div key={Math.random()} className='ingValueDivision'>
-        <h1 className='ingValueStyle'>
-          {item.value}{' '}
-          <Button
-            class='ingsButton'
-            clickAction={() => this.removeIngredients(item.id)}
-          >
-            <FAICON iconName={constants.FATIMESCIRCLE} color='black' />
-          </Button>
-        </h1>
-      </div>
-    ));
+    const ingrd = this.returnIngredArray('ingredients');
+    const keyIngred = this.returnIngredArray('keyingredients');
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>
         {numberInputs}
         {textInputs}
         <div className='ingredientsSection'>
-          <h1 className='ingTitle'>Ingredients</h1>
+          <h1 className='ingTitle'>Key Ingredients (with values)</h1>
           <Ingredients
+            type='keyingredients'
+            submitIngredients={this.setIngredients}
+            validCondition={this.state.keyingredients.isValid}
+            message={this.state.keyingredients.message}
+          />
+          {keyIngred.length > 0 ? (
+            <div className='ingValueSection'>{keyIngred}</div>
+          ) : null}
+        </div>
+        <div className='ingredientsSection'>
+          <h1 className='ingTitle'>Ingredients (with values)</h1>
+          <Ingredients
+            type='ingredients'
             submitIngredients={this.setIngredients}
             validCondition={this.state.ingredients.isValid}
             message={this.state.ingredients.message}

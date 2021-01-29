@@ -35,14 +35,8 @@ const recipeSchema = new Schema({
   ingredients: [
     {
       _id: 0, // for switching off the _id property in the ingredients array
-      name: {
-        type: String,
-        required: true,
-      },
-      qty: {
-        type: String,
-        required: true,
-      },
+      type: String,
+      required: true,
     },
   ],
   procedure: {

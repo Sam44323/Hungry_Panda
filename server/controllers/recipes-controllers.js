@@ -60,6 +60,8 @@ const addNewRecipe = (req, res, next) => {
     ingredients,
     procedure,
   } = req.body;
+  ingredients = ingredients.map((item) => item.value);
+  keyIngred = keyIngred.map((item) => item.value);
   const newRecipe = new Recipe({
     name,
     image,

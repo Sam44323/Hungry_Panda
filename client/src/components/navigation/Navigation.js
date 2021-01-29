@@ -80,7 +80,7 @@ class Navigation extends React.Component {
       );
     }
     let menu = (
-      <div className='navigationListMobile'>
+      <div className='navigationListMobile' onClick={this.closeBackdrop}>
         <ul className='navLinksMobileList'>
           {this.createNavLink(
             constants.MOBILE_CLASS,

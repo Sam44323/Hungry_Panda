@@ -5,6 +5,7 @@ import '../shared/sharedStyles/styles.css';
 
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
+import axios from '../../axios-instance';
 
 class Explore extends React.Component {
   state = {
@@ -40,6 +41,18 @@ class Explore extends React.Component {
       },
     ],
   };
+
+  componentDidMount() {
+    axios
+      .get('hungrypandaAPI/recipes/explore')
+      .then((recipes) => {
+        console.log(recipes);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   render() {
     const recipesCard = this.state.recipes.map((recipe) => {
       return (
