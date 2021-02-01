@@ -7,10 +7,12 @@ import Ingredients from '../IngredientsTODO/Ingredients';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
 import axios from '../../axios-instance';
+import Loader from 'react-loader-spinner';
 
 let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
   state = {
+    loading: false,
     textFieldName: [
       {
         name: 'Recipe Name',
@@ -174,6 +176,7 @@ class Form extends Component {
   //METHOD FOR SUBMITTNG THE FORM AND ADDING A NEW RECIPE
 
   submitForm = () => {
+    this.setState({ loading: true });
     if (
       (this.state.numberFieldName[0].value === 0 &&
         this.state.numberFieldName[1].value === 0) ||
@@ -182,23 +185,29 @@ class Form extends Component {
       alert('Please fill all the details');
       return;
     }
-    const recipesDetails = {};
-    for (let item of this.state.textFieldName) {
-      recipesDetails[item.dbName] = item.value;
-    }
-    recipesDetails.cookTime = {
-      hours: this.state.numberFieldName[0].value,
-      minutes: this.state.numberFieldName[1].value,
+
+    const data = {
+      name: this.state.textFieldName[0].value,
+      image: this.state.textFieldName[1].value,
+      description: this.state.textFieldName[2].value,
+      procedure: this.state.textFieldName[3].value,
+      cookTime: {
+        hours: this.state.numberFieldName[0].value,
+        minutes: this.state.numberFieldName[1].value,
+      },
+      keyIngred: this.state.keyingredients.ing.map((item) => item.value),
+      ingredients: this.state.ingredients.ing.map((item) => item.value),
     };
-    recipesDetails.keyIngred = [...this.state.keyingredients.ing];
-    recipesDetails.ingredients = [...this.state.ingredients.ing];
     axios
-      .post('hungrypandaAPI/recipes/addrecipe', recipesDetails)
-      .then(() => {
-        alert('Successfully created a new recipe!');
+      .post('/hungrypandaAPI/recipes/addrecipe', data)
+      .then((recipeData) => {
+        this.setState({ loading: false });
+        console.log(recipeData);
+        alert('Created the recipe!');
         this.resetValue();
       })
       .catch((err) => {
+        this.setState({ loading: false });
         console.log(err);
       });
   };
@@ -288,13 +297,17 @@ class Form extends Component {
           ) : null}
         </div>
         <div className='formBtnSection'>
-          <Button
-            class='SuccessBtn'
-            clickAction={this.submitForm}
-            disabledValue={disabled}
-          >
-            Add
-          </Button>
+          {this.state.loading ? (
+            <Loader type='Puff' color='#493323' height={100} width={100} />
+          ) : (
+            <Button
+              class='SuccessBtn'
+              clickAction={this.submitForm}
+              disabledValue={disabled}
+            >
+              Add
+            </Button>
+          )}
         </div>
       </div>
     );

@@ -96,13 +96,14 @@ class ProfileForm extends Component {
 
   // FOR CHANGING THE VALUE OF THE SOCIAL-MEDIA OBJECT
 
-  submitDataAndReset = (name, value) => {
+  socialMediaDataChange = (name, value) => {
     const objectData = { ...this.state.socialMedia };
     objectData[name].value = value;
     this.setState({ socialMedia: objectData });
   };
 
-  checkFormValidation = () => {
+  submitForm = () => {
+    console.log(this.state);
     const resetUserData = { ...this.state.userData };
     const resetSocialMedia = { ...this.state.socialMedia };
     for (let key in resetUserData) {
@@ -146,7 +147,7 @@ class ProfileForm extends Component {
           type='text'
           name={this.state.socialMedia[keyValue].name}
           value={this.state.socialMedia[keyValue].value}
-          changeAction={this.changeSocialMediaValue}
+          changeAction={this.socialMediaDataChange}
         />
       );
     }
@@ -174,7 +175,7 @@ class ProfileForm extends Component {
         <div className='profileBtnSection'>
           <Button
             class='ingsBtn SuccessBtn'
-            clickAction={this.submitDataAndReset}
+            clickAction={this.submitForm}
             disabledValue={!valid}
           >
             Add

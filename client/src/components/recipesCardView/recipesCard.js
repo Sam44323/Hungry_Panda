@@ -6,15 +6,13 @@ import FAICON from '../FontAwesome/FontAwesome';
 
 const RecipesCard = (props) => {
   let c = 0;
-  let likedValue = null;
-  if (props.loves > 0) {
-    likedValue = (
-      <Fragment>
-        <h3 className='loveTitle'>{props.loves}</h3>
-        <FAICON iconName='faHeart' color='red' />
-      </Fragment>
-    );
-  }
+  let likedValue = (
+    <Fragment>
+      <h3 className='loveTitle'>{props.loves}</h3>
+      <FAICON iconName='faHeart' color='red' />
+    </Fragment>
+  );
+
   const ingreds = (
     <ul className='keyIngredContainer'>
       <h3 className='keyIngredTitle'>Key Ingredients</h3>
