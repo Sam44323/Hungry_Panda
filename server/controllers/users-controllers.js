@@ -30,7 +30,9 @@ const addNewUser = (req, res, next) => {
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        return next(errorCreator('An user already exists with this email!'));
+        return next(
+          errorCreator('An user already exists with this email!', 409)
+        );
       }
       const newUser = new User({
         name,

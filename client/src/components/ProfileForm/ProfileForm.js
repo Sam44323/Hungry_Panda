@@ -4,6 +4,7 @@ import './ProfileForm.css';
 import Input from './ProfileInput/ProfileInput';
 import FAICON from '../FontAwesome/FontAwesome';
 import Button from '../Button/Button';
+import axios from '../../axios-instance';
 
 class ProfileForm extends Component {
   state = {
@@ -102,8 +103,7 @@ class ProfileForm extends Component {
     this.setState({ socialMedia: objectData });
   };
 
-  submitForm = () => {
-    console.log(this.state);
+  resetUserDataHandler = () => {
     const resetUserData = { ...this.state.userData };
     const resetSocialMedia = { ...this.state.socialMedia };
     for (let key in resetUserData) {
@@ -116,8 +116,45 @@ class ProfileForm extends Component {
       resetSocialMedia[key].touched = false;
       resetSocialMedia[key].valid = false;
     }
-    this.setState({ userData: resetUserData, socialMedia: resetSocialMedia });
-    console.log('submitted');
+
+    return { resetUserData, resetSocialMedia };
+  };
+
+  submitForm = () => {
+    const data = {
+      name: this.state.userData.name.value.trim(),
+      email: this.state.userData.email.value.trim(),
+      userName: this.state.userData.userName.value.trim(),
+      age: this.state.userData.age.value,
+      location: this.state.userData.city.value.trim(),
+      socialMedia: [
+        {
+          name: 'Facebook',
+          value: this.state.socialMedia.fb.value.trim(),
+        },
+        {
+          name: 'Instagram',
+          value: this.state.socialMedia.insta.value.trim(),
+        },
+        {
+          name: 'Twitter',
+          value: this.state.socialMedia.twitter.value.trim(),
+        },
+      ],
+    };
+    axios
+      .post('/hungrypandaAPI/users/signup', data)
+      .then((user) => {
+        console.log(user);
+        const resetData = this.resetUserDataHandler();
+        this.setState({
+          userData: resetData.resetUserData,
+          socialMedia: resetData.resetSocialMedia,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {

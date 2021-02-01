@@ -26,8 +26,12 @@ const userSchema = new Schema({
   },
   socialMedia: [
     {
-      type: String,
-      minlength: 1,
+      name: {
+        type: String,
+      },
+      value: {
+        type: String,
+      },
     },
   ],
   recipes: [

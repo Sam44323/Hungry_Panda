@@ -22,6 +22,10 @@ app.use((req, res, next) => {
 app.use('/hungrypandaAPI/recipes', recipesRoutes);
 app.use('/hungrypandaAPI/users', usersRoutes);
 
+app.use((req, res) => {
+  res.status(404).json({ message: 'Please check the url' });
+});
+
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);

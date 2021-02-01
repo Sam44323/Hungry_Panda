@@ -187,16 +187,16 @@ class Form extends Component {
     }
 
     const data = {
-      name: this.state.textFieldName[0].value,
-      image: this.state.textFieldName[1].value,
-      description: this.state.textFieldName[2].value,
-      procedure: this.state.textFieldName[3].value,
+      name: this.state.textFieldName[0].value.trim(),
+      image: this.state.textFieldName[1].value.trim(),
+      description: this.state.textFieldName[2].value.trim(),
+      procedure: this.state.textFieldName[3].value.trim(),
       cookTime: {
         hours: this.state.numberFieldName[0].value,
         minutes: this.state.numberFieldName[1].value,
       },
-      keyIngred: this.state.keyingredients.ing.map((item) => item.value),
-      ingredients: this.state.ingredients.ing.map((item) => item.value),
+      keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
+      ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
     };
     axios
       .post('/hungrypandaAPI/recipes/addrecipe', data)
