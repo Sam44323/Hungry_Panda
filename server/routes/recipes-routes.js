@@ -17,8 +17,8 @@ router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
 router.post(
   '/addrecipe',
   [
-    check('image').notEmpty(),
     check('name').notEmpty(),
+    check('image').notEmpty(),
     check('description').isLength({ min: 6 }),
     check('keyIngred').isArray({ min: 1 }),
     check('ingredients').isArray({ min: 1 }),

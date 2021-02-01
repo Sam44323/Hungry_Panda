@@ -31,8 +31,8 @@ const getRecipe = (req, res, next) => {
 };
 
 const getRecipesByUsers = (req, res, next) => {
-  const creatorId = req.params.cid;
-  Recipe.find({ creatorId })
+  console.log(req.params.cid, 'Params!');
+  Recipe.find({ creatorId: req.params.cid })
     .then((recipes) => {
       res.status(200).json({ recipes });
     })
@@ -43,6 +43,7 @@ const getRecipesByUsers = (req, res, next) => {
 };
 
 const addNewRecipe = (req, res, next) => {
+  console.log(req.body);
   const error = validationResult(req);
   if (!error.isEmpty()) {
     return next(
@@ -60,8 +61,6 @@ const addNewRecipe = (req, res, next) => {
     ingredients,
     procedure,
   } = req.body;
-  ingredients = ingredients.map((item) => item.value);
-  keyIngred = keyIngred.map((item) => item.value);
   const newRecipe = new Recipe({
     name,
     image,
