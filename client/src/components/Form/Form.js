@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import './Form.css';
 import Input from './InputFields/Input';
@@ -202,8 +203,8 @@ class Form extends Component {
       .post('/hungrypandaAPI/recipes/addrecipe', data)
       .then((recipeData) => {
         this.setState({ loading: false });
+        this.props.history.push('/myrecipes');
         console.log(recipeData);
-        alert('Created the recipe!');
         this.resetValue();
       })
       .catch((err) => {
@@ -314,4 +315,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default withRouter(Form);

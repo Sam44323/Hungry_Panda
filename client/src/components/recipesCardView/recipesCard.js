@@ -12,7 +12,6 @@ const RecipesCard = (props) => {
       <FAICON iconName='faHeart' color='red' />
     </Fragment>
   );
-
   const ingreds = (
     <ul className='keyIngredContainer'>
       <h3 className='keyIngredTitle'>Key Ingredients</h3>
@@ -21,10 +20,7 @@ const RecipesCard = (props) => {
           ++c;
           return (
             <li key={c} className='keyIngredItem'>
-              <h4>
-                {item}
-                {c === props.kIngredLength ? '.' : ','}
-              </h4>
+              <h4 className='keyIngredItemHeading'>{item}</h4>
             </li>
           );
         })}
@@ -48,20 +44,20 @@ const RecipesCard = (props) => {
         <h3 className='recipeTitle'>{props.name}</h3>
         <p className='cookingTime'>
           <FAICON iconName='faClock' color='white' /> {timeValue}{' '}
-          {props.cooktime.mins} minutes
+          {props.cooktime.minutes} minutes
         </p>
         <h3 className='recipeDescription'>{props.desc}</h3>
         {ingreds}
         <div className='actionButtons'>
           <Button
             class='SuccessBtn'
-            clickAction={() => alert('Show is working')}
+            clickAction={() => props.showRecipeDetails(props.id)}
           >
             Show
           </Button>
           <Button
             class='DangerBtn'
-            clickAction={() => alert('Delete is working')}
+            clickAction={() => props.deleteRecipe(props.id)}
           >
             Delete
           </Button>

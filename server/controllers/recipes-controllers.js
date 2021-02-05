@@ -31,7 +31,6 @@ const getRecipe = (req, res, next) => {
 };
 
 const getRecipesByUsers = (req, res, next) => {
-  console.log(req.params.cid, 'Params!');
   Recipe.find({ creatorId: req.params.cid })
     .then((recipes) => {
       res.status(200).json({ recipes });
@@ -43,7 +42,6 @@ const getRecipesByUsers = (req, res, next) => {
 };
 
 const addNewRecipe = (req, res, next) => {
-  console.log(req.body);
   const error = validationResult(req);
   if (!error.isEmpty()) {
     return next(
@@ -102,7 +100,7 @@ const updateRecipe = (req, res, next) => {
     { ...req.body },
     { useFindAndModify: true }
   )
-    .then((updatedRecipe) => {
+    .then(() => {
       res.status(201).json({ message: 'Successfully updated the recipe!' });
     })
     .catch((err) => {

@@ -95,6 +95,19 @@
   margin: 0px 3px;
 }
 
+.keyIngredItemsSection {
+  background-color: salmon;
+  color: white;
+}
+
+.keyIngredItemHeading {
+  background-color: black;
+  padding: 10px;
+  margin: 4px 0px;
+  border-radius: 10px;
+  text-transform: capitalize;
+}
+
 /*STYLING FOR THE BUTTON SECTION AND THE LIST*/
 .actionButtons {
   width: 80%;

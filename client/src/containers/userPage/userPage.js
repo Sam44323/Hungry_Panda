@@ -20,7 +20,7 @@ class UserPage extends Component {
       .get(`/hungrypandaAPI/recipes/myrecipes/${'creator1'}`)
       .then((recipesData) => {
         this.setState({
-          recipes: recipesData.data.recipes,
+          recipes: [...recipesData.data.recipes],
           loading: false,
           hasRecipe: recipesData.data.recipes.length > 0 ? true : false,
         });
@@ -31,11 +31,33 @@ class UserPage extends Component {
       });
   }
 
+  showRecipeDetails = (id) => {
+    console.log(id);
+  };
+
+  deleteRecipe = (id) => {
+    const recipesArray = this.state.recipes.filter(
+      (recipe) => recipe._id !== id
+    );
+    this.setState({
+      recipes: [...recipesArray],
+      hasRecipe: recipesArray.length > 0 ? true : false,
+    });
+    axios
+      .delete(`/hungrypandaAPI/recipes/deleterecipe/${id}`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
     const recipesCard = this.state.recipes.map((recipe) => (
       <RecipesCard
         key={recipe._id}
-        id={recipe.id}
+        id={recipe._id}
         name={recipe.name}
         cooktime={recipe.cookTime}
         imageUrl={recipe.image}
@@ -44,6 +66,8 @@ class UserPage extends Component {
         desc={recipe.recipeDescription}
         loves={recipe.likes}
         creator={recipe.creator}
+        showRecipeDetails={this.showRecipeDetails}
+        deleteRecipe={this.deleteRecipe}
       />
     ));
     return (
