@@ -16,10 +16,10 @@ class MyProfile extends Component {
 
   componentDidMount() {
     axios
-      .get('/hungrypandaAPI/users/myprofile/601d6bfc23906d0224e9499d')
+      .get('/hungrypandaAPI/users/myprofile/601ed0ba8846ee3bdc8a349b')
       .then((user) => {
         console.log(user);
-        this.setState({ loading: false });
+        this.setState({ userData: user.data.user, loading: false });
       })
       .catch((err) => {
         console.log(err);
@@ -35,7 +35,19 @@ class MyProfile extends Component {
             <Loader type='Puff' color='#493323' height={100} width={100} />
           </div>
         ) : (
-          <ProfileMain />
+          <div className='userMainSectionDiv'>
+            <ProfileMain
+              image={this.state.userData.image}
+              name={this.state.userData.name}
+              email={this.state.userData.email}
+              userName={this.state.userData.userName}
+              age={this.state.userData.age}
+              socialMedia={this.state.userData.socialMedia}
+              location={this.state.userData.location}
+              likes={this.state.userData.totalLikes}
+              recipes={this.state.userData.totalRecipes}
+            />
+          </div>
         )}
       </React.Fragment>
     );

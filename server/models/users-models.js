@@ -20,6 +20,9 @@ const userSchema = new Schema({
     type: Number,
     min: 0,
   },
+  image: {
+    type: String,
+  },
   location: {
     type: String,
     minlength: true,
@@ -31,6 +34,9 @@ const userSchema = new Schema({
       },
       value: {
         type: String,
+      },
+      hasValue: {
+        type: Boolean,
       },
     },
   ],

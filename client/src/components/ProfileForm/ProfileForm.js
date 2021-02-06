@@ -56,14 +56,17 @@ class ProfileForm extends Component {
       fb: {
         name: 'Facebook',
         value: '',
+        hasValue: false,
       },
       insta: {
-        name: 'Insta',
+        name: 'Instagram',
         value: '',
+        hasValue: false,
       },
       twitter: {
         name: 'Twitter',
         value: '',
+        hasValue: false,
       },
     },
   };
@@ -100,6 +103,8 @@ class ProfileForm extends Component {
   socialMediaDataChange = (name, value) => {
     const objectData = { ...this.state.socialMedia };
     objectData[name].value = value;
+    objectData[name].hasValue =
+      objectData[name].value.trim().length > 0 ? true : false;
     this.setState({ socialMedia: objectData });
   };
 
@@ -125,20 +130,24 @@ class ProfileForm extends Component {
       name: this.state.userData.name.value.trim(),
       email: this.state.userData.email.value.trim(),
       userName: this.state.userData.userName.value.trim(),
+      image: this.state.userData.profilePicture.value.trim(),
       age: this.state.userData.age.value,
       location: this.state.userData.city.value.trim(),
       socialMedia: [
         {
           name: 'Facebook',
           value: this.state.socialMedia.fb.value.trim(),
+          hasValue: this.state.socialMedia.fb.hasValue,
         },
         {
           name: 'Instagram',
           value: this.state.socialMedia.insta.value.trim(),
+          hasValue: this.state.socialMedia.insta.hasValue,
         },
         {
           name: 'Twitter',
           value: this.state.socialMedia.twitter.value.trim(),
+          hasValue: this.state.socialMedia.twitter.hasValue,
         },
       ],
     };

@@ -27,7 +27,7 @@ const addNewUser = (req, res, next) => {
       )
     );
   }
-  const { name, email, userName, age, socialMedia, location } = req.body;
+  const { name, email, userName, age, socialMedia, location, image } = req.body;
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -40,6 +40,7 @@ const addNewUser = (req, res, next) => {
         email,
         userName,
         age,
+        image,
         socialMedia,
         location,
         recipes: [],

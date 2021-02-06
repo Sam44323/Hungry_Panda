@@ -8,3 +8,4 @@ export const FAUSERCIRCLE = 'faUserCircle';
 export const FASIGNALTOUT = 'faSignOutAlt';
 export const FAUSERPLUS = 'faUserPlus';
 export const FATIMESCIRCLE = 'faTimesCircle';
+export const FAEMAIL = 'faEnvelopeSquare';
