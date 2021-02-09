@@ -55,12 +55,14 @@ const RecipesCard = (props) => {
           >
             Show
           </Button>
-          <Button
-            class='DangerBtn'
-            clickAction={() => props.deleteRecipe(props.id)}
-          >
-            Delete
-          </Button>
+          {props.showDeleteButton ? (
+            <Button
+              class='DangerBtn'
+              clickAction={() => props.deleteRecipe(props.id)}
+            >
+              Delete
+            </Button>
+          ) : null}
         </div>
         <div className='likingContainer'>{likedValue}</div>
       </div>

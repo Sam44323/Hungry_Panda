@@ -25,7 +25,7 @@ const userSchema = new Schema({
   },
   location: {
     type: String,
-    minlength: true,
+    required: true,
   },
   socialMedia: [
     {
@@ -42,7 +42,8 @@ const userSchema = new Schema({
   ],
   recipes: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Recipe',
     },
   ],
   totalLikes: {

@@ -1,5 +1,7 @@
 const { validationResult } = require('express-validator');
 const errorCreator = require('../errorCreator/errorCreator');
+const { ObjectId } = require('mongodb');
+const User = require('../models/users-models');
 
 const Recipe = require('../models/recipes-models');
 
@@ -69,12 +71,19 @@ const addNewRecipe = (req, res, next) => {
     procedure,
     likedBy: [],
     likes: 0,
-    creatorId: 'creator1',
+    creatorId: ObjectId('6022a7d582b86e2ce01ceb5c'),
   });
   newRecipe
     .save()
     .then((recipe) => {
-      res.status(200).json({ New_recipe: recipe });
+      return User.findById('6022a7d582b86e2ce01ceb5c').then((user) => {
+        user.recipes.push(recipe._id);
+        user.totalRecipes++;
+        return user.save();
+      });
+    })
+    .then(() => {
+      res.status(200).json({ message: 'Created a new recipe!' });
     })
     .catch((err) => {
       console.log(err);
@@ -134,9 +143,18 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  Recipe.findByIdAndDelete(req.params.id)
+  User.findById('6022a7d582b86e2ce01ceb5c')
+    .then((user) => {
+      user.recipes = user.recipes.filter(
+        (recipe) => recipe.toString() !== req.params.id.toString()
+      );
+      user.totalRecipes--;
+      return user.save();
+    })
     .then(() => {
-      res.status(200).json({ message: 'Successfully deleted the recipe!' });
+      Recipe.findByIdAndDelete(req.params.id).then(() => {
+        res.status(200).json({ message: 'Successfully deleted the recipe!' });
+      });
     })
     .catch((err) => {
       console.log(err);

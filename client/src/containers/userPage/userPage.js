@@ -17,7 +17,7 @@ class UserPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`/hungrypandaAPI/recipes/myrecipes/${'creator1'}`)
+      .get(`/hungrypandaAPI/recipes/myrecipes/${'6022a7d582b86e2ce01ceb5c'}`)
       .then((recipesData) => {
         this.setState({
           recipes: [...recipesData.data.recipes],
@@ -63,11 +63,12 @@ class UserPage extends Component {
         imageUrl={recipe.image}
         keyIngrd={recipe.keyIngred}
         kIngredLength={recipe.keyIngred.length}
-        desc={recipe.recipeDescription}
+        desc={recipe.description}
         loves={recipe.likes}
         creator={recipe.creator}
         showRecipeDetails={this.showRecipeDetails}
         deleteRecipe={this.deleteRecipe}
+        showDeleteButton
       />
     ));
     return (

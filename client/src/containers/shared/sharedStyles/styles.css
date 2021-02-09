@@ -10,10 +10,18 @@ body {
   margin-top: 10rem;
 }
 
-/*LAYOUR FOR THE DESKTOP*/
-@media (min-width: 325px) and (orientation: landscape) {
+/*LAYOUT FOR THE DESKTOP*/
+@media (min-width: 1000px) and (max-width: 1035px) {
   .recipesCardSection {
     display: flex;
-    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+/*LAYOUT FOR THE DESKTOP*/
+@media (min-width: 725px) and (orientation: landscape) {
+  .recipesCardSection {
+    display: flex;
+    flex-wrap: wrap;
   }
 }

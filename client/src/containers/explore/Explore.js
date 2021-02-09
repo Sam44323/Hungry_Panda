@@ -38,7 +38,7 @@ class Explore extends React.Component {
           imageUrl={recipe.image}
           keyIngrd={recipe.keyIngred}
           kIngredLength={recipe.keyIngred.length}
-          desc={recipe.recipeDescription}
+          desc={recipe.description}
           loves={recipe.likes}
           creator={recipe.creator}
         />

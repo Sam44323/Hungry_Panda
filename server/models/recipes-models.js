@@ -53,7 +53,8 @@ const recipeSchema = new Schema({
     },
   ],
   creatorId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true,
   },
 });
