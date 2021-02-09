@@ -23,12 +23,13 @@ const getAllRecipes = (req, res, next) => {
 const getRecipe = (req, res, next) => {
   const recipeId = req.params.id;
   Recipe.findById(recipeId)
-    .then((recipe) => {
+    .populate('creatorId', 'name')
+    .exec((err, recipe) => {
+      if (err) {
+        console.log(err);
+        return next(errorCreator("Can't find the requested recipe!"));
+      }
       res.status(200).json({ recipe });
-    })
-    .catch((err) => {
-      console.log(err);
-      next(errorCreator("Can't find the requested recipe!"));
     });
 };
 

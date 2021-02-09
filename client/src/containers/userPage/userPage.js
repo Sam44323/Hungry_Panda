@@ -31,10 +31,6 @@ class UserPage extends Component {
       });
   }
 
-  showRecipeDetails = (id) => {
-    console.log(id);
-  };
-
   deleteRecipe = (id) => {
     const recipesArray = this.state.recipes.filter(
       (recipe) => recipe._id !== id
@@ -66,7 +62,9 @@ class UserPage extends Component {
         desc={recipe.description}
         loves={recipe.likes}
         creator={recipe.creator}
-        showRecipeDetails={this.showRecipeDetails}
+        showRecipeDetails={() =>
+          this.props.history.push(`/recipeDetails/${recipe._id}`)
+        }
         deleteRecipe={this.deleteRecipe}
         showDeleteButton
       />
