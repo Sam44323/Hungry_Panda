@@ -28,8 +28,8 @@ class Navigation extends React.Component {
   };
 
   changeElementStyle = (color, shadow, height, width) => {
-    let element = document.querySelector('.navigation');
-    let appLogo = document.querySelector('.appLogoSection');
+    const element = document.querySelector('.navigation');
+    const appLogo = document.querySelector('.appLogoSection');
     element.style.backgroundColor = color;
     element.style.boxShadow = shadow;
     appLogo.style.height = height;

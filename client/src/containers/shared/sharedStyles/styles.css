@@ -11,15 +11,7 @@ body {
 }
 
 /*LAYOUT FOR THE DESKTOP*/
-@media (min-width: 1000px) and (max-width: 1035px) {
-  .recipesCardSection {
-    display: flex;
-    flex-wrap: wrap;
-  }
-}
-
-/*LAYOUT FOR THE DESKTOP*/
-@media (min-width: 725px) and (orientation: landscape) {
+@media (min-width: 1025px) and (orientation: landscape) {
   .recipesCardSection {
     display: flex;
     flex-wrap: wrap;

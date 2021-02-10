@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import './recipesCard.css';
 import Button from '../Button/Button';
 import FAICON from '../FontAwesome/FontAwesome';
+import { FACLOCK } from '../Constants/uiconstants';
 
 const RecipesCard = (props) => {
   let c = 0;
@@ -36,36 +37,34 @@ const RecipesCard = (props) => {
       : null;
 
   return (
-    <div className='recipeCard'>
+    <div className='mainCardContent'>
       <div className='recipeImageContainer'>
         <img src={props.imageUrl} alt={props.name} className='recipeImage' />
       </div>
-      <div className='mainCardContent'>
-        <h3 className='recipeTitle'>{props.name}</h3>
-        <p className='cookingTime'>
-          <FAICON iconName='faClock' color='white' /> {timeValue}{' '}
-          {props.cooktime.minutes} minutes
-        </p>
-        <h3 className='recipeDescription'>{props.desc}</h3>
-        {ingreds}
-        <div className='actionButtons'>
+      <h3 className='recipeTitle'>{props.name}</h3>
+      <p className='cookingTime'>
+        <FAICON iconName={FACLOCK} color='white' /> {timeValue}{' '}
+        {props.cooktime.minutes} minutes
+      </p>
+      <h3 className='recipeDescription'>{props.desc}</h3>
+      {ingreds}
+      <div className='actionButtons'>
+        <Button
+          class='SuccessBtn'
+          clickAction={() => props.showRecipeDetails()}
+        >
+          Show
+        </Button>
+        {props.showDeleteButton ? (
           <Button
-            class='SuccessBtn'
-            clickAction={() => props.showRecipeDetails(props.id)}
+            class='DangerBtn'
+            clickAction={() => props.deleteRecipe(props.id)}
           >
-            Show
+            Delete
           </Button>
-          {props.showDeleteButton ? (
-            <Button
-              class='DangerBtn'
-              clickAction={() => props.deleteRecipe(props.id)}
-            >
-              Delete
-            </Button>
-          ) : null}
-        </div>
-        <div className='likingContainer'>{likedValue}</div>
+        ) : null}
       </div>
+      <div className='likingContainer'>{likedValue}</div>
     </div>
   );
 };

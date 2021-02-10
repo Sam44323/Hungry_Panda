@@ -23,7 +23,7 @@ const getAllRecipes = (req, res, next) => {
 const getRecipe = (req, res, next) => {
   const recipeId = req.params.id;
   Recipe.findById(recipeId)
-    .populate('creatorId', 'name')
+    .populate('creatorId', 'userName')
     .exec((err, recipe) => {
       if (err) {
         console.log(err);

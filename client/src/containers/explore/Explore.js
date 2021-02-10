@@ -37,6 +37,9 @@ class Explore extends React.Component {
           cooktime={recipe.cookTime}
           imageUrl={recipe.image}
           keyIngrd={recipe.keyIngred}
+          showRecipeDetails={() =>
+            this.props.history.push(`/recipeDetails/${recipe._id}`)
+          }
           kIngredLength={recipe.keyIngred.length}
           desc={recipe.description}
           loves={recipe.likes}

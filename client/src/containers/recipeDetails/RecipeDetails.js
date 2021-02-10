@@ -4,11 +4,13 @@ import axios from '../../axios-instance';
 
 import './RecipeDetails.css';
 import Navigation from '../../components/navigation/Navigation';
+import RecipeDetailsComponent from '../../components/recipesDetailsComponent/RecipeDetailsComponent';
 
 class RecipeDetails extends Component {
   state = {
     recipe: {},
     loading: false,
+    hasRecipe: false,
   };
 
   componentDidMount() {
@@ -16,8 +18,11 @@ class RecipeDetails extends Component {
     axios
       .get(`/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`)
       .then((recipe) => {
-        this.setState({ recipe: { ...recipe.data.recipe }, loading: false });
-        console.log(this.state);
+        this.setState({
+          recipe: { ...recipe.data.recipe },
+          loading: false,
+          hasRecipe: true,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -29,13 +34,13 @@ class RecipeDetails extends Component {
     return (
       <div>
         <Navigation />
-        <h1 style={{ marginTop: '100px' }}>
+        <div style={{ marginTop: '100px', textAlign: 'center' }}>
           {this.state.loading ? (
             <Loader type='Puff' color='#493323' height={100} width={100} />
-          ) : (
-            'This is the component for the details'
-          )}
-        </h1>
+          ) : this.state.hasRecipe ? (
+            <RecipeDetailsComponent recipe={this.state.recipe} />
+          ) : null}
+        </div>
       </div>
     );
   }
