@@ -47,11 +47,7 @@ const getRecipesByUsers = (req, res, next) => {
 const addNewRecipe = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(
-      errorCreator(
-        'Please enter all the required data for creating a new recipe!'
-      )
-    );
+    return next(errorCreator(error.errors[0].msg, 422));
   }
   const {
     name,

@@ -17,13 +17,32 @@ router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
 router.post(
   '/addrecipe',
   [
-    check('name').notEmpty(),
-    check('image').notEmpty(),
-    check('description').isLength({ min: 6 }),
-    check('keyIngred').isArray({ min: 1 }),
-    check('ingredients').isArray({ min: 1 }),
-    check('procedure').notEmpty(),
-    check('cookTime').notEmpty(),
+    check('cookTime.hours').isFloat({ min: 0 }),
+    check('cookTime.minutes')
+      .notEmpty()
+      .isFloat({ min: 0, max: 59 })
+      .withMessage('Please enter a valid time value for the minute!'),
+    check('name')
+      .notEmpty()
+      .withMessage('Please enter the name of the recipe!'),
+    check('image')
+      .notEmpty()
+      .isURL()
+      .withMessage('Please provide an image for the recipe'),
+    check('description')
+      .isLength({ min: 30 })
+      .withMessage('Please enter a description of at least 30 words!'),
+    check('keyIngred')
+      .isArray({ min: 1 })
+      .withMessage('Please enter at-least 1 key-ingredient!'),
+    check('ingredients')
+      .isArray({ min: 1 })
+      .withMessage('Please enter at-least 1 ingredient!'),
+    check('procedure')
+      .isLength({ min: 30 })
+      .withMessage(
+        'Please enter the procedure for prepration of at-least 30 words!'
+      ),
   ],
   recipesControllers.addNewRecipe
 );
@@ -32,13 +51,14 @@ router.post(
 router.patch(
   '/updateRecipe/:id',
   [
-    check('image').notEmpty(),
     check('name').notEmpty(),
-    check('description').isLength({ min: 6 }),
+    check('image').notEmpty().isURL(),
+    check('description').isLength({ min: 30 }),
     check('keyIngred').isArray({ min: 1 }),
     check('ingredients').isArray({ min: 1 }),
-    check('procedure').notEmpty(),
-    check('cookTime').notEmpty(),
+    check('procedure').isLength({ min: 30 }),
+    check('cookTime.*.hours').isFloat({ min: 1 }),
+    check('cookTime.*.minutes').notEmpty().isFloat({ min: 1, max: 59 }),
   ],
   recipesControllers.updateRecipe
 );

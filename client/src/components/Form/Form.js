@@ -66,14 +66,11 @@ class Form extends Component {
     ],
     ingredients: {
       ing: [],
-      message: 'Enter a valid ingredient!',
-      isValid: true,
     },
     keyingredients: {
       ing: [],
-      message: 'Enter a valid ingredient!',
-      isValid: true,
     },
+    errorMessage: [],
   };
 
   //FOR DELETING THE INGREDIENT VALUE
@@ -91,16 +88,11 @@ class Form extends Component {
   //FOR CHANGING THE VALUES OF THE INPUTS
 
   changeValueHandler = (name, type, value) => {
-    let valueArray = [];
-    if (type === 'number') {
-      valueArray = [...this.state.numberFieldName];
-      if (name === 'Minutes' && value > 59) {
-        alert('Plese enter a valid time');
-        return;
-      }
-    } else {
-      valueArray = [...this.state.textFieldName];
-    }
+    let valueArray =
+      type === 'number'
+        ? [...this.state.numberFieldName]
+        : [...this.state.textFieldName];
+
     valueArray = valueArray.map((item) => {
       if (item.name === name) {
         item.value = value;
@@ -135,12 +127,10 @@ class Form extends Component {
   //METHOD FOR SETTING THE INGREDIENTS TO THE INGREDIENTS ARRAY OF THE STATE
 
   setIngredients = (value, type) => {
-    const ingObject = { ...this.state[type] };
     if (value.trim() === '') {
-      ingObject.isValid = false;
-      this.setState({ ingredients: ingObject });
       return;
     }
+    const ingObject = { ...this.state[type] };
     ingObject.ing.push({ id: ingConst++, value: value.trim() });
     ingObject.isValid = true;
     if (type === 'ingredients') {
@@ -163,8 +153,6 @@ class Form extends Component {
     }
     let resetIngs = {
       ing: [],
-      message: 'Enter a valid ingredient!',
-      isValid: true,
     };
     this.setState({
       textFieldName: textField,
@@ -178,14 +166,6 @@ class Form extends Component {
 
   submitForm = () => {
     this.setState({ loading: true });
-    if (
-      (this.state.numberFieldName[0].value === 0 &&
-        this.state.numberFieldName[1].value === 0) ||
-      this.state.ingredients.ing.length === 0
-    ) {
-      alert('Please fill all the details');
-      return;
-    }
 
     const data = {
       name: this.state.textFieldName[0].value.trim(),
@@ -208,8 +188,10 @@ class Form extends Component {
         this.resetValue();
       })
       .catch((err) => {
-        this.setState({ loading: false });
-        console.log(err);
+        this.setState({
+          loading: false,
+          errorMessage: err.response.data.message,
+        });
       });
   };
 
@@ -271,6 +253,7 @@ class Form extends Component {
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>
+        {this.state.errorMessage && this.state.errorMessage}
         {numberInputs}
         {textInputs}
         <div className='ingredientsSection'>
@@ -279,7 +262,6 @@ class Form extends Component {
             type='keyingredients'
             submitIngredients={this.setIngredients}
             validCondition={this.state.keyingredients.isValid}
-            message={this.state.keyingredients.message}
           />
           {keyIngred.length > 0 ? (
             <div className='ingValueSection'>{keyIngred}</div>
@@ -291,7 +273,6 @@ class Form extends Component {
             type='ingredients'
             submitIngredients={this.setIngredients}
             validCondition={this.state.ingredients.isValid}
-            message={this.state.ingredients.message}
           />
           {ingrd.length > 0 ? (
             <div className='ingValueSection'>{ingrd}</div>

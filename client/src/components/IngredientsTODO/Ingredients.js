@@ -18,9 +18,6 @@ class Ingredients extends Component {
           onChange={(e) => this.setState({ value: e.target.value })}
           autoComplete='off'
         />
-        {!this.props.validCondition ? (
-          <h1 className='ingValidation'>{this.props.message}</h1>
-        ) : null}
         <div className='addButtonSection'>
           <Button
             clickAction={() => {

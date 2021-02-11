@@ -65,7 +65,7 @@
   border-radius: 3px;
   margin: 0px auto;
   padding: 4px;
-  min-width: 100px;
+  min-width: 300px;
   max-width: 400px;
 }
 
@@ -74,7 +74,6 @@
 .keyIngredContainer {
   margin: 0px;
   margin-top: 10px;
-  width: 98%;
   margin: 10px auto;
   background-color: antiquewhite;
   padding: 5px 0px;

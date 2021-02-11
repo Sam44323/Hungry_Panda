@@ -8,14 +8,3 @@
   margin: 4px auto;
   text-align: center;
 }
-
-.ingValidation {
-  width: 70%;
-  margin: 4px auto;
-  background-color: salmon;
-  max-width: 300px;
-  color: white;
-  padding: 10px;
-  border: 1px solid red;
-  font-size: 1rem;
-}
