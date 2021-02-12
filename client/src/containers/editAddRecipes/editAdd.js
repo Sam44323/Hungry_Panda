@@ -6,6 +6,8 @@ import './editAdd.css';
 
 import Navigation from '../../components/navigation/Navigation';
 import Form from '../../components/Form/Form';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
+import axios from '../../axios-instance';
 
 const EditAdd = () => {
   return (
@@ -20,4 +22,4 @@ const EditAdd = () => {
   );
 };
 
-export default EditAdd;
+export default errorHandlerHOC(EditAdd, axios);

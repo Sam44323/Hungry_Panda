@@ -70,7 +70,6 @@ class Form extends Component {
     keyingredients: {
       ing: [],
     },
-    errorMessage: [],
   };
 
   //FOR DELETING THE INGREDIENT VALUE
@@ -130,9 +129,9 @@ class Form extends Component {
     if (value.trim() === '') {
       return;
     }
+    console.log(type);
     const ingObject = { ...this.state[type] };
     ingObject.ing.push({ id: ingConst++, value: value.trim() });
-    ingObject.isValid = true;
     if (type === 'ingredients') {
       this.setState({ ingredients: ingObject });
     } else {
@@ -179,20 +178,13 @@ class Form extends Component {
       keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
       ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
     };
-    axios
-      .post('/hungrypandaAPI/recipes/addrecipe', data)
-      .then((recipeData) => {
-        this.setState({ loading: false });
+    axios.post('/hungrypandaAPI/recipes/addrecipe', data).then((recipeData) => {
+      if (recipeData) {
         this.props.history.push('/myrecipes');
-        console.log(recipeData);
         this.resetValue();
-      })
-      .catch((err) => {
-        this.setState({
-          loading: false,
-          errorMessage: err.response.data.message,
-        });
-      });
+      }
+      this.setState({ loading: false });
+    });
   };
 
   returnIngredArray = (type) => {
@@ -253,7 +245,6 @@ class Form extends Component {
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
       <div className='formSection'>
-        {this.state.errorMessage && this.state.errorMessage}
         {numberInputs}
         {textInputs}
         <div className='ingredientsSection'>
