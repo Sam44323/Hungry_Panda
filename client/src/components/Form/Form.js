@@ -7,8 +7,8 @@ import Button from '../Button/Button';
 import Ingredients from '../IngredientsTODO/Ingredients';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
-import axios from '../../axios-instance';
 import Loader from 'react-loader-spinner';
+import axios from '../../axios-instance';
 
 let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
