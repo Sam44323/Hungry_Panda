@@ -27,10 +27,9 @@ router.post(
       .withMessage('Please enter the name of the recipe!'),
     check('image')
       .notEmpty()
-      .isURL()
       .withMessage('Please provide an image for the recipe'),
     check('description')
-      .isLength({ min: 30 })
+      .isLength({ min: 1, max: 40 })
       .withMessage('Please enter a description of at least 30 words!'),
     check('keyIngred')
       .isArray({ min: 1 })

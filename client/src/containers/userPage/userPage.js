@@ -6,6 +6,7 @@ import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
 import axios from '../../axios-instance';
 import Loader from 'react-loader-spinner';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class UserPage extends Component {
   state = {
@@ -17,17 +18,13 @@ class UserPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`/hungrypandaAPI/recipes/myrecipes/${'6022a7d582b86e2ce01ceb5c'}`)
+      .get(`/hungrypandaAPI/recipes/myrecipes/${'6028ce557603b333344b50ae'}`)
       .then((recipesData) => {
         this.setState({
           recipes: [...recipesData.data.recipes],
           loading: false,
           hasRecipe: recipesData.data.recipes.length > 0 ? true : false,
         });
-      })
-      .catch((err) => {
-        this.setState({ loading: false });
-        console.log(err);
       });
   }
 
@@ -87,4 +84,4 @@ class UserPage extends Component {
   }
 }
 
-export default UserPage;
+export default errorHandlerHOC(UserPage, axios);

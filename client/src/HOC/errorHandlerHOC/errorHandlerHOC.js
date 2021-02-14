@@ -11,8 +11,8 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
     componentDidMount() {
       axios.interceptors.response.use(
         (res) => res,
-        (error) => {
-          this.setState({ error: error.response.data.message });
+        (err) => {
+          this.setState({ error: err.response.data.message });
         }
       );
     }

@@ -40,7 +40,7 @@ const getRecipesByUsers = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      next(errorCreator("Can't find the recipes for the requested user!"));
+      next(errorCreator("Can't find the recipes for the requested user!", 400));
     });
 };
 
@@ -68,12 +68,12 @@ const addNewRecipe = (req, res, next) => {
     procedure,
     likedBy: [],
     likes: 0,
-    creatorId: ObjectId('6022a7d582b86e2ce01ceb5c'),
+    creatorId: ObjectId('6028ce557603b333344b50ae'),
   });
   newRecipe
     .save()
     .then((recipe) => {
-      return User.findById('6022a7d582b86e2ce01ceb5c').then((user) => {
+      return User.findById('6028ce557603b333344b50ae').then((user) => {
         user.recipes.push(recipe._id);
         user.totalRecipes++;
         return user.save();
@@ -140,7 +140,7 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  User.findById('6022a7d582b86e2ce01ceb5c')
+  User.findById('6028ce557603b333344b50ae')
     .then((user) => {
       user.recipes = user.recipes.filter(
         (recipe) => recipe.toString() !== req.params.id.toString()
