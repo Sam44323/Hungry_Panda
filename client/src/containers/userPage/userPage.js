@@ -20,11 +20,16 @@ class UserPage extends Component {
     axios
       .get(`/hungrypandaAPI/recipes/myrecipes/${'6028ce557603b333344b50ae'}`)
       .then((recipesData) => {
-        this.setState({
-          recipes: [...recipesData.data.recipes],
-          loading: false,
-          hasRecipe: recipesData.data.recipes.length > 0 ? true : false,
-        });
+        if (recipesData) {
+          this.setState({
+            recipes: [...recipesData.data.recipes],
+            loading: false,
+            hasRecipe: recipesData.data.recipes.length > 0 ? true : false,
+          });
+        }
+      })
+      .catch(() => {
+        this.setState({ loading: false });
       });
   }
 
@@ -37,12 +42,12 @@ class UserPage extends Component {
       hasRecipe: recipesArray.length > 0 ? true : false,
     });
     axios
-      .delete(`/hungrypandaAPI/recipes/deleterecipe/${id}`)
+      .delete(`http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`)
       .then((response) => {
         console.log(response);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        this.setState({ loading: false });
       });
   };
 

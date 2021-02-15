@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from '../../axios-instance';
 import Loader from 'react-loader-spinner';
-
-//<Loader type='Puff' color='#493323' height={100} width={100} />
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 import './MyProfile.css';
 import Navigation from '../../components/navigation/Navigation';
@@ -18,11 +17,10 @@ class MyProfile extends Component {
     axios
       .get('/hungrypandaAPI/users/myprofile/6028ce557603b333344b50ae')
       .then((user) => {
-        console.log(user);
         this.setState({ userData: user.data.user, loading: false });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        this.setState({ loading: false });
       });
   }
 
@@ -34,7 +32,7 @@ class MyProfile extends Component {
           <div style={{ textAlign: 'center', marginTop: '100px' }}>
             <Loader type='Puff' color='#493323' height={100} width={100} />
           </div>
-        ) : (
+        ) : this.state.userData ? (
           <div className='userMainSectionDiv'>
             <ProfileMain
               image={this.state.userData.image}
@@ -48,10 +46,10 @@ class MyProfile extends Component {
               recipes={this.state.userData.totalRecipes}
             />
           </div>
-        )}
+        ) : null}
       </React.Fragment>
     );
   }
 }
 
-export default MyProfile;
+export default errorHandlerHOC(MyProfile, axios);

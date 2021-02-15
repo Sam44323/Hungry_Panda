@@ -7,6 +7,7 @@ import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
 import axios from '../../axios-instance';
 import Loader from 'react-loader-spinner';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class Explore extends React.Component {
   state = {
@@ -62,4 +63,4 @@ class Explore extends React.Component {
   }
 }
 
-export default Explore;
+export default errorHandlerHOC(Explore, axios);

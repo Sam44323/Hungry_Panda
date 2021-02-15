@@ -178,13 +178,19 @@ class Form extends Component {
       keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
       ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
     };
-    axios.post('/hungrypandaAPI/recipes/addrecipe', data).then((recipeData) => {
-      if (recipeData) {
-        this.props.history.push('/myrecipes');
-        this.resetValue();
-      }
-      this.setState({ loading: false });
-    });
+    axios
+      .post('/hungrypandaAPI/recipes/addrecipe', data)
+      .then((recipeData) => {
+        if (recipeData) {
+          this.props.history.push('/myrecipes');
+          this.resetValue();
+        }
+        this.setState({ loading: false });
+      })
+      .catch(() => {
+        console.log('catch block for the form');
+        this.setState({ loading: false });
+      });
   };
 
   returnIngredArray = (type) => {

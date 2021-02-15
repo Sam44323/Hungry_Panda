@@ -17,7 +17,9 @@ router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
 router.post(
   '/addrecipe',
   [
-    check('cookTime.hours').isFloat({ min: 0 }),
+    check('cookTime.hours')
+      .isFloat({ min: 0 })
+      .withMessage('Please enter a valid value for the hour'),
     check('cookTime.minutes')
       .notEmpty()
       .isFloat({ min: 0, max: 59 })
@@ -29,8 +31,8 @@ router.post(
       .notEmpty()
       .withMessage('Please provide an image for the recipe'),
     check('description')
-      .isLength({ min: 1, max: 40 })
-      .withMessage('Please enter a description of at least 30 words!'),
+      .isLength({ min: 10, max: 400 })
+      .withMessage('Please enter a description between 10 to 400 words!'),
     check('keyIngred')
       .isArray({ min: 1 })
       .withMessage('Please enter at-least 1 key-ingredient!'),
