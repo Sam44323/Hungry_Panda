@@ -23,6 +23,13 @@ class ProfileForm extends Component {
         isValid: false,
         message: 'Enter a valid email!',
       },
+      password: {
+        name: 'password',
+        value: '',
+        touched: false,
+        isValid: false,
+        message: 'Enter a password!',
+      },
       userName: {
         name: 'User name',
         value: '',
@@ -76,6 +83,7 @@ class ProfileForm extends Component {
   checkValidity = (name, value) => {
     if (
       name === 'name' ||
+      name === 'password' ||
       name === 'userName' ||
       name === 'profilePicture' ||
       name === 'city'
