@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import uuid from 'react-uuid';
 
 import './Form.css';
 import Input from './InputFields/Input';
@@ -10,7 +11,6 @@ import * as constants from '../Constants/uiconstants';
 import Loader from 'react-loader-spinner';
 import axios from '../../axios-instance';
 
-let ingConst = 1; // CONST FOR INGREDIENT IDS
 class Form extends Component {
   state = {
     loading: false,
@@ -129,9 +129,8 @@ class Form extends Component {
     if (value.trim() === '') {
       return;
     }
-    console.log(type);
     const ingObject = { ...this.state[type] };
-    ingObject.ing.push({ id: ingConst++, value: value.trim() });
+    ingObject.ing.push({ id: uuid(), value: value.trim() });
     if (type === 'ingredients') {
       this.setState({ ingredients: ingObject });
     } else {

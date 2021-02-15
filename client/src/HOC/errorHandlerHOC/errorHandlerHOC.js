@@ -10,21 +10,10 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
         error: null,
       };
       //setting the interceptors in the constructor
-      axios.interceptors.request.use(
-        (req) => {
-          this.setState({ error: null });
-          return req;
-        },
-        (err) => {
-          console.log(err);
-          return Promise.reject(err);
-        }
-      );
       axios.interceptors.response.use(
         (res) => res,
         (err) => {
           this.setState({ error: err.response.data.message });
-          return Promise.reject(err);
         }
       );
     }

@@ -5,6 +5,7 @@ import Input from './ProfileInput/ProfileInput';
 import FAICON from '../FontAwesome/FontAwesome';
 import Button from '../Button/Button';
 import axios from '../../axios-instance';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class ProfileForm extends Component {
   state = {
@@ -137,6 +138,7 @@ class ProfileForm extends Component {
     const data = {
       name: this.state.userData.name.value.trim(),
       email: this.state.userData.email.value.trim(),
+      password: this.state.userData.password.value.trim(),
       userName: this.state.userData.userName.value.trim(),
       image: this.state.userData.profilePicture.value.trim(),
       age: this.state.userData.age.value,
@@ -240,4 +242,4 @@ class ProfileForm extends Component {
   }
 }
 
-export default ProfileForm;
+export default errorHandlerHOC(ProfileForm, axios);

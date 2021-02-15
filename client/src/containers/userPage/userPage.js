@@ -18,7 +18,7 @@ class UserPage extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`/hungrypandaAPI/recipes/myrecipes/${'6028ce557603b333344b50ae'}`)
+      .get(`/hungrypandaAPI/recipes/myrecipes/${'602aa6b101e5f32f94d473c6'}`)
       .then((recipesData) => {
         if (recipesData) {
           this.setState({
@@ -28,7 +28,8 @@ class UserPage extends Component {
           });
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         this.setState({ loading: false });
       });
   }

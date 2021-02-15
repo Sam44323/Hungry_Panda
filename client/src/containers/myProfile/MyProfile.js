@@ -15,7 +15,7 @@ class MyProfile extends Component {
 
   componentDidMount() {
     axios
-      .get('/hungrypandaAPI/users/myprofile/6028ce557603b333344b50ae')
+      .get('/hungrypandaAPI/users/myprofile/602aa6b101e5f32f94d473c6')
       .then((user) => {
         this.setState({ userData: user.data.user, loading: false });
       })

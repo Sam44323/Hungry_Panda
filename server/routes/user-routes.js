@@ -10,12 +10,25 @@ router.get('/myprofile/:id', userController.getUserData);
 router.post(
   '/signup',
   [
-    check('name').notEmpty().isString(),
-    check('email').normalizeEmail().isEmail(),
-    check('userName').notEmpty().isString(),
-    check('age').isNumeric(),
+    check('name').notEmpty().isString().withMessage('Please enter a name!'),
+    check('email')
+      .normalizeEmail()
+      .isEmail()
+      .withMessage('Please enter a valid email address!'),
+    check('userName')
+      .notEmpty()
+      .isString()
+      .withMessage('Please enter an user-name'),
+    check('password')
+      .notEmpty()
+      .isLength({ min: 5 })
+      .withMessage('Please enter a password of at-least 5 characters!'),
+    check('age').isNumeric().withMessage('Please enter your age'),
     check('socialMedia').isArray(),
-    check('location').isString().isLength({ min: 1 }),
+    check('location')
+      .isString()
+      .isLength({ min: 1 })
+      .withMessage('Please enter a city-name!'),
   ],
   userController.addNewUser
 );

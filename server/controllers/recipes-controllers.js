@@ -34,7 +34,15 @@ const getRecipe = (req, res, next) => {
 };
 
 const getRecipesByUsers = (req, res, next) => {
-  Recipe.find({ creatorId: req.params.cid })
+  User.findById(req.params.cid)
+    .then((user) => {
+      if (!user) {
+        return next(
+          errorCreator("Can't find the recipes for the requested user!", 400)
+        );
+      }
+      return Recipe.find({ creatorId: req.params.cid });
+    })
     .then((recipes) => {
       res.status(200).json({ recipes });
     })
@@ -68,12 +76,12 @@ const addNewRecipe = (req, res, next) => {
     procedure,
     likedBy: [],
     likes: 0,
-    creatorId: ObjectId('6028ce557603b333344b50ae'),
+    creatorId: ObjectId('602aa6b101e5f32f94d473c6'),
   });
   newRecipe
     .save()
     .then((recipe) => {
-      return User.findById('6028ce557603b333344b50ae').then((user) => {
+      return User.findById('602aa6b101e5f32f94d473c6').then((user) => {
         user.recipes.push(recipe._id);
         user.totalRecipes++;
         return user.save();
@@ -140,7 +148,7 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  User.findById('6028ce557603b333344b50ae')
+  User.findById('602aa6b101e5f32f94d473c6')
     .then((user) => {
       user.recipes = user.recipes.filter(
         (recipe) => recipe.toString() !== req.params.id.toString()

@@ -1,6 +1,6 @@
 const errorCreator = require('../errorCreator/errorCreator');
 const { validationResult } = require('express-validator');
-const { ObjectId } = require('mongodb');
+const bcrypt = require('bcrypt');
 
 const User = require('../models/users-models');
 
@@ -21,13 +21,18 @@ const getUserData = (req, res, next) => {
 const addNewUser = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(
-      errorCreator(
-        'Please check all the informations entered or enter all the required informations!'
-      )
-    );
+    return next(errorCreator(error.errors[0].msg, 422));
   }
-  const { name, email, userName, age, socialMedia, location, image } = req.body;
+  const {
+    name,
+    password,
+    email,
+    userName,
+    age,
+    socialMedia,
+    location,
+    image,
+  } = req.body;
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -35,21 +40,30 @@ const addNewUser = (req, res, next) => {
           errorCreator('An user already exists with this email!', 409)
         );
       }
-      const newUser = new User({
-        name,
-        email,
-        userName,
-        age,
-        image,
-        socialMedia,
-        location,
-        recipes: [],
-        totalLikes: 0,
-        totalRecipes: 0,
-      });
-      newUser.save().then((user) => {
-        res.status(200).json({ newUser: user });
-      });
+
+      //for hashing the entered passoword by user
+
+      bcrypt
+        .hash(password, 12)
+        .then((password) => {
+          const newUser = new User({
+            name,
+            password,
+            email,
+            userName,
+            age,
+            image,
+            socialMedia,
+            location,
+            recipes: [],
+            totalLikes: 0,
+            totalRecipes: 0,
+          });
+          return newUser.save();
+        })
+        .then((user) => {
+          res.status(200).json({ newUser: user });
+        });
     })
     .catch((err) => {
       console.log(err);
