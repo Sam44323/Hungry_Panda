@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import uuid from 'react-uuid';
 
-import './Form.css';
+import styles from './Form.module.css';
+import btnStyles from '../Button/Button.module.css';
 import Input from './InputFields/Input';
 import Button from '../Button/Button';
 import Ingredients from '../IngredientsTODO/Ingredients';
@@ -194,11 +195,11 @@ class Form extends Component {
 
   returnIngredArray = (type) => {
     return this.state[type].ing.map((item) => (
-      <div key={Math.random()} className='ingValueDivision'>
-        <h1 className='ingValueStyle'>
+      <div key={Math.random()} className={styles.ingValueDivision}>
+        <h1 className={styles.ingValueStyle}>
           {item.value}{' '}
           <Button
-            class='ingsButton'
+            class={`${btnStyles.ingsButton}`}
             clickAction={() => this.removeIngredients(type, item.id)}
           >
             <FAICON iconName={constants.FATIMESCIRCLE} color='black' />
@@ -226,7 +227,7 @@ class Form extends Component {
     ));
     //STORING THE INPUTS FOR THE NUMBERS
     const numberInputs = (
-      <div className='numberSection'>
+      <div className={styles.numberSection}>
         {this.state.numberFieldName.map((item) => (
           <Input
             key={++c}
@@ -249,37 +250,37 @@ class Form extends Component {
     const keyIngred = this.returnIngredArray('keyingredients');
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
-      <div className='formSection'>
+      <div className={styles.formSection}>
         {numberInputs}
         {textInputs}
-        <div className='ingredientsSection'>
-          <h1 className='ingTitle'>Key Ingredients (with values)</h1>
+        <div className={styles.ingredientsSection}>
+          <h1 className={styles.ingTitle}>Key Ingredients (with values)</h1>
           <Ingredients
             type='keyingredients'
             submitIngredients={this.setIngredients}
             validCondition={this.state.keyingredients.isValid}
           />
           {keyIngred.length > 0 ? (
-            <div className='ingValueSection'>{keyIngred}</div>
+            <div className={styles.ingValueSection}>{keyIngred}</div>
           ) : null}
         </div>
-        <div className='ingredientsSection'>
-          <h1 className='ingTitle'>Ingredients (with values)</h1>
+        <div className={styles.ingredientsSection}>
+          <h1 className={styles.ingTitle}>Ingredients (with values)</h1>
           <Ingredients
             type='ingredients'
             submitIngredients={this.setIngredients}
             validCondition={this.state.ingredients.isValid}
           />
           {ingrd.length > 0 ? (
-            <div className='ingValueSection'>{ingrd}</div>
+            <div className={styles.ingValueSection}>{ingrd}</div>
           ) : null}
         </div>
-        <div className='formBtnSection'>
+        <div className={styles.formBtnSection}>
           {this.state.loading ? (
             <Loader type='Puff' color='#493323' height={100} width={100} />
           ) : (
             <Button
-              class='SuccessBtn'
+              class={`${btnStyles.SuccessBtn}`}
               clickAction={this.submitForm}
               disabledValue={disabled}
             >

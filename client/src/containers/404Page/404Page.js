@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './404Page.css';
+import styles from './404Page.module.css';
 
 //We'll style this later
 

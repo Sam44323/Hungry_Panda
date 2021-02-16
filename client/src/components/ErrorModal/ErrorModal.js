@@ -1,15 +1,16 @@
 import React from 'react';
 
-import './ErrorModal.css';
+import styles from './ErrorModal.module.css';
+import btnStyles from '../Button/Button.module.css';
 import Button from '../Button/Button';
 
 const ErrorModal = ({ errorMessage, handleModal }) => {
   return (
     <React.Fragment>
-      <div className='errorModalBackdrop'>
-        <div className='errorModalContent'>
-          <h1 className='errorModalMessage'>{errorMessage}</h1>
-          <Button class='DangerBtn' clickAction={handleModal}>
+      <div className={styles.errorModalBackdrop}>
+        <div className={styles.errorModalContent}>
+          <h1 className={styles.errorModalMessage}>{errorMessage}</h1>
+          <Button class={`${btnStyles.DangerBtn}`} clickAction={handleModal}>
             Close
           </Button>
         </div>

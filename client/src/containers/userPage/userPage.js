@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import './userPage.css';
-import '../shared/sharedStyles/styles.css';
+import userStyles from './userPage.module.css';
+import styles from '../shared/sharedStyles/styles.module.css';
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
 import axios from '../../axios-instance';
@@ -21,6 +21,7 @@ class UserPage extends Component {
       .get(`/hungrypandaAPI/recipes/myrecipes/${'602aa6b101e5f32f94d473c6'}`)
       .then((recipesData) => {
         if (recipesData) {
+          console.log(recipesData);
           this.setState({
             recipes: [...recipesData.data.recipes],
             loading: false,
@@ -28,8 +29,7 @@ class UserPage extends Component {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         this.setState({ loading: false });
       });
   }
@@ -76,9 +76,11 @@ class UserPage extends Component {
       <React.Fragment>
         <Navigation />
         {!this.state.hasRecipe ? (
-          <h1 className='errorTitle'>You don't have any recipes yet!</h1>
+          <h1 className={userStyles.errorTitle}>
+            You don't have any recipes yet!
+          </h1>
         ) : (
-          <div className='recipesCardSection'>{recipesCard}</div>
+          <div className={styles.recipesCardSection}>{recipesCard}</div>
         )}
         {this.state.loading ? (
           <div style={{ textAlign: 'center' }}>

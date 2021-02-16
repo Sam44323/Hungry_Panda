@@ -1,7 +1,6 @@
 import React from 'react';
 
-import './Explore.css';
-import '../shared/sharedStyles/styles.css';
+import styles from '../shared/sharedStyles/styles.module.css';
 
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
@@ -56,7 +55,7 @@ class Explore extends React.Component {
             <Loader type='Puff' color='#493323' height={100} width={100} />
           </div>
         ) : (
-          <div className='recipesCardSection'>{recipesCard}</div>
+          <div className={styles.recipesCardSection}>{recipesCard}</div>
         )}
       </React.Fragment>
     );

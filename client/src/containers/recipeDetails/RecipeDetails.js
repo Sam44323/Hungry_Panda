@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
 import axios from '../../axios-instance';
 
-import './RecipeDetails.css';
 import Navigation from '../../components/navigation/Navigation';
 import RecipeDetailsComponent from '../../components/recipesDetailsComponent/RecipeDetailsComponent';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class RecipeDetails extends Component {
   state = {
@@ -45,4 +45,4 @@ class RecipeDetails extends Component {
     );
   }
 }
-export default RecipeDetails;
+export default errorHandlerHOC(RecipeDetails, axios);

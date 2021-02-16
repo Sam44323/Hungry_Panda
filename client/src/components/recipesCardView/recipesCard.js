@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 
-import './recipesCard.css';
+import styles from './recipesCard.module.css';
+import btnStyles from '../Button/Button.module.css';
 import Button from '../Button/Button';
 import FAICON from '../FontAwesome/FontAwesome';
 import { FACLOCK } from '../Constants/uiconstants';
@@ -9,19 +10,19 @@ const RecipesCard = (props) => {
   let c = 0;
   let likedValue = (
     <Fragment>
-      <h3 className='loveTitle'>{props.loves}</h3>
+      <h3 className={styles.loveTitle}>{props.loves}</h3>
       <FAICON iconName='faHeart' color='red' />
     </Fragment>
   );
   const ingreds = (
-    <ul className='keyIngredContainer'>
-      <h3 className='keyIngredTitle'>Key Ingredients</h3>
-      <div className='keyIngredItemsSection'>
+    <ul className={styles.keyIngredContainer}>
+      <h3 className={styles.keyIngredTitle}>Key Ingredients</h3>
+      <div className={styles.keyIngredItemsSection}>
         {props.keyIngrd.map((item) => {
           ++c;
           return (
-            <li key={c} className='keyIngredItem'>
-              <h4 className='keyIngredItemHeading'>{item}</h4>
+            <li key={c} className={styles.keyIngredItem}>
+              <h4 className={styles.keyIngredItemHeading}>{item}</h4>
             </li>
           );
         })}
@@ -37,34 +38,38 @@ const RecipesCard = (props) => {
       : null;
 
   return (
-    <div className='mainCardContent'>
-      <div className='recipeImageContainer'>
-        <img src={props.imageUrl} alt={props.name} className='recipeImage' />
+    <div className={styles.mainCardContent}>
+      <div className={styles.recipeImageContainer}>
+        <img
+          src={props.imageUrl}
+          alt={props.name}
+          className={styles.recipeImage}
+        />
       </div>
-      <h3 className='recipeTitle'>{props.name}</h3>
-      <p className='cookingTime'>
+      <h3 className={styles.recipeTitle}>{props.name}</h3>
+      <p className={styles.cookingTime}>
         <FAICON iconName={FACLOCK} color='white' /> {timeValue}{' '}
         {props.cooktime.minutes} minutes
       </p>
-      <h3 className='recipeDescription'>{props.desc}</h3>
+      <h3 className={styles.recipeDescription}>{props.desc}</h3>
       {ingreds}
-      <div className='actionButtons'>
+      <div className={styles.actionButtons}>
         <Button
-          class='SuccessBtn'
+          class={`${btnStyles.SuccessBtn}`}
           clickAction={() => props.showRecipeDetails()}
         >
           Show
         </Button>
         {props.showDeleteButton ? (
           <Button
-            class='DangerBtn'
+            class={`${btnStyles.DangerBtn}`}
             clickAction={() => props.deleteRecipe(props.id)}
           >
             Delete
           </Button>
         ) : null}
       </div>
-      <div className='likingContainer'>{likedValue}</div>
+      <div className={styles.likingContainer}>{likedValue}</div>
     </div>
   );
 };

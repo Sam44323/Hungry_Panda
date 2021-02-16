@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import axios from '../../axios-instance';
 import Loader from 'react-loader-spinner';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
-import './MyProfile.css';
+import styles from './MyProfile.module.css';
 import Navigation from '../../components/navigation/Navigation';
 import ProfileMain from '../../components/ProfileComponent/ProfileMain';
+import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class MyProfile extends Component {
   state = {
@@ -33,7 +33,7 @@ class MyProfile extends Component {
             <Loader type='Puff' color='#493323' height={100} width={100} />
           </div>
         ) : this.state.userData ? (
-          <div className='userMainSectionDiv'>
+          <div className={styles.userMainSectionDiv}>
             <ProfileMain
               image={this.state.userData.image}
               name={this.state.userData.name}

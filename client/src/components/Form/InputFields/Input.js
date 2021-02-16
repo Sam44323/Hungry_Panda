@@ -1,11 +1,11 @@
-import './Input.css';
+import styles from './Input.module.css';
 
 const Input = (props) => {
   let inputValue;
   switch (props.type) {
     case 'textarea':
       inputValue = (
-        <div className='inputSection'>
+        <div className={styles.inputSection}>
           <label htmlFor={props.name}>{props.name}</label>
           <textarea
             name={props.name}
@@ -19,7 +19,7 @@ const Input = (props) => {
             cols='3'
           />
           {props.touched && !props.isValid ? (
-            <p className='messageSection'>{props.message}</p>
+            <p className={styles.messageSection}>{props.message}</p>
           ) : null}
         </div>
       );
@@ -28,8 +28,8 @@ const Input = (props) => {
     default:
       inputValue = (
         <div
-          className={`inputSection ${
-            props.classValue ? props.classValue : null
+          className={`${styles.inputSection} ${
+            props.classValue ? styles[props.classValue] : null
           }`}
         >
           <label htmlFor={props.name}>{props.name}</label>
@@ -43,7 +43,7 @@ const Input = (props) => {
             required={props.required}
           />
           {props.touched && !props.isValid ? (
-            <p className='messageSection'>{props.message}</p>
+            <p className={styles.messageSection}>{props.message}</p>
           ) : null}
         </div>
       );

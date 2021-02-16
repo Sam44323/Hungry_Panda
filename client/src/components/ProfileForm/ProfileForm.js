@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import './ProfileForm.css';
+import styles from './ProfileForm.module.css';
+import btnStyles from '../Button/Button.module.css';
 import Input from './ProfileInput/ProfileInput';
 import FAICON from '../FontAwesome/FontAwesome';
 import Button from '../Button/Button';
 import axios from '../../axios-instance';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class ProfileForm extends Component {
   state = {
@@ -135,6 +135,7 @@ class ProfileForm extends Component {
   };
 
   submitForm = () => {
+    console.log(this.state.userData);
     const data = {
       name: this.state.userData.name.value.trim(),
       email: this.state.userData.email.value.trim(),
@@ -215,22 +216,22 @@ class ProfileForm extends Component {
           : false;
     }
     return (
-      <div className='profileFormMain'>
-        <div className='userDetailsSection'>
-          <h1 className='userDataTitle'>
+      <div className={styles.profileFormMain}>
+        <div className={styles.userDetailsSection}>
+          <h1 className={styles.userDataTitle}>
             My Profile <FAICON iconName='faUser' color='brown' />
           </h1>
           {dataInput}
         </div>
-        <div className='socialMediaSection'>
-          <h1 className='userSocialMediaTitle'>
+        <div className={styles.socialMediaSection}>
+          <h1 className={styles.userSocialMediaTitle}>
             Follow me on <FAICON iconName='faHashtag' color='brown' />
           </h1>
           {socialMedia}
         </div>
-        <div className='profileBtnSection'>
+        <div className={styles.profileBtnSection}>
           <Button
-            class='ingsBtn SuccessBtn'
+            class={`${btnStyles.ingsBtn} ${btnStyles.SuccessBtn}`}
             clickAction={this.submitForm}
             disabledValue={!valid}
           >
@@ -242,4 +243,4 @@ class ProfileForm extends Component {
   }
 }
 
-export default errorHandlerHOC(ProfileForm, axios);
+export default ProfileForm;

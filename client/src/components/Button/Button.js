@@ -1,9 +1,11 @@
-import './Button.css';
+import styles from './Button.module.css';
 
 const Button = (props) => {
   return (
     <button
-      className={`btn ${props.class} ${props.disabledValue && 'disableClass'}`}
+      className={`${styles.btn} ${props.class} ${
+        props.disabledValue && styles.disableClass
+      }`}
       onClick={props.clickAction}
       disabled={props.disabledValue}
     >

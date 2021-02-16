@@ -6,7 +6,7 @@ import {
   faInstagram,
 } from '@fortawesome/free-brands-svg-icons';
 
-import './ProfileMain.css';
+import styles from './ProfileMain.module.css';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
 
@@ -21,7 +21,7 @@ const ProfileMain = (props) => {
     if (item.hasValue) {
       return (
         <a href={item.value} key={item.name}>
-          <div className='socialMediaSectionDiv'>
+          <div className={styles.socialMediaSectionDiv}>
             <FontAwesomeIcon icon={icon} />
           </div>
         </a>
@@ -31,35 +31,44 @@ const ProfileMain = (props) => {
   });
   return (
     <React.Fragment>
-      <div className='userSectionMain'>
-        <div className='userImageSection'>
-          <img src={props.image} alt={props.name} className='userImage' />
+      <div className={styles.userSectionMain}>
+        <div className={styles.userImageSection}>
+          <img
+            src={props.image}
+            alt={props.name}
+            className={styles.userImage}
+          />
         </div>
-        <h1 className='userNameHeading'>{props.userName}</h1>
-        <div className='recipesLoveDivSection'>
-          <h1 className='recipesLove'>{props.recipes} Recipes</h1>
-          <h1 className='recipesLove'>{props.likes} Loves</h1>
+        <h1 className={styles.userNameHeading}>{props.userName}</h1>
+        <div className={styles.recipesLoveDivSection}>
+          <h1 className={styles.recipesLove}>{props.recipes} Recipes</h1>
+          <h1 className={styles.recipesLove}>{props.likes} Loves</h1>
         </div>
-        <div className='editButtonSection'>
-          <button className='userProfileButton'>Edit Profile</button>
+        <div className={styles.editButtonSection}>
+          <button className={styles.userProfileButton}>Edit Profile</button>
         </div>
       </div>
-      <div className='userDetailSub'>
-        <div className='subSecFirst'>
-          <h1 className='nameTag'>{props.name}</h1>
-          <div className='ageLocSection'>
-            <h1 className='ageLoc'>{props.location},</h1>
-            <h1 className='ageLoc'>{props.age}</h1>
+      <div className={styles.userDetailSub}>
+        <div className={styles.subSecFirst}>
+          <h1 className={styles.nameTag}>{props.name}</h1>
+          <div className={styles.ageLocSection}>
+            <h1 className={styles.ageLoc}>{props.location},</h1>
+            <h1 className={styles.ageLoc}>{props.age}</h1>
           </div>
-          <div className='emailTagSection'>
-            <a href={`mailto:${props.email}`} className='emailIconsStyle'>
+          <div className={styles.emailTagSection}>
+            <a
+              href={`mailto:${props.email}`}
+              className={styles.emailIconsStyle}
+            >
               <FAICON iconName={constants.FAEMAIL} color='white' />
             </a>
             <br />
             Email
           </div>
         </div>
-        <div className='socialMediaSectionContainer'>{socialMediaLinks}</div>
+        <div className={styles.socialMediaSectionContainer}>
+          {socialMediaLinks}
+        </div>
       </div>
     </React.Fragment>
   );

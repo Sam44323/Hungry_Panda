@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-import './Ingredients.css';
+import styles from './Ingredients.module.css';
+import btnStyles from '../Button/Button.module.css';
 import Button from '../Button/Button';
 
 class Ingredients extends Component {
@@ -12,19 +13,19 @@ class Ingredients extends Component {
       <React.Fragment>
         <input
           type='text'
-          className='ingredInput'
+          className={styles.ingredInput}
           name='ingred'
           value={this.state.value}
           onChange={(e) => this.setState({ value: e.target.value })}
           autoComplete='off'
         />
-        <div className='addButtonSection'>
+        <div className={styles.addButtonSection}>
           <Button
             clickAction={() => {
               this.props.submitIngredients(this.state.value, this.props.type);
               this.setState({ value: '' });
             }}
-            class='SuccessBtn'
+            class={`${btnStyles.SuccessBtn}`}
           >
             Add
           </Button>

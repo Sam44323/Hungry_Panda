@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 
-import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import ErrorModal from '../components/ErrorModal/ErrorModal';
 
-const errorHandlerHOC = (WrappedComponent, axios) => {
+const formErrorHandlerHOC = (WrappedComponent, axios) => {
   return class extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        error: null,
-      };
-      //setting the interceptors in the constructor
+    state = {
+      error: null,
+    };
+    componentDidMount() {
       axios.interceptors.response.use(
         (res) => res,
         (err) => {
@@ -41,4 +39,4 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
   };
 };
 
-export default errorHandlerHOC;
+export default formErrorHandlerHOC;

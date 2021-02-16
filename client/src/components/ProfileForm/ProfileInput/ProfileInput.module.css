@@ -4,8 +4,17 @@
 }
 
 .profileInputLabel {
-  margin-bottom: 4px;
   font-size: 1.1rem;
+}
+
+/*STYLING FOR THE INVALID MESSAGE*/
+.messageSection {
+  background-color: salmon;
+  color: red;
+  padding: 10px;
+  text-align: center;
+  width: 70%;
+  margin: auto;
 }
 
 .profileInputTag {
@@ -14,7 +23,7 @@
   font-size: 1.1rem;
 }
 
-.profileInputTag:focus {
+.input:focus {
   border: none;
   border-bottom: 3px solid salmon;
 }
@@ -33,5 +42,6 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #000 inset;
+  box-shadow: 0 0 0px 1000px #000 inset;
   transition: 5000s ease-in-out 0s;
 }

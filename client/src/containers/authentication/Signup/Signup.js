@@ -1,8 +1,9 @@
 import React from 'react';
 
-import './Signup.css';
 import Navigation from '../../../components/navigation/Navigation';
 import ProfileForm from '../../../components/ProfileForm/ProfileForm';
+import formErrorHandlerHOC from '../../../HOC/formErrorHandlerHOC';
+import axios from '../../../axios-instance';
 
 const Signup = () => {
   return (
@@ -13,4 +14,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default formErrorHandlerHOC(Signup, axios);
