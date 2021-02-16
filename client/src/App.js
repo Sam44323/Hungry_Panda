@@ -1,6 +1,6 @@
 import { Switch, Route } from 'react-router-dom';
 
-import styles from './App.module.css';
+import './App.css';
 import Homepage from './containers/homepage/Homepage';
 import Explore from './containers/explore/Explore';
 import UserPage from './containers/userPage/userPage';

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styles from './404Page.module.css';
-
 //We'll style this later
 
 const PageNotFound = () => {
