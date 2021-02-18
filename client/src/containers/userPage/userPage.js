@@ -63,7 +63,7 @@ class UserPage extends Component {
         keyIngrd={recipe.keyIngred}
         kIngredLength={recipe.keyIngred.length}
         desc={recipe.description}
-        loves={recipe.likes}
+        loves={-1}
         creator={recipe.creator}
         showRecipeDetails={() =>
           this.props.history.push(`/recipeDetails/${recipe._id}`)

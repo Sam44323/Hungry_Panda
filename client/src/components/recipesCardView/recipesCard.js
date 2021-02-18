@@ -69,7 +69,9 @@ const RecipesCard = (props) => {
           </Button>
         ) : null}
       </div>
-      <div className={styles.likingContainer}>{likedValue}</div>
+      {props.loves >= 0 ? (
+        <div className={styles.likingContainer}>{likedValue}</div>
+      ) : null}
     </div>
   );
 };
