@@ -16,6 +16,16 @@ select:-webkit-autofill:focus {
   transition: 5000s ease-in-out 0s;
 }
 
+.sectionTitle {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 0px auto;
+  margin-top: 90px;
+  border-bottom: 3px solid brown;
+  width: 70%;
+  max-width: 300px;
+}
+
 .formSection {
   width: 90%;
   margin: 30px auto;

@@ -4,7 +4,7 @@ import './App.css';
 import Homepage from './containers/homepage/Homepage';
 import Explore from './containers/explore/Explore';
 import UserPage from './containers/userPage/userPage';
-import EditAdd from './containers/editAddRecipes/editAdd';
+import EditAdd from './containers/EditAdd/EditAdd';
 import MyProfile from './containers/myProfile/MyProfile';
 import Signup from './containers/authentication/Signup/Signup';
 import RecipeDetails from './containers/recipeDetails/RecipeDetails';

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import uuid from 'react-uuid';
 
 import styles from './Form.module.css';
@@ -10,7 +9,6 @@ import Ingredients from '../IngredientsTODO/Ingredients';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
 import Loader from 'react-loader-spinner';
-import axios from '../../axios-instance';
 
 class Form extends Component {
   state = {
@@ -139,33 +137,9 @@ class Form extends Component {
     }
   };
 
-  resetValue = () => {
-    const textField = [...this.state.textFieldName];
-    const numberField = [...this.state.numberFieldName];
-    for (let item of textField) {
-      item.value = '';
-      item.isValid = false;
-      item.touched = false;
-    }
-    for (let item of numberField) {
-      item.value = 0;
-    }
-    let resetIngs = {
-      ing: [],
-    };
-    this.setState({
-      textFieldName: textField,
-      numberFieldName: numberField,
-      ingredients: resetIngs,
-      keyingredients: resetIngs,
-    });
-  };
-
   //METHOD FOR SUBMITTNG THE FORM AND ADDING A NEW RECIPE
 
   submitForm = () => {
-    this.setState({ loading: true });
-
     const data = {
       name: this.state.textFieldName[0].value.trim(),
       image: this.state.textFieldName[1].value.trim(),
@@ -178,19 +152,7 @@ class Form extends Component {
       keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
       ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
     };
-    axios
-      .post('/hungrypandaAPI/recipes/addrecipe', data)
-      .then((recipeData) => {
-        if (recipeData) {
-          this.props.history.push('/myrecipes');
-          this.resetValue();
-        }
-        this.setState({ loading: false });
-      })
-      .catch(() => {
-        console.log('catch block for the form');
-        this.setState({ loading: false });
-      });
+    this.props.submitForm(data);
   };
 
   returnIngredArray = (type) => {
@@ -250,47 +212,49 @@ class Form extends Component {
     const keyIngred = this.returnIngredArray('keyingredients');
     let disabled = !this.checkFormValidation(); //for storing the button disabled information
     return (
-      <div className={styles.formSection}>
-        {numberInputs}
-        {textInputs}
-        <div className={styles.ingredientsSection}>
-          <h1 className={styles.ingTitle}>Key Ingredients (with values)</h1>
-          <Ingredients
-            type='keyingredients'
-            submitIngredients={this.setIngredients}
-            validCondition={this.state.keyingredients.isValid}
-          />
-          {keyIngred.length > 0 ? (
-            <div className={styles.ingValueSection}>{keyIngred}</div>
-          ) : null}
+      <React.Fragment>
+        <div className={styles.formSection} style={{ marginTop: '100px' }}>
+          {numberInputs}
+          {textInputs}
+          <div className={styles.ingredientsSection}>
+            <h1 className={styles.ingTitle}>Key Ingredients (with values)</h1>
+            <Ingredients
+              type='keyingredients'
+              submitIngredients={this.setIngredients}
+              validCondition={this.state.keyingredients.isValid}
+            />
+            {keyIngred.length > 0 ? (
+              <div className={styles.ingValueSection}>{keyIngred}</div>
+            ) : null}
+          </div>
+          <div className={styles.ingredientsSection}>
+            <h1 className={styles.ingTitle}>Ingredients (with values)</h1>
+            <Ingredients
+              type='ingredients'
+              submitIngredients={this.setIngredients}
+              validCondition={this.state.ingredients.isValid}
+            />
+            {ingrd.length > 0 ? (
+              <div className={styles.ingValueSection}>{ingrd}</div>
+            ) : null}
+          </div>
+          <div className={styles.formBtnSection}>
+            {this.state.loading ? (
+              <Loader type='Puff' color='#493323' height={100} width={100} />
+            ) : (
+              <Button
+                class={`${btnStyles.SuccessBtn}`}
+                clickAction={this.submitForm}
+                disabledValue={disabled}
+              >
+                Add
+              </Button>
+            )}
+          </div>
         </div>
-        <div className={styles.ingredientsSection}>
-          <h1 className={styles.ingTitle}>Ingredients (with values)</h1>
-          <Ingredients
-            type='ingredients'
-            submitIngredients={this.setIngredients}
-            validCondition={this.state.ingredients.isValid}
-          />
-          {ingrd.length > 0 ? (
-            <div className={styles.ingValueSection}>{ingrd}</div>
-          ) : null}
-        </div>
-        <div className={styles.formBtnSection}>
-          {this.state.loading ? (
-            <Loader type='Puff' color='#493323' height={100} width={100} />
-          ) : (
-            <Button
-              class={`${btnStyles.SuccessBtn}`}
-              clickAction={this.submitForm}
-              disabledValue={disabled}
-            >
-              Add
-            </Button>
-          )}
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
-export default withRouter(Form);
+export default Form;

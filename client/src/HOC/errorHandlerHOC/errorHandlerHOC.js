@@ -10,7 +10,7 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
         error: null,
       };
       //setting the interceptors in the constructor
-      axios.interceptors.response.use(
+      this.interceptor = axios.interceptors.response.use(
         (res) => res,
         (err) => {
           if (err.code) {
@@ -19,6 +19,10 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
           this.setState({ error: err.response.data.message });
         }
       );
+    }
+
+    componentWillUnmount() {
+      axios.interceptors.request.eject(this.interceptors);
     }
 
     closeErrorModal = () => {

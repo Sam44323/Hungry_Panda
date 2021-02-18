@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Navigation from '../../../components/navigation/Navigation';
 import ProfileForm from '../../../components/ProfileForm/ProfileForm';
-import formErrorHandlerHOC from '../../../HOC/formErrorHandlerHOC';
-import axios from '../../../axios-instance';
+import axios from 'axios';
+import ErrorModal from '../../../components/ErrorModal/ErrorModal';
 
-const Signup = () => {
+const Signup = (props) => {
+  const [error, setError] = useState();
+
+  const submitForm = (data) => {
+    axios
+      .post('http://localhost:5000/hungrypandaAPI/users/signup', data)
+      .then(() => {
+        props.history.push('/myrecipes');
+      })
+      .catch((err) => {
+        return setError(err.response.data.message);
+      });
+  };
+
   return (
     <React.Fragment>
+      {error ? (
+        <ErrorModal
+          errorMessage={error}
+          handleModal={() => {
+            setError(null);
+          }}
+        />
+      ) : null}
       <Navigation />
-      <ProfileForm />
+      <ProfileForm submitForm={submitForm} />
     </React.Fragment>
   );
 };
 
-export default formErrorHandlerHOC(Signup, axios);
+export default Signup;

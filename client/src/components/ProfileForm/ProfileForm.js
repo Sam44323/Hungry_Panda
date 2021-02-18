@@ -5,7 +5,6 @@ import btnStyles from '../Button/Button.module.css';
 import Input from './ProfileInput/ProfileInput';
 import FAICON from '../FontAwesome/FontAwesome';
 import Button from '../Button/Button';
-import axios from '../../axios-instance';
 
 class ProfileForm extends Component {
   state = {
@@ -117,23 +116,6 @@ class ProfileForm extends Component {
     this.setState({ socialMedia: objectData });
   };
 
-  resetUserDataHandler = () => {
-    const resetUserData = { ...this.state.userData };
-    const resetSocialMedia = { ...this.state.socialMedia };
-    for (let key in resetUserData) {
-      resetUserData[key].value = key === 'age' ? 0 : '';
-      resetUserData[key].touched = false;
-      resetUserData[key].valid = false;
-    }
-    for (let key in resetSocialMedia) {
-      resetSocialMedia[key].value = '';
-      resetSocialMedia[key].touched = false;
-      resetSocialMedia[key].valid = false;
-    }
-
-    return { resetUserData, resetSocialMedia };
-  };
-
   submitForm = () => {
     console.log(this.state.userData);
     const data = {
@@ -162,19 +144,7 @@ class ProfileForm extends Component {
         },
       ],
     };
-    axios
-      .post('/hungrypandaAPI/users/signup', data)
-      .then((user) => {
-        console.log(user);
-        const resetData = this.resetUserDataHandler();
-        this.setState({
-          userData: resetData.resetUserData,
-          socialMedia: resetData.resetSocialMedia,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    this.props.submitForm(data);
   };
 
   render() {
