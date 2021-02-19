@@ -9,14 +9,14 @@ const errorHandlerHOC = (WrappedComponent, axios) => {
       this.state = {
         error: null,
       };
-      //setting the interceptors in the constructor
       this.interceptor = axios.interceptors.response.use(
         (res) => res,
         (err) => {
-          if (err.code) {
-            return this.setState({ error: 'Request Timeout!' }); // for handling the timeout situation while fetching data from api
+          console.dir(err);
+          if (err.data) {
+            this.setState({ error: err.response.data.message });
           }
-          this.setState({ error: err.response.data.message });
+          this.setState({ error: 'Please try again after some time!' });
         }
       );
     }

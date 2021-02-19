@@ -27,12 +27,22 @@ class Explore extends React.Component {
       });
   }
 
+  likeValueHandler = (recipeId) => {
+    axios
+      .patch(`hungrypandaAPI/recipes/updatelike/${recipeId}`)
+      .then((response) => {
+        if (response) {
+          this.setState({ recipes: response.data.recipes });
+        }
+      });
+  };
+
   render() {
     const recipesCard = this.state.recipes.map((recipe) => {
       return (
         <RecipesCard
           key={recipe._id}
-          id={recipe.id}
+          id={recipe._id}
           name={recipe.name}
           cooktime={recipe.cookTime}
           imageUrl={recipe.image}
@@ -42,6 +52,7 @@ class Explore extends React.Component {
           }
           kIngredLength={recipe.keyIngred.length}
           desc={recipe.description}
+          likeValueHandler={this.likeValueHandler}
           loves={recipe.likes}
           creator={recipe.creator}
         />

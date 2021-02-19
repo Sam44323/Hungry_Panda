@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator');
 const errorCreator = require('../errorCreator/errorCreator');
 const { ObjectId } = require('mongodb');
 const User = require('../models/users-models');
+const { ADD_LIKES, REMOVE_LIKES } = require('../constants/server-constants');
 
 const Recipe = require('../models/recipes-models');
 
@@ -123,23 +124,48 @@ const updateRecipe = (req, res, next) => {
     });
 };
 
+const updateUser = (updateType) => {
+  console.log(updateType);
+  User.findById('602aa6b101e5f32f94d473c6').then((user) => {
+    if (updateType === ADD_LIKES) {
+      user.totalLikes++;
+    } else if (updateType === REMOVE_LIKES) {
+      user.totalLikes--;
+    }
+    return user.save();
+  });
+};
+
 const updateLikeValue = (req, res) => {
+  let type;
   Recipe.findById(req.params.id)
     .then((recipe) => {
-      const includeCurrUser = recipe.likedBy.includes('creator1');
+      const includeCurrUser = recipe.likedBy.includes(
+        '602aa6b101e5f32f94d473c6'
+      );
       if (includeCurrUser) {
-        recipe.likedBy = recipe.likedBy.filter((user) => user !== 'creator1');
+        recipe.likedBy = recipe.likedBy.filter(
+          (user) => user !== '602aa6b101e5f32f94d473c6'
+        );
         recipe.likes -= 1;
+        type = REMOVE_LIKES;
       } else {
-        recipe.likedBy.push('creator1');
+        recipe.likedBy.push('602aa6b101e5f32f94d473c6');
         recipe.likes += 1;
+        type = ADD_LIKES;
       }
-      recipe.save().then((recipe) => {
-        res.status(201).json({
-          likes: recipe.likes,
-          likedBy: recipe.likedBy,
+      recipe
+        .save()
+        .then(() => {
+          //will refactor this likingContainer
+          return updateUser(type);
+        })
+        .then(() => {
+          return Recipe.find();
+        })
+        .then((recipes) => {
+          res.status(200).json({ recipes });
         });
-      });
     })
     .catch((err) => {
       console.log(err);

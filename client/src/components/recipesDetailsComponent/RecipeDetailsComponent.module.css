@@ -105,6 +105,23 @@
   white-space: pre-wrap;
 }
 
+.likingContainer {
+  background-color: coral;
+  width: 4rem;
+  margin: 0px 0px 10px auto;
+}
+
+.loveTitle {
+  color: white;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.likingContainer:hover {
+  background-color: brown;
+  cursor: default;
+}
+
 .recipeDetailsKIngredTitle,
 .recipeDetailsIngredientsTitle,
 .recipeDetailsProcedureTitle {
@@ -175,4 +192,21 @@
   border-radius: 4px;
   font-size: 1.15rem;
   white-space: pre-wrap; /*To preserve the white-spaces in the paragraph*/
+}
+
+@media (min-width: 245px) and (max-width: 300px) and (orientation: portrait) {
+  .recipeDetailsImage {
+    height: 150px;
+    width: 150px;
+  }
+
+  .recipeDetailsSection,
+  .recipeDetailsMain,
+  .keyIngredientsDetailsSection,
+  .ingredientsDetailsSection,
+  .recipeDetailsProcedure {
+    display: block;
+    width: 250px;
+    margin: 30px auto;
+  }
 }

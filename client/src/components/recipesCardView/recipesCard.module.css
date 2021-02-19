@@ -120,6 +120,7 @@
   height: 57px;
   margin-left: auto;
   margin-top: 30px;
+  border-radius: 30%;
 }
 
 .likingContainer:hover {

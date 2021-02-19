@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 import styles from './recipesCard.module.css';
 import btnStyles from '../Button/Button.module.css';
@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import FAICON from '../FontAwesome/FontAwesome';
 import { FACLOCK } from '../Constants/uiconstants';
 
-const RecipesCard = (props) => {
+const RecipesCard = React.memo((props) => {
   let c = 0;
   let likedValue = (
     <Fragment>
@@ -70,10 +70,15 @@ const RecipesCard = (props) => {
         ) : null}
       </div>
       {props.loves >= 0 ? (
-        <div className={styles.likingContainer}>{likedValue}</div>
+        <div
+          className={styles.likingContainer}
+          onClick={() => props.likeValueHandler(props.id)}
+        >
+          {likedValue}
+        </div>
       ) : null}
     </div>
   );
-};
+});
 
 export default RecipesCard;
