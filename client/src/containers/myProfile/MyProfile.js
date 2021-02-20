@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
-import axios from '../../axios-instance';
+import axios from 'axios';
 import Loader from 'react-loader-spinner';
 
 import styles from './MyProfile.module.css';
 import Navigation from '../../components/navigation/Navigation';
 import ProfileMain from '../../components/ProfileComponent/ProfileMain';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 class MyProfile extends Component {
   state = {
     userData: null,
     loading: true,
+    error: null,
   };
 
   componentDidMount() {
     axios
-      .get('/hungrypandaAPI/users/myprofile/602aa6b101e5f32f94d473c6')
+      .get(
+        'http://localhost:5000/hungrypandaAPI/users/myprofile/602aa6b101e5f32f94d473c6'
+      )
       .then((user) => {
         this.setState({ userData: user.data.user, loading: false });
       })
-      .catch(() => {
-        this.setState({ loading: false });
+      .catch((err) => {
+        this.setState({ loading: false, error: err.response.data.message });
       });
   }
 
   render() {
     return (
       <React.Fragment>
+        {this.state.error && (
+          <ErrorModal
+            handleModal={() => this.setState({ error: null })}
+            errorMessage={this.state.error}
+          />
+        )}
         <Navigation />
         {this.state.loading ? (
           <div style={{ textAlign: 'center', marginTop: '100px' }}>
@@ -52,4 +61,4 @@ class MyProfile extends Component {
   }
 }
 
-export default errorHandlerHOC(MyProfile, axios);
+export default MyProfile;

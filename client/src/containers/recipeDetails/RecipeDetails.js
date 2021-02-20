@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Loader from 'react-loader-spinner';
-import axios from '../../axios-instance';
+import axios from 'axios';
 
 import Navigation from '../../components/navigation/Navigation';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import RecipeDetailsComponent from '../../components/recipesDetailsComponent/RecipeDetailsComponent';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
 
 class RecipeDetails extends Component {
   state = {
@@ -12,12 +12,15 @@ class RecipeDetails extends Component {
     loading: false,
     hasRecipe: false,
     creatorUsername: '',
+    error: null,
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`)
+      .get(
+        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`
+      )
       .then((recipe) => {
         if (recipe) {
           this.setState({
@@ -36,7 +39,9 @@ class RecipeDetails extends Component {
 
   likeValueHandler = (recipeId) => {
     axios
-      .patch(`hungrypandaAPI/recipes/updatelike/${recipeId}`)
+      .patch(
+        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`
+      )
       .then((response) => {
         if (response) {
           const recipeIndex = response.data.recipes.findIndex(
@@ -44,12 +49,21 @@ class RecipeDetails extends Component {
           );
           this.setState({ recipe: response.data.recipes[recipeIndex] });
         }
+      })
+      .catch((err) => {
+        this.setState({ error: 'Please try again after some time!' });
       });
   };
 
   render() {
     return (
       <div>
+        {this.state.error && (
+          <ErrorModal
+            errorMessage={this.state.error}
+            handleModal={() => this.setState({ error: null })}
+          />
+        )}
         <Navigation />
         <div style={{ marginTop: '100px', textAlign: 'center' }}>
           {this.state.loading ? (
@@ -66,4 +80,4 @@ class RecipeDetails extends Component {
     );
   }
 }
-export default errorHandlerHOC(RecipeDetails, axios);
+export default RecipeDetails;

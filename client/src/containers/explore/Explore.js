@@ -4,36 +4,50 @@ import styles from '../shared/sharedStyles/styles.module.css';
 
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
-import axios from '../../axios-instance';
+import axios from 'axios';
 import Loader from 'react-loader-spinner';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 class Explore extends React.Component {
   state = {
     recipes: [],
     loading: false,
+    error: null,
   };
 
   componentDidMount() {
+    this.axiosCancelSource = axios.CancelToken.source();
     this.setState({ loading: true });
     axios
-      .get('hungrypandaAPI/recipes/explore')
+      .get('http://localhost:5000/hungrypandaAPI/recipes/explore', {
+        cancelToken: this.axiosCancelSource.token,
+      })
       .then((recipes) => {
-        this.setState({ recipes: recipes.data.recipes, loading: false });
+        if (recipes) {
+          this.setState({
+            recipes: recipes.data.recipes,
+            loading: false,
+          });
+        }
       })
       .catch((err) => {
-        this.setState({ loading: false });
+        this.setState({ loading: false, error: 'Network error!' });
         console.log(err);
       });
   }
 
   likeValueHandler = (recipeId) => {
     axios
-      .patch(`hungrypandaAPI/recipes/updatelike/${recipeId}`)
+      .patch(
+        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`
+      )
       .then((response) => {
         if (response) {
           this.setState({ recipes: response.data.recipes });
         }
+      })
+      .catch((err) => {
+        this.setState({ error: 'Please try again after some time!' });
       });
   };
 
@@ -60,6 +74,12 @@ class Explore extends React.Component {
     });
     return (
       <React.Fragment>
+        {this.state.error && (
+          <ErrorModal
+            handleModal={() => this.setState({ error: null })}
+            errorMessage={this.state.error}
+          />
+        )}
         <Navigation />
         {this.state.loading ? (
           <div style={{ textAlign: 'center', marginTop: '100px' }}>
@@ -73,4 +93,4 @@ class Explore extends React.Component {
   }
 }
 
-export default errorHandlerHOC(Explore, axios);
+export default Explore;

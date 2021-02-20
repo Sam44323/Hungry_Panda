@@ -4,21 +4,24 @@ import userStyles from './userPage.module.css';
 import styles from '../shared/sharedStyles/styles.module.css';
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
-import axios from '../../axios-instance';
+import axios from 'axios';
 import Loader from 'react-loader-spinner';
-import errorHandlerHOC from '../../HOC/errorHandlerHOC/errorHandlerHOC';
+import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
 class UserPage extends Component {
   state = {
     recipes: [],
     loading: false,
     hasRecipe: true,
+    error: null,
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get(`/hungrypandaAPI/recipes/myrecipes/${'602aa6b101e5f32f94d473c6'}`)
+      .get(
+        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${'602aa6b101e5f32f94d473c6'}`
+      )
       .then((recipesData) => {
         if (recipesData) {
           console.log(recipesData);
@@ -27,10 +30,12 @@ class UserPage extends Component {
             loading: false,
             hasRecipe: recipesData.data.recipes.length > 0 ? true : false,
           });
+        } else {
+          throw Error('Please try again!');
         }
       })
-      .catch(() => {
-        this.setState({ loading: false });
+      .catch((err) => {
+        this.setState({ loading: false, error: 'Please try again later!' });
       });
   }
 
@@ -74,6 +79,12 @@ class UserPage extends Component {
     ));
     return (
       <React.Fragment>
+        {this.state.error && (
+          <ErrorModal
+            handleModal={() => this.setState({ error: null })}
+            errorMessage={this.state.error}
+          />
+        )}
         <Navigation />
         {!this.state.hasRecipe ? (
           <h1 className={userStyles.errorTitle}>
@@ -92,4 +103,4 @@ class UserPage extends Component {
   }
 }
 
-export default errorHandlerHOC(UserPage, axios);
+export default UserPage;
