@@ -10,6 +10,11 @@ body {
   margin-top: 10rem;
 }
 
+.loadingDivStyles {
+  text-align: center;
+  margin-top: 100px;
+}
+
 /*LAYOUT FOR THE DESKTOP*/
 @media (min-width: 1025px) and (orientation: landscape) {
   .recipesCardSection {
