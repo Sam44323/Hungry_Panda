@@ -7,7 +7,7 @@ const recipesControllers = require('../controllers/recipes-controllers');
 //GETTING ALL THE RECIPES(EXPLORE)
 router.get('/explore', recipesControllers.getAllRecipes);
 
-//GETTING A PARTICULAR RECIPE
+//GETTING A PARTICULAR RECIPE FOR THE GIVEN PARAMETER
 router.get('/recipe/:id', recipesControllers.getRecipe);
 
 //GETTING THE RECIPE BY THE USER ID
