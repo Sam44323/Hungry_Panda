@@ -5,6 +5,7 @@ import Homepage from './containers/homepage/Homepage';
 import Explore from './containers/explore/Explore';
 import UserPage from './containers/userPage/userPage';
 import AddRecipes from './containers/AddRecipes/AddRecipes';
+import EditRecipes from './containers/EditRecipes/EditRecipes';
 import MyProfile from './containers/myProfile/MyProfile';
 import Signup from './containers/authentication/Signup/Signup';
 import RecipeDetails from './containers/recipeDetails/RecipeDetails';
@@ -21,6 +22,7 @@ function App() {
         <Route path='/profile' component={MyProfile} />
         <Route path='/auth/signup' component={Signup} />
         <Route path='/recipeDetails/:id' component={RecipeDetails} />
+        <Route path='/edit-recipe/:id' component={EditRecipes} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

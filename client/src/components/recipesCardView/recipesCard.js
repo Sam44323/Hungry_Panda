@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import styles from './recipesCard.module.css';
 import btnStyles from '../Button/Button.module.css';
@@ -60,6 +61,11 @@ const RecipesCard = React.memo((props) => {
         >
           Show
         </Button>
+        <button
+          onClick={() => props.history.replace(`edit-recipe/${props.id}`)}
+        >
+          Edit
+        </button>
         {props.showDeleteButton ? (
           <Button
             class={`${btnStyles.DangerBtn}`}
@@ -81,4 +87,4 @@ const RecipesCard = React.memo((props) => {
   );
 });
 
-export default RecipesCard;
+export default withRouter(RecipesCard);
