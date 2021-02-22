@@ -75,6 +75,7 @@ class UserPage extends Component {
         }
         deleteRecipe={this.deleteRecipe}
         showDeleteButton
+        editBtn
       />
     ));
     return (

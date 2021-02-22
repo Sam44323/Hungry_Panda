@@ -20,12 +20,17 @@ class MyProfile extends Component {
         'http://localhost:5000/hungrypandaAPI/users/myprofile/602aa6b101e5f32f94d473c6'
       )
       .then((user) => {
-        this.setState({ userData: user.data.user, loading: false });
+        if (user) {
+          this.setState({ userData: user.data.user, loading: false });
+        }
       })
       .catch((err) => {
         this.setState({ loading: false, error: err.response.data.message });
       });
   }
+
+  editProfile = () =>
+    this.props.history.push(`edit-profile/${this.state.userData._id}`);
 
   render() {
     return (
@@ -44,6 +49,7 @@ class MyProfile extends Component {
         ) : this.state.userData ? (
           <div className={styles.userMainSectionDiv}>
             <ProfileMain
+              editHandler={this.editProfile}
               image={this.state.userData.image}
               name={this.state.userData.name}
               email={this.state.userData.email}

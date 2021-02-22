@@ -41,6 +41,16 @@
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.71);
 }
 
+.EditBtn {
+  background-color: #4a3933;
+  border-radius: 40%;
+}
+
+.EditBtn:hover {
+  background-color: #81655b;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.71);
+}
+
 .disableClass,
 .disableClass:hover {
   background-color: grey;

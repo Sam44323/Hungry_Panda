@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
 
+import {
+  userInputDetailState,
+  socialMediaObjectCreator,
+} from '../../../components/Constants/utilityFunction/createStateValue';
 import sharedStyles from '../../shared/sharedStyles/styles.module.css';
 import formErrorHandlerHOC from '../../../HOC/formErrorHandlerHOC';
 import Navigation from '../../../components/navigation/Navigation';
@@ -11,72 +15,22 @@ class Signup extends PureComponent {
   state = {
     loading: false,
     userData: {
-      name: {
-        name: 'Name',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a name!',
-      },
-      email: {
-        name: 'Email',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a valid email!',
-      },
-      password: {
-        name: 'password',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a password!',
-      },
-      userName: {
-        name: 'User name',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a User Name!',
-      },
-      profilePicture: {
-        name: 'Profile picture',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a picture!',
-      },
-      age: {
-        name: 'Age',
-        value: 0,
-        touched: false,
-        isValid: false,
-        message: 'Enter an age!',
-      },
-      city: {
-        name: 'City',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a city!',
-      },
+      name: userInputDetailState('Name', false, 'Enter a name!'),
+      email: userInputDetailState('Email', false, 'Enter a valid email!'),
+      password: userInputDetailState('password', false, 'Enter a password!'),
+      userName: userInputDetailState('User name', false, 'Enter a User Name!'),
+      profilePicture: userInputDetailState(
+        'Profile picture',
+        false,
+        'Enter a picture!'
+      ),
+      age: userInputDetailState('Age', false, 'Enter an age!', 0),
+      city: userInputDetailState('City', false, 'Enter a city!'),
     },
     socialMedia: {
-      fb: {
-        name: 'Facebook',
-        value: '',
-        hasValue: false,
-      },
-      insta: {
-        name: 'Instagram',
-        value: '',
-        hasValue: false,
-      },
-      twitter: {
-        name: 'Twitter',
-        value: '',
-        hasValue: false,
-      },
+      fb: socialMediaObjectCreator('Facebook'),
+      insta: socialMediaObjectCreator('Instagram'),
+      twitter: socialMediaObjectCreator('Twitter'),
     },
   };
 

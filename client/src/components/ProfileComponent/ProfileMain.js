@@ -45,7 +45,12 @@ const ProfileMain = (props) => {
           <h1 className={styles.recipesLove}>{props.likes} Loves</h1>
         </div>
         <div className={styles.editButtonSection}>
-          <button className={styles.userProfileButton}>Edit Profile</button>
+          <button
+            className={styles.userProfileButton}
+            onClick={props.editHandler}
+          >
+            Edit Profile
+          </button>
         </div>
       </div>
       <div className={styles.userDetailSub}>

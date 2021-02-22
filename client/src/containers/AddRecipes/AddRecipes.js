@@ -157,6 +157,7 @@ class AddRecipes extends PureComponent {
             setIngredients={this.setIngredients}
             submit={this.submitForm}
             buttonName='Create'
+            buttonStyle='SuccessBtn'
           />
         )}
       </React.Fragment>

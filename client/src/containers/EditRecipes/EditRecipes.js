@@ -201,7 +201,7 @@ class EditRecipes extends Component {
             checkFormValidation={this.checkFormValidation}
             setIngredients={this.setIngredients}
             submit={this.submitForm}
-            buttonName='Upadate'
+            buttonName='Update'
           />
         )}
       </React.Fragment>

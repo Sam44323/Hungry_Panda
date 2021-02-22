@@ -13,10 +13,11 @@ const formErrorHandlerHOC = (WrappedComponent) => {
       this.resInterceptors = axios.interceptors.response.use(
         (res) => res,
         (err) => {
-          if (!err.data || err.response.status === 404) {
+          if (err.response.data.message) {
+            this.setState({ error: err.response.data.message });
+          } else if (!err.data || err.response.status === 404) {
             return this.setState({ error: 'Network Error' });
           }
-          this.setState({ error: err.response.data.message });
         }
       );
     }

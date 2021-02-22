@@ -5,7 +5,7 @@ import styles from './recipesCard.module.css';
 import btnStyles from '../Button/Button.module.css';
 import Button from '../Button/Button';
 import FAICON from '../FontAwesome/FontAwesome';
-import { FACLOCK } from '../Constants/uiconstants';
+import { FACLOCK, FAEDIT } from '../Constants/uiconstants';
 
 const RecipesCard = React.memo((props) => {
   let c = 0;
@@ -50,7 +50,10 @@ const RecipesCard = React.memo((props) => {
       <h3 className={styles.recipeTitle}>{props.name}</h3>
       <p className={styles.cookingTime}>
         <FAICON iconName={FACLOCK} color='white' /> {timeValue}{' '}
-        {props.cooktime.minutes} minutes
+        {props.cooktime.minutes < 10
+          ? `0${props.cooktime.minutes}`
+          : props.cooktime.minutes}{' '}
+        minutes
       </p>
       <h3 className={styles.recipeDescription}>{props.desc}</h3>
       {ingreds}
@@ -61,11 +64,14 @@ const RecipesCard = React.memo((props) => {
         >
           Show
         </Button>
-        <button
-          onClick={() => props.history.replace(`edit-recipe/${props.id}`)}
-        >
-          Edit
-        </button>
+        {props.editBtn && (
+          <Button
+            class={`${btnStyles.EditBtn}`}
+            clickAction={() => props.history.push(`edit-recipe/${props.id}`)}
+          >
+            <FAICON iconName={FAEDIT} color='white' />
+          </Button>
+        )}
         {props.showDeleteButton ? (
           <Button
             class={`${btnStyles.DangerBtn}`}

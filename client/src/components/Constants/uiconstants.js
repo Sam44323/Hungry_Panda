@@ -10,3 +10,4 @@ export const FAUSERPLUS = 'faUserPlus';
 export const FATIMESCIRCLE = 'faTimesCircle';
 export const FAEMAIL = 'faEnvelopeSquare';
 export const FACLOCK = 'faClock';
+export const FAEDIT = 'faEdit';

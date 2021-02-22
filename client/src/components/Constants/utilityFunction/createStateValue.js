@@ -28,3 +28,17 @@ exports.ingObjectCreator = (value = []) => ({
         })),
   isValid: true,
 });
+
+exports.userInputDetailState = (name, isValid, message, value = '') => ({
+  name,
+  value,
+  touched: false,
+  isValid,
+  message,
+});
+
+exports.socialMediaObjectCreator = (name, value = '', hasValue = false) => ({
+  name,
+  value,
+  hasValue,
+});
