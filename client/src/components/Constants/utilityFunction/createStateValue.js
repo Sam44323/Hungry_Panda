@@ -29,10 +29,16 @@ exports.ingObjectCreator = (value = []) => ({
   isValid: true,
 });
 
-exports.userInputDetailState = (name, isValid, message, value = '') => ({
+exports.userInputDetailState = (
+  name,
+  isValid,
+  message,
+  value = '',
+  touched = false
+) => ({
   name,
   value,
-  touched: false,
+  touched,
   isValid,
   message,
 });

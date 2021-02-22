@@ -108,6 +108,9 @@
 /*STYLING FOR THE BUTTON SECTION AND THE LIST*/
 .actionButtons {
   width: 80%;
+  display: flex;
+  text-align: center;
+  justify-content: space-evenly;
   margin: auto;
   margin-top: 10px;
 }

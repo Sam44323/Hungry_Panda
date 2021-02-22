@@ -37,12 +37,21 @@ router.post(
 router.patch(
   '/editprofile/:id',
   [
-    check('name').notEmpty().isString(),
-    check('email').normalizeEmail().isEmail(),
-    check('userName').notEmpty().isString(),
-    check('age').isNumeric(),
+    check('name').notEmpty().isString().withMessage('Please enter a name!'),
+    check('email')
+      .normalizeEmail()
+      .isEmail()
+      .withMessage('Please enter a valid email address!'),
+    check('userName')
+      .notEmpty()
+      .isString()
+      .withMessage('Please enter an user-name'),
+    check('age').isNumeric().withMessage('Please enter your age'),
     check('socialMedia').isArray(),
-    check('location').isString(),
+    check('location')
+      .isString()
+      .isLength({ min: 1 })
+      .withMessage('Please enter a city-name!'),
   ],
   userController.editUserData
 );

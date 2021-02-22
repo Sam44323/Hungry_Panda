@@ -7,6 +7,7 @@ import FAICON from '../FontAwesome/FontAwesome';
 import Button from '../Button/Button';
 
 const ProfileForm = (props) => {
+  let c = 0;
   const dataInput = [];
   for (let keyValue in props.userData) {
     const type = keyValue === 'age' ? 'number' : 'text';
@@ -39,9 +40,11 @@ const ProfileForm = (props) => {
   }
   let valid = true;
   for (let key in props.userData) {
-    valid =
-      props.userData[key].isValid && props.userData[key].touched ? true : false;
+    if (props.userData[key].isValid && props.userData[key].touched) {
+      c++;
+    }
   }
+  valid = c === props.userDataLength ? true : false;
   return (
     <div className={styles.profileFormMain}>
       <div className={styles.userDetailsSection}>
@@ -62,7 +65,7 @@ const ProfileForm = (props) => {
           clickAction={props.submitForm}
           disabledValue={!valid}
         >
-          Add
+          {props.btntext}
         </Button>
       </div>
     </div>

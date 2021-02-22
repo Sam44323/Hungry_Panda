@@ -119,8 +119,10 @@ class Signup extends PureComponent {
             submitForm={this.submitForm}
             userData={this.state.userData}
             socialMedia={this.state.socialMedia}
+            userDataLength={7}
             changeDataValue={this.changeDataValue}
             socialMediaDataChange={this.socialMediaDataChange}
+            btntext='Add'
           />
         )}
       </React.Fragment>
