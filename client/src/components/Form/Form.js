@@ -63,6 +63,7 @@ const Form = (props) => {
   //FOR STORING THE INGREDIENTS IN A STYLED INPUT
   const ingrd = returnIngredArray('ingredients');
   const keyIngred = returnIngredArray('keyingredients');
+
   const disabled = !props.checkFormValidation();
   return (
     <React.Fragment>
@@ -96,7 +97,7 @@ const Form = (props) => {
             clickAction={props.submit}
             disabledValue={disabled}
           >
-            Create
+            {props.buttonName}
           </Button>
         </div>
       </div>

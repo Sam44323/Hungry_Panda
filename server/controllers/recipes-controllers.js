@@ -103,17 +103,13 @@ const addNewRecipe = (req, res, next) => {
 const updateRecipe = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    return next(
-      errorCreator(
-        'Please fill out all the required fields for updating the recipe!'
-      )
-    );
+    return next(errorCreator(error.errors[0].msg, 422));
   }
 
   Recipe.findByIdAndUpdate(
     req.params.id,
     { ...req.body },
-    { useFindAndModify: true }
+    { useFindAndModify: false }
   )
     .then(() => {
       res.status(201).json({ message: 'Successfully updated the recipe!' });

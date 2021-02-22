@@ -1,0 +1,30 @@
+exports.getTextField = (name, dbName, type, message, isValid, value = '') => {
+  return {
+    name,
+    dbName,
+    type,
+    value: value,
+    touched: false,
+    isValid,
+    message,
+  };
+};
+
+exports.timeValue = (name, value, isValid) => {
+  return {
+    name,
+    value,
+    isValid,
+  };
+};
+
+exports.ingObjectCreator = (value = []) => ({
+  ing:
+    value.length === 0
+      ? value
+      : value.map((item) => ({
+          id: Math.random().toString(),
+          value: item,
+        })),
+  isValid: true,
+});

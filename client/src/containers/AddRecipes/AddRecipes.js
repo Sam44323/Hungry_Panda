@@ -1,6 +1,12 @@
 import React, { PureComponent } from 'react';
 import uuid from 'react-uuid';
 
+import {
+  getTextField,
+  timeValue,
+  ingObjectCreator,
+} from '../../components/Constants/utilityFunction/createStateValue';
+
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
 import formErrorHandlerHOC from '../../HOC/formErrorHandlerHOC';
 import Navigation from '../../components/navigation/Navigation';
@@ -12,63 +18,35 @@ class AddRecipes extends PureComponent {
   state = {
     loading: false,
     textFieldName: [
-      {
-        name: 'Recipe Name',
-        dbName: 'name',
-        type: 'text',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter the recipe name!',
-      },
-      {
-        name: 'Image',
-        dbName: 'image',
-        type: 'text',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter a recipe image!',
-      },
-      {
-        name: 'Description',
-        dbName: 'description',
-        type: 'textarea',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Give some recipe description!',
-      },
-      {
-        name: 'Procedure',
-        dbName: 'procedure',
-        type: 'textarea',
-        value: '',
-        touched: false,
-        isValid: false,
-        message: 'Enter the procedure!',
-      },
+      getTextField(
+        'Recipe Name',
+        'name',
+        'text',
+        'Enter the recipe name!',
+        false
+      ),
+      getTextField('Image', 'image', 'text', 'Enter a recipe image!', false),
+      getTextField(
+        'Description',
+        'description',
+        'textarea',
+        'Give some recipe description!',
+        false
+      ),
+      getTextField(
+        'Procedure',
+        'procedure',
+        'textarea',
+        'Enter the procedure!',
+        false
+      ),
     ],
     numberFieldName: [
-      {
-        name: 'Hours',
-        value: 0,
-        touched: false,
-      },
-      {
-        name: 'Minutes',
-        value: 0,
-        touched: false,
-      },
+      timeValue('Hours', 0, false),
+      timeValue('Minutes', 0, false),
     ],
-    ingredients: {
-      ing: [],
-      isValid: true,
-    },
-    keyingredients: {
-      ing: [],
-      isValid: true,
-    },
+    ingredients: { ...ingObjectCreator() },
+    keyingredients: { ...ingObjectCreator() },
   };
 
   //FOR CHANGING THE VALUE OF THE RECIPE DETAILS
@@ -178,6 +156,7 @@ class AddRecipes extends PureComponent {
             checkFormValidation={this.checkFormValidation}
             setIngredients={this.setIngredients}
             submit={this.submitForm}
+            buttonName='Create'
           />
         )}
       </React.Fragment>
