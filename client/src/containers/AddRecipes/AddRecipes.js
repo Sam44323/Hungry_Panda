@@ -5,6 +5,7 @@ import {
   getTextField,
   timeValue,
   ingObjectCreator,
+  getImageField,
 } from '../../components/Constants/utilityFunction/createStateValue';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
@@ -17,6 +18,7 @@ import Loader from 'react-loader-spinner';
 class AddRecipes extends PureComponent {
   state = {
     loading: false,
+    image: getImageField('Image', 'image'),
     textFieldName: [
       getTextField(
         'Recipe Name',
@@ -25,7 +27,6 @@ class AddRecipes extends PureComponent {
         'Enter the recipe name!',
         false
       ),
-      getTextField('Image', 'image', 'text', 'Enter a recipe image!', false),
       getTextField(
         'Description',
         'description',
@@ -74,6 +75,11 @@ class AddRecipes extends PureComponent {
     }
   };
 
+  //FOR CHANGING THE VALUE OF THE IMAGE FILE
+  imageValueChangeHandler = (value) => {
+    this.setState({ image: { ...this.state.image, value } });
+  };
+
   //CHECKING THE VALIDATION OF THE FORM
   checkFormValidation = () => {
     let c = 0;
@@ -82,7 +88,7 @@ class AddRecipes extends PureComponent {
         c++;
       }
     }
-    return c === 4;
+    return c === 3;
   };
 
   //ADDING THE INGREDIENTS TO THE RESPECTIVE ARRAYS
@@ -103,10 +109,10 @@ class AddRecipes extends PureComponent {
   submitForm = () => {
     this.setState({ loading: true });
     const data = {
+      image: this.state.image.value,
       name: this.state.textFieldName[0].value.trim(),
-      image: this.state.textFieldName[1].value.trim(),
-      description: this.state.textFieldName[2].value.trim(),
-      procedure: this.state.textFieldName[3].value.trim(),
+      description: this.state.textFieldName[1].value.trim(),
+      procedure: this.state.textFieldName[2].value.trim(),
       cookTime: {
         hours: this.state.numberFieldName[0].value,
         minutes: this.state.numberFieldName[1].value,
@@ -137,6 +143,7 @@ class AddRecipes extends PureComponent {
   };
 
   render() {
+    console.log(this.state.image.value);
     return (
       <React.Fragment>
         <Navigation />
@@ -147,6 +154,8 @@ class AddRecipes extends PureComponent {
         ) : (
           <Form
             submitForm={this.submitForm}
+            imageField={this.state.image}
+            fileActionMethod={this.imageValueChangeHandler}
             textFieldName={this.state.textFieldName}
             numberFieldName={this.state.numberFieldName}
             ingredients={this.state.ingredients}

@@ -25,6 +25,24 @@ const Input = (props) => {
       );
       break;
 
+    case 'file':
+      inputValue = (
+        <div className={styles.inputSection}>
+          <label htmlFor={props.name} className={styles.fileLabel}>
+            {props.name}
+            <hr />
+            <input
+              name={props.name}
+              type='file'
+              onChange={(event) =>
+                props.fileActionHandler(event.target.files[0])
+              }
+            />
+          </label>
+        </div>
+      );
+      break;
+
     default:
       inputValue = (
         <div

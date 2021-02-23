@@ -27,9 +27,6 @@ router.post(
     check('name')
       .notEmpty()
       .withMessage('Please enter the name of the recipe!'),
-    check('image')
-      .notEmpty()
-      .withMessage('Please provide an image for the recipe'),
     check('description')
       .isLength({ min: 10, max: 400 })
       .withMessage('Please enter a description between 10 to 400 words!'),
@@ -62,9 +59,6 @@ router.patch(
     check('name')
       .notEmpty()
       .withMessage('Please enter the name of the recipe!'),
-    check('image')
-      .notEmpty()
-      .withMessage('Please provide an image for the recipe'),
     check('description')
       .isLength({ min: 10, max: 400 })
       .withMessage('Please enter a description between 10 to 400 words!'),

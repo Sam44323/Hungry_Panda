@@ -10,6 +10,15 @@ exports.getTextField = (name, dbName, type, message, isValid, value = '') => {
   };
 };
 
+exports.getImageField = (name, dbName) => {
+  return {
+    name,
+    dbName,
+    type: 'file',
+    value: null,
+  };
+};
+
 exports.timeValue = (name, value, isValid) => {
   return {
     name,
