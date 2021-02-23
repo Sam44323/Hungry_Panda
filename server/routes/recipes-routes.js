@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
+const { body } = require('express-validator');
 
 const router = Router();
 const recipesControllers = require('../controllers/recipes-controllers');
@@ -17,26 +17,18 @@ router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
 router.post(
   '/addrecipe',
   [
-    check('cookTime.hours')
+    body('cookTime.*.hours')
       .isFloat({ min: 0 })
       .withMessage('Please enter a valid value for the hour'),
-    check('cookTime.minutes')
+    body('cookTime.*.minutes')
       .notEmpty()
       .isFloat({ min: 0, max: 59 })
       .withMessage('Please enter a valid time value for the minute!'),
-    check('name')
-      .notEmpty()
-      .withMessage('Please enter the name of the recipe!'),
-    check('description')
+    body('name').notEmpty().withMessage('Please enter the name of the recipe!'),
+    body('description')
       .isLength({ min: 10, max: 400 })
       .withMessage('Please enter a description between 10 to 400 words!'),
-    check('keyIngred')
-      .isArray({ min: 1 })
-      .withMessage('Please enter at-least 1 key-ingredient!'),
-    check('ingredients')
-      .isArray({ min: 1 })
-      .withMessage('Please enter at-least 1 ingredient!'),
-    check('procedure')
+    body('procedure')
       .isLength({ min: 30 })
       .withMessage(
         'Please enter the procedure for prepration of at-least 30 words!'
@@ -49,26 +41,18 @@ router.post(
 router.patch(
   '/updateRecipe/:id',
   [
-    check('cookTime.hours')
+    body('cookTime.*.hours')
       .isFloat({ min: 0 })
       .withMessage('Please enter a valid value for the hour'),
-    check('cookTime.minutes')
+    body('cookTime.*.minutes')
       .notEmpty()
       .isFloat({ min: 0, max: 59 })
       .withMessage('Please enter a valid time value for the minute!'),
-    check('name')
-      .notEmpty()
-      .withMessage('Please enter the name of the recipe!'),
-    check('description')
+    body('name').notEmpty().withMessage('Please enter the name of the recipe!'),
+    body('description')
       .isLength({ min: 10, max: 400 })
       .withMessage('Please enter a description between 10 to 400 words!'),
-    check('keyIngred')
-      .isArray({ min: 1 })
-      .withMessage('Please enter at-least 1 key-ingredient!'),
-    check('ingredients')
-      .isArray({ min: 1 })
-      .withMessage('Please enter at-least 1 ingredient!'),
-    check('procedure')
+    body('procedure')
       .isLength({ min: 30 })
       .withMessage(
         'Please enter the procedure for prepration of at-least 30 words!'
