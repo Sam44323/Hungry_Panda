@@ -143,7 +143,6 @@ class AddRecipes extends PureComponent {
   };
 
   render() {
-    console.log(this.state.image.value);
     return (
       <React.Fragment>
         <Navigation />
