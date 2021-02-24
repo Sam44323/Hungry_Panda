@@ -119,8 +119,8 @@ const updateRecipe = (req, res, next) => {
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   }
 
-  console.log(req.body);
-  console.log(req.file);
+  // console.log(req.body);
+  // console.log(req.file);
   Recipe.findById(req.params.id)
     .then((recipe) => {
       console.log(recipe);
