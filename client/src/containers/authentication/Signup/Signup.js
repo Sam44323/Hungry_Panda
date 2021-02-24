@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import {
   userInputDetailState,
   socialMediaObjectCreator,
+  getImageField,
 } from '../../../components/Constants/utilityFunction/createStateValue';
 import sharedStyles from '../../shared/sharedStyles/styles.module.css';
 import formErrorHandlerHOC from '../../../HOC/formErrorHandlerHOC';
@@ -14,16 +15,12 @@ import Loader from 'react-loader-spinner';
 class Signup extends PureComponent {
   state = {
     loading: false,
+    image: getImageField('Profile picture', 'profilePicture'),
     userData: {
       name: userInputDetailState('Name', false, 'Enter a name!'),
       email: userInputDetailState('Email', false, 'Enter a valid email!'),
       password: userInputDetailState('password', false, 'Enter a password!'),
       userName: userInputDetailState('User name', false, 'Enter a User Name!'),
-      profilePicture: userInputDetailState(
-        'Profile picture',
-        false,
-        'Enter a picture!'
-      ),
       age: userInputDetailState('Age', false, 'Enter an age!', 0),
       city: userInputDetailState('City', false, 'Enter a city!'),
     },
@@ -51,6 +48,12 @@ class Signup extends PureComponent {
     }
   };
 
+  //FOR CHANGING THE VALUE OF THE IMAGE FIELD
+
+  changeImageValue = (value) => {
+    this.setState({ image: { ...this.state.image, value } });
+  };
+
   //FOR CHANGING THE VALUE OF THE userData OBJECT
   changeDataValue = (name, value) => {
     const objectData = { ...this.state.userData };
@@ -71,15 +74,18 @@ class Signup extends PureComponent {
 
   submitForm = () => {
     this.setState({ loading: true });
-    const data = {
-      name: this.state.userData.name.value.trim(),
-      email: this.state.userData.email.value.trim(),
-      password: this.state.userData.password.value.trim(),
-      userName: this.state.userData.userName.value.trim(),
-      image: this.state.userData.profilePicture.value.trim(),
-      age: this.state.userData.age.value,
-      location: this.state.userData.city.value.trim(),
-      socialMedia: [
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('image', this.state.image.value);
+    bodyFormData.append('name', this.state.userData.name.value.trim());
+    bodyFormData.append('email', this.state.userData.email.value.trim());
+    bodyFormData.append('password', this.state.userData.password.value.trim());
+    bodyFormData.append('userName', this.state.userData.userName.value.trim());
+    bodyFormData.append('age', JSON.parse(this.state.userData.age.value));
+    bodyFormData.append('location', this.state.userData.city.value.trim());
+    bodyFormData.append(
+      'socialMedia',
+      JSON.stringify([
         {
           name: 'Facebook',
           value: this.state.socialMedia.fb.value.trim(),
@@ -95,16 +101,19 @@ class Signup extends PureComponent {
           value: this.state.socialMedia.twitter.value.trim(),
           hasValue: this.state.socialMedia.twitter.hasValue,
         },
-      ],
-    };
-    axios
-      .post('http://localhost:5000/hungrypandaAPI/users/signup', data)
-      .then((response) => {
-        this.setState({ loading: false });
-        if (response) {
-          this.props.history.push('/myrecipes');
-        }
-      });
+      ])
+    );
+    axios({
+      method: 'POST',
+      url: 'http://localhost:5000/hungrypandaAPI/users/signup',
+      data: bodyFormData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((response) => {
+      this.setState({ loading: false });
+      if (response) {
+        this.props.history.push('/myrecipes');
+      }
+    });
   };
   render() {
     return (
@@ -117,9 +126,11 @@ class Signup extends PureComponent {
         ) : (
           <ProfileForm
             submitForm={this.submitForm}
+            imageData={this.state.image}
+            imageValueHandler={this.changeImageValue}
             userData={this.state.userData}
             socialMedia={this.state.socialMedia}
-            userDataLength={7}
+            userDataLength={6}
             changeDataValue={this.changeDataValue}
             socialMediaDataChange={this.socialMediaDataChange}
             btntext='Add'

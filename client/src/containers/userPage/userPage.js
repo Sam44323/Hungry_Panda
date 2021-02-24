@@ -20,7 +20,7 @@ class UserPage extends Component {
     this.setState({ loading: true });
     axios
       .get(
-        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${'602aa6b101e5f32f94d473c6'}`
+        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${'6036818291a2143a8c40ba34'}`
       )
       .then((recipesData) => {
         if (recipesData) {
@@ -73,6 +73,7 @@ class UserPage extends Component {
         desc={recipe.description}
         loves={-1}
         creator={recipe.creator}
+        //USE QUERY PARAMS FOR SHOWING THE LIKE VALUE ACCORDINGLY THE PAGES
         showRecipeDetails={() =>
           this.props.history.push(`/recipeDetails/${recipe._id}`)
         }

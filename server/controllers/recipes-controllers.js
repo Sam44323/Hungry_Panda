@@ -85,12 +85,12 @@ const addNewRecipe = (req, res, next) => {
     procedure,
     likedBy: [],
     likes: 0,
-    creatorId: ObjectId('602aa6b101e5f32f94d473c6'),
+    creatorId: ObjectId('6036818291a2143a8c40ba34'),
   });
   newRecipe
     .save()
     .then((recipe) => {
-      return User.findById('602aa6b101e5f32f94d473c6').then((user) => {
+      return User.findById('6036818291a2143a8c40ba34').then((user) => {
         user.recipes.push(recipe._id);
         user.totalRecipes++;
         return user.save();
@@ -150,7 +150,7 @@ const updateRecipe = (req, res, next) => {
 
 const updateUser = (updateType) => {
   console.log(updateType);
-  User.findById('602aa6b101e5f32f94d473c6').then((user) => {
+  User.findById('6036818291a2143a8c40ba34').then((user) => {
     if (updateType === ADD_LIKES) {
       user.totalLikes++;
     } else if (updateType === REMOVE_LIKES) {
@@ -165,16 +165,16 @@ const updateLikeValue = (req, res) => {
   Recipe.findById(req.params.id)
     .then((recipe) => {
       const includeCurrUser = recipe.likedBy.includes(
-        '602aa6b101e5f32f94d473c6'
+        '6036818291a2143a8c40ba34'
       );
       if (includeCurrUser) {
         recipe.likedBy = recipe.likedBy.filter(
-          (user) => user !== '602aa6b101e5f32f94d473c6'
+          (user) => user !== '6036818291a2143a8c40ba34'
         );
         recipe.likes -= 1;
         type = REMOVE_LIKES;
       } else {
-        recipe.likedBy.push('602aa6b101e5f32f94d473c6');
+        recipe.likedBy.push('6036818291a2143a8c40ba34');
         recipe.likes += 1;
         type = ADD_LIKES;
       }
@@ -198,7 +198,7 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  User.findById('602aa6b101e5f32f94d473c6')
+  User.findById('6036818291a2143a8c40ba34')
     .then((user) => {
       user.recipes = user.recipes.filter(
         (recipe) => recipe.toString() !== req.params.id.toString()

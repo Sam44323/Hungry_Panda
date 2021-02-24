@@ -60,7 +60,7 @@ const RecipesCard = React.memo((props) => {
       <div className={styles.actionButtons}>
         <Button
           class={`${btnStyles.SuccessBtn}`}
-          clickAction={() => props.showRecipeDetails()}
+          clickAction={props.showRecipeDetails}
         >
           Show
         </Button>

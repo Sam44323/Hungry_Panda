@@ -17,7 +17,7 @@ class MyProfile extends Component {
   componentDidMount() {
     axios
       .get(
-        'http://localhost:5000/hungrypandaAPI/users/myprofile/602aa6b101e5f32f94d473c6'
+        'http://localhost:5000/hungrypandaAPI/users/myprofile/6036818291a2143a8c40ba34'
       )
       .then((user) => {
         if (user) {

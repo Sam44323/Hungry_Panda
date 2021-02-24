@@ -1,4 +1,5 @@
 import styles from './Input.module.css';
+import sharedStyles from '../../../containers/shared/sharedStyles/styles.module.css';
 
 const Input = (props) => {
   let inputValue;
@@ -28,7 +29,7 @@ const Input = (props) => {
     case 'file':
       inputValue = (
         <div className={styles.inputSection}>
-          <label htmlFor={props.name} className={styles.fileLabel}>
+          <label htmlFor={props.name} className={sharedStyles.fileLabel}>
             {props.name}
             <hr />
             <input

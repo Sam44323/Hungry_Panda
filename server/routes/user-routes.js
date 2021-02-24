@@ -24,7 +24,6 @@ router.post(
       .isLength({ min: 5 })
       .withMessage('Please enter a password of at-least 5 characters!'),
     check('age').isNumeric().withMessage('Please enter your age'),
-    check('socialMedia').isArray(),
     check('location')
       .isString()
       .isLength({ min: 1 })
@@ -47,7 +46,6 @@ router.patch(
       .isString()
       .withMessage('Please enter an user-name'),
     check('age').isNumeric().withMessage('Please enter your age'),
-    check('socialMedia').isArray(),
     check('location')
       .isString()
       .isLength({ min: 1 })

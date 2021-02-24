@@ -2,6 +2,7 @@ import React from 'react';
 import uuid from 'react-uuid';
 
 import styles from './Form.module.css';
+import sharedStyles from '../../containers/shared/sharedStyles/styles.module.css';
 import btnStyles from '../Button/Button.module.css';
 import Input from './InputFields/Input';
 import Button from '../Button/Button';
@@ -75,7 +76,7 @@ const Form = (props) => {
             fileActionHandler={props.fileActionMethod}
           />
         ) : (
-          <div className={styles.changePhotoButtonSection}>
+          <div className={sharedStyles.changePhotoButtonSection}>
             <Button
               class={`${btnStyles.EditPhoto}`}
               clickAction={() => props.fileActionMethod(null)}

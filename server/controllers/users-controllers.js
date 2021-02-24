@@ -22,6 +22,8 @@ const addNewUser = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
     return next(errorCreator(error.errors[0].msg, 422));
+  } else if (!req.file) {
+    return next(errorCreator('Image is required for creating a recipe', 422));
   }
   const {
     name,
@@ -31,8 +33,10 @@ const addNewUser = (req, res, next) => {
     age,
     socialMedia,
     location,
-    image,
   } = req.body;
+
+  const image = req.file.path.replace(/\\/g, '/');
+
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -51,9 +55,9 @@ const addNewUser = (req, res, next) => {
             password,
             email,
             userName,
-            age,
+            age: JSON.parse(age),
             image,
-            socialMedia,
+            socialMedia: JSON.parse(socialMedia),
             location,
             recipes: [],
             totalLikes: 0,
