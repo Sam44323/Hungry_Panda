@@ -23,7 +23,7 @@ router.post(
       .notEmpty()
       .isLength({ min: 5 })
       .withMessage('Please enter a password of at-least 5 characters!'),
-    check('age').isNumeric().withMessage('Please enter your age'),
+    check('age').notEmpty().withMessage('Please enter your age'),
     check('location')
       .isString()
       .isLength({ min: 1 })
@@ -45,7 +45,7 @@ router.patch(
       .notEmpty()
       .isString()
       .withMessage('Please enter an user-name'),
-    check('age').isNumeric().withMessage('Please enter your age'),
+    check('age').notEmpty().withMessage('Please enter your age'),
     check('location')
       .isString()
       .isLength({ min: 1 })

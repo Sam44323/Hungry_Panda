@@ -84,7 +84,20 @@ const editUserData = (req, res, next) => {
       )
     );
   }
-  User.findByIdAndUpdate(req.params.id, { ...req.body })
+  const { name, email, userName, age, socialMedia, location } = req.body;
+  const newUser = {
+    name,
+    email,
+    userName,
+    age: JSON.parse(age),
+    socialMedia: JSON.parse(socialMedia),
+    location,
+  };
+  if (req.file) {
+    newUser.image = req.file.path.replace(/\\/g, '/');
+  }
+
+  User.findByIdAndUpdate(req.params.id, { ...newUser })
     .then(() => {
       res.status(201).json('Successfully updated the user data!');
     })

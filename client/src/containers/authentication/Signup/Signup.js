@@ -37,7 +37,6 @@ class Signup extends PureComponent {
       name === 'name' ||
       name === 'password' ||
       name === 'userName' ||
-      name === 'profilePicture' ||
       name === 'city'
     ) {
       return value === '' ? false : true;

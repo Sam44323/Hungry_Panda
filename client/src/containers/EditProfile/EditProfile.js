@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 import {
   socialMediaObjectCreator,
   userInputDetailState,
+  getImageField,
 } from '../../components/Constants/utilityFunction/createStateValue';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
@@ -15,11 +16,11 @@ import formErrorHandlerHOC from '../../HOC/formErrorHandlerHOC';
 class EditProfile extends PureComponent {
   state = {
     loading: false,
+    image: getImageField('Profile picture', 'profilePicture'),
     userData: {
       name: {},
       email: {},
       userName: {},
-      profilePicture: {},
       age: {},
       city: {},
     },
@@ -58,13 +59,6 @@ class EditProfile extends PureComponent {
               true,
               'Enter a User Name!',
               user.data.user.userName,
-              true
-            ),
-            profilePicture: userInputDetailState(
-              'Profile picture',
-              true,
-              'Enter a picture!',
-              user.data.user.image,
               true
             ),
             age: userInputDetailState(
@@ -120,6 +114,11 @@ class EditProfile extends PureComponent {
     }
   };
 
+  //FOR CHANGING THE VALUE OF THE IMAGE
+  changeImageValue = (value) => {
+    this.setState({ image: { ...this.state.image, value } });
+  };
+
   //FOR CHANGING THE VALUE OF THE userData OBJECT
   changeDataValue = (name, value) => {
     const objectData = { ...this.state.userData };
@@ -140,14 +139,17 @@ class EditProfile extends PureComponent {
 
   submitForm = () => {
     this.setState({ loading: true });
-    const data = {
-      name: this.state.userData.name.value.trim(),
-      email: this.state.userData.email.value.trim(),
-      userName: this.state.userData.userName.value.trim(),
-      image: this.state.userData.profilePicture.value.trim(),
-      age: this.state.userData.age.value,
-      location: this.state.userData.city.value.trim(),
-      socialMedia: [
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('image', this.state.image.value);
+    bodyFormData.append('name', this.state.userData.name.value.trim());
+    bodyFormData.append('email', this.state.userData.email.value.trim());
+    bodyFormData.append('userName', this.state.userData.userName.value.trim());
+    bodyFormData.append('age', JSON.parse(this.state.userData.age.value));
+    bodyFormData.append('location', this.state.userData.city.value.trim());
+    bodyFormData.append(
+      'socialMedia',
+      JSON.stringify([
         {
           name: 'Facebook',
           value: this.state.socialMedia.fb.value.trim(),
@@ -163,19 +165,19 @@ class EditProfile extends PureComponent {
           value: this.state.socialMedia.twitter.value.trim(),
           hasValue: this.state.socialMedia.twitter.hasValue,
         },
-      ],
-    };
-    axios
-      .patch(
-        `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
-        data
-      )
-      .then((response) => {
-        this.setState({ loading: false });
-        if (response) {
-          this.props.history.push('/profile');
-        }
-      });
+      ])
+    );
+    axios({
+      method: 'PATCH',
+      url: `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
+      data: bodyFormData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((response) => {
+      this.setState({ loading: false });
+      if (response) {
+        this.props.history.push('/profile');
+      }
+    });
   };
 
   render() {
@@ -189,9 +191,11 @@ class EditProfile extends PureComponent {
         ) : (
           <ProfileForm
             submitForm={this.submitForm}
+            imageData={this.state.image}
+            imageValueHandler={this.changeImageValue}
             userData={this.state.userData}
             socialMedia={this.state.socialMedia}
-            userDataLength={6}
+            userDataLength={5}
             changeDataValue={this.changeDataValue}
             socialMediaDataChange={this.socialMediaDataChange}
             btntext='Update'

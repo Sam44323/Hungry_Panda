@@ -118,27 +118,18 @@ const updateRecipe = (req, res, next) => {
   ) {
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   }
-  const {
-    name,
-    cookTime,
-    description,
-    keyIngred,
-    ingredients,
-    procedure,
-  } = req.body;
-  Recipe.findById(req.params.id)
-    .then((recipe) => {
-      const newRecipe = {
-        name,
-        image: !req.file ? recipe.image : req.file.path.replace(/\\/g, '/'),
-        cookTime: JSON.parse(cookTime),
-        description,
-        keyIngred: JSON.parse(keyIngred),
-        ingredients: JSON.parse(ingredients),
-        procedure,
-      };
-      return Recipe.findByIdAndUpdate(req.params.id, newRecipe);
-    })
+  const updatedRecipe = {
+    name: req.body.name,
+    cookTime: JSON.parse(req.body.cookTime),
+    description: req.body.description,
+    keyIngred: JSON.parse(req.body.keyIngred),
+    ingredients: JSON.parse(req.body.ingredients),
+    procedure: req.body.procedure,
+  };
+  if (req.file) {
+    updateRecipe.image = req.file.path.replace(/\\/g, '/');
+  }
+  Recipe.findByIdAndUpdate(req.params.id, updatedRecipe)
     .then(() => {
       res.status(200).json({ message: 'Updated the recipe!' });
     })
