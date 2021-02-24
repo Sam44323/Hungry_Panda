@@ -118,29 +118,34 @@ const updateRecipe = (req, res, next) => {
   ) {
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   }
-
-  // console.log(req.body);
-  // console.log(req.file);
+  const {
+    name,
+    cookTime,
+    description,
+    keyIngred,
+    ingredients,
+    procedure,
+  } = req.body;
   Recipe.findById(req.params.id)
     .then((recipe) => {
-      console.log(recipe);
+      const newRecipe = {
+        name,
+        image: !req.file ? recipe.image : req.file.path.replace(/\\/g, '/'),
+        cookTime: JSON.parse(cookTime),
+        description,
+        keyIngred: JSON.parse(keyIngred),
+        ingredients: JSON.parse(ingredients),
+        procedure,
+      };
+      return Recipe.findByIdAndUpdate(req.params.id, newRecipe);
+    })
+    .then(() => {
+      res.status(200).json({ message: 'Updated the recipe!' });
     })
     .catch((err) => {
       console.log(err);
       next(errorCreator("Can't updated the requested recipe at this moment"));
     });
-
-  // Recipe.findByIdAndUpdate(
-  //   req.params.id,
-  //   { ...req.body },
-  //   { useFindAndModify: false }
-  // )
-  //   .then(() => {
-  //     res.status(201).json({ message: 'Successfully updated the recipe!' });
-  //   })
-  //   .catch((err) => {
-
-  //   });
 };
 
 const updateUser = (updateType) => {

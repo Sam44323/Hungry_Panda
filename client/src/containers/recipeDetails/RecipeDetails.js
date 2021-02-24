@@ -48,10 +48,14 @@ class RecipeDetails extends Component {
           const recipeIndex = response.data.recipes.findIndex(
             (recipe) => recipe._id === recipeId
           );
+          response.data.recipes[
+            recipeIndex
+          ].image = `http://localhost:5000/${response.data.recipes[recipeIndex].image}`;
           this.setState({ recipe: response.data.recipes[recipeIndex] });
         }
       })
       .catch((err) => {
+        console.log(err);
         this.setState({ error: 'Please try again after some time!' });
       });
   };
