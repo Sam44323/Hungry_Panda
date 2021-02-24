@@ -56,12 +56,12 @@ const getRecipesByUsers = (req, res, next) => {
 const addNewRecipe = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    next(errorCreator(error.errors[0].msg, 422));
+    return next(errorCreator(error.errors[0].msg, 422));
   } else if (
     JSON.parse(req.body.keyIngred).length === 0 ||
     JSON.parse(req.body.ingredients).length === 0
   ) {
-    next(errorCreator('Please enter at-least 1 ingredients!', 422));
+    return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));
   }
@@ -112,20 +112,35 @@ const updateRecipe = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
     return next(errorCreator(error.errors[0].msg, 422));
+  } else if (
+    JSON.parse(req.body.keyIngred).length === 0 ||
+    JSON.parse(req.body.ingredients).length === 0
+  ) {
+    return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   }
 
-  Recipe.findByIdAndUpdate(
-    req.params.id,
-    { ...req.body },
-    { useFindAndModify: false }
-  )
-    .then(() => {
-      res.status(201).json({ message: 'Successfully updated the recipe!' });
+  console.log(req.body);
+  console.log(req.file);
+  Recipe.findById(req.params.id)
+    .then((recipe) => {
+      console.log(recipe);
     })
     .catch((err) => {
       console.log(err);
       next(errorCreator("Can't updated the requested recipe at this moment"));
     });
+
+  // Recipe.findByIdAndUpdate(
+  //   req.params.id,
+  //   { ...req.body },
+  //   { useFindAndModify: false }
+  // )
+  //   .then(() => {
+  //     res.status(201).json({ message: 'Successfully updated the recipe!' });
+  //   })
+  //   .catch((err) => {
+
+  //   });
 };
 
 const updateUser = (updateType) => {

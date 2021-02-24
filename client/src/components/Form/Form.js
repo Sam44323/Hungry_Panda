@@ -68,11 +68,22 @@ const Form = (props) => {
   return (
     <React.Fragment>
       <div className={styles.formSection} style={{ marginTop: '100px' }}>
-        <Input
-          type='file'
-          name={props.imageField.name}
-          fileActionHandler={props.fileActionMethod}
-        />
+        {!props.imageField.value ? (
+          <Input
+            type='file'
+            name={props.imageField.name}
+            fileActionHandler={props.fileActionMethod}
+          />
+        ) : (
+          <div className={styles.changePhotoButtonSection}>
+            <Button
+              class={`${btnStyles.EditPhoto}`}
+              clickAction={() => props.fileActionMethod(null)}
+            >
+              Change Photo
+            </Button>
+          </div>
+        )}
         {numberInputs}
         {textInputs}
         <div className={styles.ingredientsSection}>

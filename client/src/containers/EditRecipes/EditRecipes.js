@@ -6,6 +6,7 @@ import {
   getTextField,
   ingObjectCreator,
   timeValue,
+  getImageField,
 } from '../../components/Constants/utilityFunction/createStateValue';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
@@ -17,6 +18,7 @@ import Loader from 'react-loader-spinner';
 class EditRecipes extends Component {
   state = {
     loading: false,
+    image: {},
     textFieldName: [],
     numberFieldName: [],
     ingredients: {
@@ -36,6 +38,7 @@ class EditRecipes extends Component {
         `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`
       )
       .then((recipe) => {
+        console.log(recipe.data.recipe);
         if (recipe) {
           const textFieldName = [
             getTextField(
@@ -45,14 +48,6 @@ class EditRecipes extends Component {
               'Enter the recipe name!',
               true,
               recipe.data.recipe.name
-            ),
-            getTextField(
-              'Image',
-              'image',
-              'text',
-              'Enter a recipe image!',
-              true,
-              recipe.data.recipe.image
             ),
             getTextField(
               'Description',
@@ -82,6 +77,7 @@ class EditRecipes extends Component {
           this.setState({
             recipeId: recipe.data.recipe._id,
             loading: false,
+            image: getImageField('Image', 'image'),
             textFieldName,
             numberFieldName,
             ingredients,
@@ -116,6 +112,11 @@ class EditRecipes extends Component {
     }
   };
 
+  //FOR CHANGING THE VALUE OF THE IMAGE FILE
+  imageValueChangeHandler = (value) => {
+    this.setState({ image: { ...this.state.image, value } });
+  };
+
   //CHECKING THE VALIDATION OF THE FORM
   checkFormValidation = () => {
     let c = 0;
@@ -124,7 +125,7 @@ class EditRecipes extends Component {
         c++;
       }
     }
-    return c === 4;
+    return c === 3;
   };
 
   //ADDING THE INGREDIENTS TO THE RESPECTIVE ARRAYS
@@ -144,29 +145,45 @@ class EditRecipes extends Component {
   //FOR SUBMITTING THE FORM
   submitForm = () => {
     this.setState({ loading: true });
-    const data = {
-      name: this.state.textFieldName[0].value.trim(),
-      image: this.state.textFieldName[1].value.trim(),
-      description: this.state.textFieldName[2].value.trim(),
-      procedure: this.state.textFieldName[3].value.trim(),
-      cookTime: {
-        hours: this.state.numberFieldName[0].value,
-        minutes: this.state.numberFieldName[1].value,
-      },
-      keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
-      ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
-    };
-    axios
-      .patch(
-        `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
-        data
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('name', this.state.textFieldName[0].value.trim());
+    bodyFormData.append('image', this.state.image.value);
+    bodyFormData.append(
+      'description',
+      this.state.textFieldName[1].value.trim()
+    );
+    bodyFormData.append('procedure', this.state.textFieldName[2].value.trim());
+    bodyFormData.append(
+      'cookTime',
+      JSON.stringify({
+        hours: parseFloat(this.state.numberFieldName[0].value),
+        minutes: parseFloat(this.state.numberFieldName[1].value),
+      })
+    );
+    bodyFormData.append(
+      'keyIngred',
+      JSON.stringify(
+        this.state.keyingredients.ing.map((item) => item.value.trim())
       )
-      .then((resp) => {
-        this.setState({ loading: false });
-        if (resp) {
-          this.props.history.push('/myrecipes');
-        }
-      });
+    );
+    bodyFormData.append(
+      'ingredients',
+      JSON.stringify(
+        this.state.ingredients.ing.map((item) => item.value.trim())
+      )
+    );
+    axios({
+      method: 'PATCH',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
+      data: bodyFormData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((resp) => {
+      this.setState({ loading: false });
+      if (resp) {
+        this.props.history.push('/myrecipes');
+      }
+    });
   };
 
   //FOR REMOVING THE INGREDIENTS FROM THE RESPECTIVE ARRAYS
@@ -192,6 +209,8 @@ class EditRecipes extends Component {
         ) : (
           <Form
             submitForm={this.submitForm}
+            imageField={this.state.image}
+            fileActionMethod={this.imageValueChangeHandler}
             textFieldName={this.state.textFieldName}
             numberFieldName={this.state.numberFieldName}
             ingredients={this.state.ingredients}

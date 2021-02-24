@@ -23,6 +23,7 @@ class RecipeDetails extends Component {
       )
       .then((recipe) => {
         if (recipe) {
+          recipe.data.recipe.image = `http://localhost:5000/${recipe.data.recipe.image}`;
           this.setState({
             recipe: { ...recipe.data.recipe },
             loading: false,

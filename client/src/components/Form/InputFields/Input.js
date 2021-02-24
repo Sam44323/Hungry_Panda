@@ -34,6 +34,7 @@ const Input = (props) => {
             <input
               name={props.name}
               type='file'
+              value={props.value}
               onChange={(event) =>
                 props.fileActionHandler(event.target.files[0])
               }

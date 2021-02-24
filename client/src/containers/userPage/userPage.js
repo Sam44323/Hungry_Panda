@@ -24,7 +24,10 @@ class UserPage extends Component {
       )
       .then((recipesData) => {
         if (recipesData) {
-          console.log(recipesData);
+          for (let recipe of recipesData.data.recipes) {
+            console.log(recipe);
+            recipe.image = `http://localhost:5000/${recipe.image}`;
+          }
           this.setState({
             recipes: [...recipesData.data.recipes],
             loading: false,

@@ -24,6 +24,10 @@ class Explore extends React.Component {
       })
       .then((recipes) => {
         if (recipes) {
+          for (let recipe of recipes.data.recipes) {
+            console.log(recipe);
+            recipe.image = `http://localhost:5000/${recipe.image}`;
+          }
           this.setState({
             recipes: recipes.data.recipes,
             loading: false,

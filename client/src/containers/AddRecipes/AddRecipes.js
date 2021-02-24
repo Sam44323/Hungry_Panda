@@ -108,26 +108,45 @@ class AddRecipes extends PureComponent {
   //FOR SUBMITTING THE FORM
   submitForm = () => {
     this.setState({ loading: true });
-    const data = {
-      image: this.state.image.value,
-      name: this.state.textFieldName[0].value.trim(),
-      description: this.state.textFieldName[1].value.trim(),
-      procedure: this.state.textFieldName[2].value.trim(),
-      cookTime: {
-        hours: this.state.numberFieldName[0].value,
-        minutes: this.state.numberFieldName[1].value,
-      },
-      keyIngred: this.state.keyingredients.ing.map((item) => item.value.trim()),
-      ingredients: this.state.ingredients.ing.map((item) => item.value.trim()),
-    };
-    axios
-      .post('http://localhost:5000/hungrypandaAPI/recipes/addrecipe', data)
-      .then((resp) => {
-        this.setState({ loading: false });
-        if (resp) {
-          this.props.history.push('/myrecipes');
-        }
-      });
+    const bodyFormData = new FormData();
+
+    bodyFormData.append('name', this.state.textFieldName[0].value.trim());
+    bodyFormData.append('image', this.state.image.value);
+    bodyFormData.append(
+      'description',
+      this.state.textFieldName[1].value.trim()
+    );
+    bodyFormData.append('procedure', this.state.textFieldName[2].value.trim());
+    bodyFormData.append(
+      'cookTime',
+      JSON.stringify({
+        hours: parseFloat(this.state.numberFieldName[0].value),
+        minutes: parseFloat(this.state.numberFieldName[1].value),
+      })
+    );
+    bodyFormData.append(
+      'keyIngred',
+      JSON.stringify(
+        this.state.keyingredients.ing.map((item) => item.value.trim())
+      )
+    );
+    bodyFormData.append(
+      'ingredients',
+      JSON.stringify(
+        this.state.ingredients.ing.map((item) => item.value.trim())
+      )
+    );
+    axios({
+      method: 'POST',
+      url: 'http://localhost:5000/hungrypandaAPI/recipes/addrecipe',
+      data: bodyFormData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }).then((resp) => {
+      this.setState({ loading: false });
+      if (resp) {
+        this.props.history.push('/myrecipes');
+      }
+    });
   };
 
   //FOR REMOVING THE INGREDIENTS FROM THE RESPECTIVE ARRAYS

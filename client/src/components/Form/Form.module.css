@@ -79,6 +79,12 @@ select:-webkit-autofill:focus {
   text-align: center;
 }
 
+/*CHANGE PHOTO BUTTON SECTION*/
+.changePhotoButtonSection {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 /*FOR THE DEVICES OF TABLETS AND SOME BIGGER*/
 @media (min-width: 745px) and (max-width: 1024px) and (orientation: portrait) {
   .formSection {
