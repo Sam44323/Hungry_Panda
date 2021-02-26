@@ -2,9 +2,10 @@ const { Router } = require('express');
 const { check } = require('express-validator');
 const router = Router();
 const userController = require('../controllers/users-controllers');
+const authMiddleware = require('../middleware/authMiddleware');
 
 //GETTING AN USER'S DATA
-router.get('/myprofile/:id', userController.getUserData);
+router.get('/myprofile/:id', authMiddleware, userController.getUserData);
 
 //ADDING A NEW USER(SIGN UP)
 router.post(

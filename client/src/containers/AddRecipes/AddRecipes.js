@@ -50,6 +50,13 @@ class AddRecipes extends PureComponent {
     keyingredients: { ...ingObjectCreator() },
   };
 
+  componentDidMount() {
+    if (localStorage.getItem('token')) {
+      new Date(localStorage.getItem('expiresIn')) < new Date() &&
+        this.props.history.replace('/auth/login');
+    }
+  }
+
   //FOR CHANGING THE VALUE OF THE RECIPE DETAILS
   changeValueHandler = (name, type, value) => {
     let valueArray =
@@ -140,7 +147,10 @@ class AddRecipes extends PureComponent {
       method: 'POST',
       url: 'http://localhost:5000/hungrypandaAPI/recipes/addrecipe',
       data: bodyFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     }).then((resp) => {
       this.setState({ loading: false });
       if (resp) {

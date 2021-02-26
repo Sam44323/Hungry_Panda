@@ -47,7 +47,8 @@ class UserPage extends Component {
       .catch((err) => {
         console.dir(err);
         if (err.response) {
-          this.props.history.replace('/auth/login');
+          localStorage.clear();
+          return this.props.history.replace('/auth/login');
         }
         this.setState({ loading: false, error: 'Please try again later!' });
       });
@@ -60,6 +61,13 @@ class UserPage extends Component {
     this.setState({
       recipes: [...recipesArray],
       hasRecipe: recipesArray.length > 0 ? true : false,
+    });
+    axios({
+      method: 'DELETE',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     });
     axios
       .delete(`http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`)

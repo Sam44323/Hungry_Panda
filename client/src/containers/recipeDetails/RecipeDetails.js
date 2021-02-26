@@ -16,11 +16,18 @@ class RecipeDetails extends Component {
   };
 
   componentDidMount() {
+    if (localStorage.getItem('token')) {
+      new Date(localStorage.getItem('expiresIn')) < new Date() &&
+        this.props.history.replace('/auth/login');
+    }
     this.setState({ loading: true });
-    axios
-      .get(
-        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`
-      )
+    axios({
+      method: 'GET',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((recipe) => {
         if (recipe) {
           recipe.data.recipe.image = `http://localhost:5000/${recipe.data.recipe.image}`;

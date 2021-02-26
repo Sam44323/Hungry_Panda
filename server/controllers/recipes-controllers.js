@@ -5,6 +5,8 @@ const User = require('../models/users-models');
 const { ADD_LIKES, REMOVE_LIKES } = require('../constants/server-constants');
 const { deleteFiles } = require('../constants/fileFunctions');
 
+//ADD THE FRONT END LOGIC FOR LIKING A RECIPE
+
 const Recipe = require('../models/recipes-models');
 
 const getAllRecipes = (req, res, next) => {
@@ -84,14 +86,12 @@ const addNewRecipe = (req, res, next) => {
     keyIngred: JSON.parse(keyIngred),
     ingredients: JSON.parse(ingredients),
     procedure,
-    likedBy: [],
-    likes: 0,
-    creatorId: ObjectId('6036818291a2143a8c40ba34'),
+    creatorId: ObjectId(req.userId),
   });
   newRecipe
     .save()
     .then((recipe) => {
-      return User.findById('6036818291a2143a8c40ba34').then((user) => {
+      return User.findById(req.userId).then((user) => {
         user.recipes.push(recipe._id);
         user.totalRecipes++;
         return user.save();
@@ -142,7 +142,7 @@ const updateRecipe = (req, res, next) => {
 
 const updateUser = (updateType) => {
   console.log(updateType);
-  User.findById('6036818291a2143a8c40ba34').then((user) => {
+  User.findById(req.userId).then((user) => {
     if (updateType === ADD_LIKES) {
       user.totalLikes++;
     } else if (updateType === REMOVE_LIKES) {
@@ -156,17 +156,13 @@ const updateLikeValue = (req, res) => {
   let type;
   Recipe.findById(req.params.id)
     .then((recipe) => {
-      const includeCurrUser = recipe.likedBy.includes(
-        '6036818291a2143a8c40ba34'
-      );
+      const includeCurrUser = recipe.likedBy.includes(req.userId);
       if (includeCurrUser) {
-        recipe.likedBy = recipe.likedBy.filter(
-          (user) => user !== '6036818291a2143a8c40ba34'
-        );
+        recipe.likedBy = recipe.likedBy.filter((user) => user !== req.userId);
         recipe.likes -= 1;
         type = REMOVE_LIKES;
       } else {
-        recipe.likedBy.push('6036818291a2143a8c40ba34');
+        recipe.likedBy.push(req.userId);
         recipe.likes += 1;
         type = ADD_LIKES;
       }
@@ -190,7 +186,7 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  User.findById('6036818291a2143a8c40ba34')
+  User.findById(req.userId)
     .then((user) => {
       user.recipes = user.recipes.filter(
         (recipe) => recipe.toString() !== req.params.id.toString()
@@ -199,6 +195,7 @@ const deleteRecipe = (req, res, next) => {
       return user.save();
     })
     .then(() => {
+      //add the logic for deleting the images from the file system
       Recipe.findByIdAndDelete(req.params.id).then(() => {
         res.status(200).json({ message: 'Successfully deleted the recipe!' });
       });

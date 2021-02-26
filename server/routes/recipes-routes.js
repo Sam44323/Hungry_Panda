@@ -9,7 +9,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 router.get('/explore', recipesControllers.getAllRecipes);
 
 //GETTING A PARTICULAR RECIPE FOR THE GIVEN PARAMETER
-router.get('/recipe/:id', recipesControllers.getRecipe);
+router.get('/recipe/:id', authMiddleware, recipesControllers.getRecipe);
 
 //GETTING THE RECIPE BY THE USER ID
 router.get(
@@ -21,6 +21,7 @@ router.get(
 //CREATING A NEW RECIPE
 router.post(
   '/addrecipe',
+  authMiddleware,
   [
     body('cookTime.*.hours')
       .isFloat({ min: 0 })
@@ -70,6 +71,10 @@ router.patch(
 router.patch('/updatelike/:id', recipesControllers.updateLikeValue);
 
 //DELETING A RECIPE
-router.delete('/deleterecipe/:id', recipesControllers.deleteRecipe);
+router.delete(
+  '/deleterecipe/:id',
+  authMiddleware,
+  recipesControllers.deleteRecipe
+);
 
 module.exports = router;

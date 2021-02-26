@@ -13,12 +13,20 @@ class MyProfile extends Component {
     loading: true,
     error: null,
   };
-
   componentDidMount() {
-    axios
-      .get(
-        'http://localhost:5000/hungrypandaAPI/users/myprofile/6036818291a2143a8c40ba34'
-      )
+    if (!localStorage.getItem('token')) {
+      return this.props.history.replace('/auth/login');
+    }
+    console.log(localStorage.getItem('token'));
+    axios({
+      method: 'GET',
+      url: `http://localhost:5000/hungrypandaAPI/users/myprofile/${localStorage.getItem(
+        'userId'
+      )}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((user) => {
         if (user) {
           user.data.user.image = `http://localhost:5000/${user.data.user.image}`;
@@ -26,6 +34,10 @@ class MyProfile extends Component {
         }
       })
       .catch((err) => {
+        if (err.response) {
+          localStorage.clear();
+          return this.props.history.replace('/auth/login');
+        }
         this.setState({ loading: false, error: err.response.data.message });
       });
   }
