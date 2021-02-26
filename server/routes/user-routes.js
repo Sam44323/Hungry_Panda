@@ -54,6 +54,9 @@ router.patch(
   userController.editUserData
 );
 
+//LOGGING IN AN USER
+router.post('/login', userController.loginUser);
+
 //LOGGING OUT AN USER
 router.post('/logout', userController.logUserOut);
 

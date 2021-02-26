@@ -107,6 +107,26 @@ const editUserData = (req, res, next) => {
     });
 };
 
+const loginUser = (req, res, next) => {
+  const { email, password } = req.body;
+  User.findOne({ email })
+    .then((user) => {
+      if (!user) {
+        return next(errorCreator('An user with such email is not found!', 401));
+      }
+      return bcrypt.compare(password, user.password);
+    })
+    .then((isValid) => {
+      if (!isValid) {
+        return next(errorCreator('The password entered is incorrect!', 401));
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      next(errorCreator('No such user exists, with such email!', 401));
+    });
+};
+
 const logUserOut = (req, res, next) => {
   res.status(200).json({ message: 'You are logged out!' });
 };
@@ -126,5 +146,6 @@ const deleteUserAccount = (req, res, next) => {
 exports.getUserData = getUserData;
 exports.addNewUser = addNewUser;
 exports.editUserData = editUserData;
+exports.loginUser = loginUser;
 exports.logUserOut = logUserOut;
 exports.deleteUserAccount = deleteUserAccount;
