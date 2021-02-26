@@ -109,7 +109,8 @@ const editUserData = (req, res, next) => {
 
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
-  User.findOne({ email })
+
+  User.findOne({ email: email })
     .then((user) => {
       if (!user) {
         return next(errorCreator('An user with such email is not found!', 401));
@@ -120,10 +121,10 @@ const loginUser = (req, res, next) => {
       if (!isValid) {
         return next(errorCreator('The password entered is incorrect!', 401));
       }
+      res.status(200).json({ message: 'Successfully logged in!' });
     })
     .catch((err) => {
-      console.log(err);
-      next(errorCreator('No such user exists, with such email!', 401));
+      next(errorCreator('Please try to log in after a few moments!', 401));
     });
 };
 
