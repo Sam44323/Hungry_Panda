@@ -18,14 +18,21 @@ class UserPage extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    axios
-      .get(
-        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${'6036818291a2143a8c40ba34'}`
-      )
+    if (!localStorage.getItem('token')) {
+      return this.props.history.replace('/auth/login');
+    }
+    axios({
+      method: 'GET',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${localStorage.getItem(
+        'userId'
+      )}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((recipesData) => {
         if (recipesData) {
           for (let recipe of recipesData.data.recipes) {
-            console.log(recipe);
             recipe.image = `http://localhost:5000/${recipe.image}`;
           }
           this.setState({
@@ -38,6 +45,10 @@ class UserPage extends Component {
         }
       })
       .catch((err) => {
+        console.dir(err);
+        if (err.response) {
+          this.props.history.replace('/auth/login');
+        }
         this.setState({ loading: false, error: 'Please try again later!' });
       });
   }

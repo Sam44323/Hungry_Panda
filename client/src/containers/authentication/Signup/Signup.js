@@ -110,7 +110,7 @@ class Signup extends PureComponent {
     }).then((response) => {
       this.setState({ loading: false });
       if (response) {
-        this.props.history.push('auth/login');
+        this.props.history.push('/auth/login');
       }
     });
   };

@@ -3,6 +3,7 @@ const { body } = require('express-validator');
 
 const router = Router();
 const recipesControllers = require('../controllers/recipes-controllers');
+const authMiddleware = require('../middleware/authMiddleware');
 
 //GETTING ALL THE RECIPES(EXPLORE)
 router.get('/explore', recipesControllers.getAllRecipes);
@@ -11,7 +12,11 @@ router.get('/explore', recipesControllers.getAllRecipes);
 router.get('/recipe/:id', recipesControllers.getRecipe);
 
 //GETTING THE RECIPE BY THE USER ID
-router.get('/myrecipes/:cid', recipesControllers.getRecipesByUser);
+router.get(
+  '/myrecipes/:cid',
+  authMiddleware,
+  recipesControllers.getRecipesByUser
+);
 
 //CREATING A NEW RECIPE
 router.post(

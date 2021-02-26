@@ -9,7 +9,6 @@ import Explore from './containers/explore/Explore';
 import UserPage from './containers/userPage/userPage';
 import AddRecipes from './containers/AddRecipes/AddRecipes';
 import Signup from './containers/authentication/Signup/Signup';
-import NotFoundPage from './containers/404Page/404Page';
 
 //RECIPES RELATED LAZY LOADING
 const RecipeDetails = React.lazy(() =>
@@ -27,6 +26,7 @@ const EditProfile = React.lazy(() =>
 const Login = React.lazy(() =>
   import('./containers/authentication/Login/Login')
 );
+const NotFoundPage = React.lazy(() => import('./containers/404Page/404Page'));
 
 function App() {
   return (
@@ -37,14 +37,16 @@ function App() {
         <Route path='/add-recipes' component={AddRecipes} />
         <Route path='/auth/signup' component={Signup} />
         <Suspense fallback={<Fallback />}>
-          <Route path='/myrecipes' component={UserPage} />
-          <Route path='/recipeDetails/:id' component={RecipeDetails} />
-          <Route path='/edit-recipe/:id' component={EditRecipes} />
-          <Route path='/auth/login' component={Login} />
-          <Route path='/profile' component={MyProfile} />
-          <Route path='/edit-profile/:id' component={EditProfile} />
+          <Switch>
+            <Route path='/myrecipes' component={UserPage} />
+            <Route path='/recipeDetails/:id' component={RecipeDetails} />
+            <Route path='/edit-recipe/:id' component={EditRecipes} />
+            <Route path='/auth/login' component={Login} />
+            <Route path='/profile' component={MyProfile} />
+            <Route path='/edit-profile/:id' component={EditProfile} />
+            <Route component={NotFoundPage} />
+          </Switch>
         </Suspense>
-        <Route component={NotFoundPage} />
       </Switch>
     </div>
   );

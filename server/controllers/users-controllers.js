@@ -1,6 +1,7 @@
 const errorCreator = require('../errorCreator/errorCreator');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/users-models');
 
@@ -109,21 +110,34 @@ const editUserData = (req, res, next) => {
 
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
-
+  let userData;
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
         return next(errorCreator('An user with such email is not found!', 401));
       }
+      userData = user;
       return bcrypt.compare(password, user.password);
     })
     .then((isValid) => {
       if (!isValid) {
         return next(errorCreator('The password entered is incorrect!', 401));
       }
-      res.status(200).json({ message: 'Successfully logged in!' });
+      //creating a JWT for the logged in user
+      const token = jwt.sign(
+        {
+          email: userData.email,
+          userId: userData._id.toString(),
+        },
+        'HUNGRY_PANDA_JWT_SECRET',
+        {
+          expiresIn: '1h', // token will become invalid after one hour
+        }
+      );
+      res.status(200).json({ token, userId: userData._id.toString() });
     })
     .catch((err) => {
+      console.log(err);
       next(errorCreator('Please try to log in after a few moments!', 401));
     });
 };
