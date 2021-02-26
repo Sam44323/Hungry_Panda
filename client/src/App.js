@@ -19,7 +19,7 @@ const EditRecipes = React.lazy(() =>
   import('./containers/EditRecipes/EditRecipes')
 );
 
-//USER PROFILE RELATED LAZY LOADING
+//USER PROFILE RELATED LAZY LOADING COMPONENTS
 const MyProfile = React.lazy(() => import('./containers/myProfile/MyProfile'));
 const EditProfile = React.lazy(() =>
   import('./containers/EditProfile/EditProfile')
