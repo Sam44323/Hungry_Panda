@@ -5,8 +5,6 @@ const User = require('../models/users-models');
 const { ADD_LIKES, REMOVE_LIKES } = require('../constants/server-constants');
 const { deleteFiles } = require('../constants/fileFunctions');
 
-//ADD THE FRONT END LOGIC FOR LIKING A RECIPE
-
 const Recipe = require('../models/recipes-models');
 
 const getAllRecipes = (req, res, next) => {
