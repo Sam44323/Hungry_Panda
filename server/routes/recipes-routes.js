@@ -6,7 +6,7 @@ const recipesControllers = require('../controllers/recipes-controllers');
 const authMiddleware = require('../middleware/authMiddleware');
 
 //GETTING ALL THE RECIPES(EXPLORE)
-router.get('/explore', recipesControllers.getAllRecipes);
+router.get('/explore', authMiddleware, recipesControllers.getAllRecipes);
 
 //GETTING A PARTICULAR RECIPE FOR THE GIVEN PARAMETER
 router.get('/recipe/:id', authMiddleware, recipesControllers.getRecipe);

@@ -24,14 +24,16 @@ class Explore extends React.Component {
     }
     this.axiosCancelSource = axios.CancelToken.source();
     this.setState({ loading: true });
-    axios
-      .get('http://localhost:5000/hungrypandaAPI/recipes/explore', {
-        cancelToken: this.axiosCancelSource.token,
-      })
+    axios({
+      method: 'GET',
+      url: 'http://localhost:5000/hungrypandaAPI/recipes/explore',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((recipes) => {
         if (recipes) {
           for (let recipe of recipes.data.recipes) {
-            console.log(recipe);
             recipe.image = `http://localhost:5000/${recipe.image}`;
           }
           this.setState({

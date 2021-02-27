@@ -8,7 +8,7 @@ const { deleteFiles } = require('../constants/fileFunctions');
 const Recipe = require('../models/recipes-models');
 
 const getAllRecipes = (req, res, next) => {
-  Recipe.find()
+  Recipe.find({ creatorId: { $ne: req.userId } })
     .then((recipes) => {
       res.status(200).json({ recipes });
     })
