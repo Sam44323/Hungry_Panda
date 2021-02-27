@@ -117,18 +117,15 @@ const updateRecipe = (req, res, next) => {
   ) {
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   }
-  const updatedRecipe = {
-    name: req.body.name,
-    cookTime: JSON.parse(req.body.cookTime),
-    description: req.body.description,
-    keyIngred: JSON.parse(req.body.keyIngred),
-    ingredients: JSON.parse(req.body.ingredients),
-    procedure: req.body.procedure,
-  };
-  if (req.file) {
-    updateRecipe.image = req.file.path.replace(/\\/g, '/');
-  }
-  Recipe.findByIdAndUpdate(req.params.id, updatedRecipe)
+
+  Recipe.findById(req.params.id)
+    .then((recipe) => {
+      if (req.file) {
+        deleteFiles(recipe.image);
+        recipe.image = req.file.path.replace(/\\/g, '/');
+      }
+      return recipe.save();
+    })
     .then(() => {
       res.status(200).json({ message: 'Updated the recipe!' });
     })
@@ -194,6 +191,7 @@ const deleteRecipe = (req, res, next) => {
           errorCreator('You are not authenticated to delete this recipe', 404)
         );
       }
+      deleteFiles(recipe.image);
       return User.findById(req.userId);
     })
     .then((user) => {

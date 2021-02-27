@@ -11,6 +11,8 @@ const usersRoutes = require('./routes/user-routes');
 
 //THE FILE STORAGE CONFIGURATION
 
+//change the file name for storing the file in the server
+
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'images');
