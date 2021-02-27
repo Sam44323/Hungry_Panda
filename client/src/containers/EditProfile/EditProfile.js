@@ -32,70 +32,78 @@ class EditProfile extends PureComponent {
   };
 
   componentDidMount() {
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
+      return this.props.history.replace('/auth/login');
+    }
     this.setState({ loading: true });
-    axios
-      .get(
-        `http://localhost:5000/hungrypandaAPI/users/myprofile/${this.props.match.params.id}`
-      )
-      .then((user) => {
-        if (user) {
-          const userData = {
-            name: userInputDetailState(
-              'Name',
-              true,
-              'Enter a name!',
-              user.data.user.name,
-              true
-            ),
-            email: userInputDetailState(
-              'Email',
-              true,
-              'Enter a valid email!',
-              user.data.user.email,
-              true
-            ),
-            userName: userInputDetailState(
-              'User name',
-              true,
-              'Enter a User Name!',
-              user.data.user.userName,
-              true
-            ),
-            age: userInputDetailState(
-              'Age',
-              true,
-              'Enter an age!',
-              user.data.user.age,
-              true
-            ),
-            city: userInputDetailState(
-              'City',
-              true,
-              'Enter a city!',
-              user.data.user.location,
-              true
-            ),
-          };
-          const socialMedia = {
-            fb: socialMediaObjectCreator(
-              'Facebook',
-              user.data.user.socialMedia[0].value,
-              user.data.user.socialMedia[0].hasValue
-            ),
-            insta: socialMediaObjectCreator(
-              'Instagram',
-              user.data.user.socialMedia[1].value,
-              user.data.user.socialMedia[1].hasValue
-            ),
-            twitter: socialMediaObjectCreator(
-              'Twitter',
-              user.data.user.socialMedia[2].value,
-              user.data.user.socialMedia[2].hasValue
-            ),
-          };
-          this.setState({ loading: false, userData, socialMedia });
-        }
-      });
+    axios({
+      method: 'GET',
+      url: `http://localhost:5000/hungrypandaAPI/users/myprofile/${this.props.match.params.id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((user) => {
+      if (user) {
+        const userData = {
+          name: userInputDetailState(
+            'Name',
+            true,
+            'Enter a name!',
+            user.data.user.name,
+            true
+          ),
+          email: userInputDetailState(
+            'Email',
+            true,
+            'Enter a valid email!',
+            user.data.user.email,
+            true
+          ),
+          userName: userInputDetailState(
+            'User name',
+            true,
+            'Enter a User Name!',
+            user.data.user.userName,
+            true
+          ),
+          age: userInputDetailState(
+            'Age',
+            true,
+            'Enter an age!',
+            user.data.user.age,
+            true
+          ),
+          city: userInputDetailState(
+            'City',
+            true,
+            'Enter a city!',
+            user.data.user.location,
+            true
+          ),
+        };
+        const socialMedia = {
+          fb: socialMediaObjectCreator(
+            'Facebook',
+            user.data.user.socialMedia[0].value,
+            user.data.user.socialMedia[0].hasValue
+          ),
+          insta: socialMediaObjectCreator(
+            'Instagram',
+            user.data.user.socialMedia[1].value,
+            user.data.user.socialMedia[1].hasValue
+          ),
+          twitter: socialMediaObjectCreator(
+            'Twitter',
+            user.data.user.socialMedia[2].value,
+            user.data.user.socialMedia[2].hasValue
+          ),
+        };
+        this.setState({ loading: false, userData, socialMedia });
+      }
+    });
   }
 
   //FOR VALIDATING THE INPUT VALUE
@@ -171,7 +179,10 @@ class EditProfile extends PureComponent {
       method: 'PATCH',
       url: `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
       data: bodyFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     }).then((response) => {
       this.setState({ loading: false });
       if (response) {

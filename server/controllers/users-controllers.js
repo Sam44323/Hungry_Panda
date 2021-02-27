@@ -2,6 +2,7 @@ const errorCreator = require('../errorCreator/errorCreator');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { deleteFiles } = require('../constants/fileFunctions');
 
 const User = require('../models/users-models');
 
@@ -22,6 +23,9 @@ const getUserData = (req, res, next) => {
 const addNewUser = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
     return next(errorCreator(error.errors[0].msg, 422));
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));
@@ -60,9 +64,6 @@ const addNewUser = (req, res, next) => {
             image,
             socialMedia: JSON.parse(socialMedia),
             location,
-            recipes: [],
-            totalLikes: 0,
-            totalRecipes: 0,
           });
           return newUser.save();
         })
@@ -79,11 +80,16 @@ const addNewUser = (req, res, next) => {
 const editUserData = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
     return next(
       errorCreator(
         'Please check all the informations entered or enter all the required informations!'
       )
     );
+  } else if (JSON.parse(req.body.age) < 1) {
+    return next(errorCreator('Please enter an age!', 422));
   }
   const { name, email, userName, age, socialMedia, location } = req.body;
   const newUser = {
@@ -94,11 +100,15 @@ const editUserData = (req, res, next) => {
     socialMedia: JSON.parse(socialMedia),
     location,
   };
-  if (req.file) {
-    newUser.image = req.file.path.replace(/\\/g, '/');
-  }
 
-  User.findByIdAndUpdate(req.params.id, { ...newUser })
+  User.findById(req.params.id)
+    .then((user) => {
+      if (req.file) {
+        deleteFiles(user.image);
+        newUser.image = req.file.path.replace(/\\/g, '/');
+      }
+      return User.findByIdAndUpdate(req.params.id, { ...newUser });
+    })
     .then(() => {
       res.status(201).json('Successfully updated the user data!');
     })

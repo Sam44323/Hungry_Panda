@@ -36,6 +36,7 @@ router.post(
 //EDITING THE USER DATA
 router.patch(
   '/editprofile/:id',
+  authMiddleware,
   [
     check('name').notEmpty().isString().withMessage('Please enter a name!'),
     check('email')
@@ -62,6 +63,10 @@ router.post('/login', userController.loginUser);
 router.post('/logout', userController.logUserOut);
 
 //DELETE USER ACCOUNT
-router.delete('/delete-account', userController.deleteUserAccount);
+router.delete(
+  '/delete-account',
+  authMiddleware,
+  userController.deleteUserAccount
+);
 
 module.exports = router;

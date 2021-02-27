@@ -48,13 +48,16 @@ const userSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Recipe',
+      default: [],
     },
   ],
   totalLikes: {
     type: Number,
+    default: 0,
   },
   totalRecipes: {
     type: Number,
+    default: 0,
   },
 });
 

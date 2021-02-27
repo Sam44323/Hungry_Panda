@@ -107,6 +107,17 @@ class Explore extends React.Component {
         ) : (
           <div className={styles.recipesCardSection}>{recipesCard}</div>
         )}
+        {this.state.recipes.length === 0 && !this.state.loading && (
+          <h1
+            style={{
+              marginTop: '100px',
+              textAlign: 'center',
+              color: 'saddlebrown',
+            }}
+          >
+            No recipes to show!
+          </h1>
+        )}
       </React.Fragment>
     );
   }
