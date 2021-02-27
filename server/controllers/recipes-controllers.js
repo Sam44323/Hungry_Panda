@@ -56,12 +56,15 @@ const getRecipesByUsers = (req, res, next) => {
 
 const addNewRecipe = (req, res, next) => {
   const error = validationResult(req);
-  if (!error.isEmpty()) {
+  if (!error.isEmpty() && req.file) {
+    deleteFiles(req.file.path.replace(/\\/g, '/'));
     return next(errorCreator(error.errors[0].msg, 422));
   } else if (
-    JSON.parse(req.body.keyIngred).length === 0 ||
-    JSON.parse(req.body.ingredients).length === 0
+    (JSON.parse(req.body.keyIngred).length === 0 ||
+      JSON.parse(req.body.ingredients).length === 0) &&
+    req.file
   ) {
+    deleteFiles(req.file.path.replace(/\\/g, '/'));
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));

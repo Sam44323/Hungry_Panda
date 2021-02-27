@@ -3,7 +3,6 @@ const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
 const apiKeys = require('../config');
 const multer = require('multer');
-const path = require('path');
 
 const app = express();
 const recipesRoutes = require('./routes/recipes-routes');
@@ -18,7 +17,7 @@ const fileStorage = multer.diskStorage({
     cb(null, 'images');
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
   },
 });
 
