@@ -115,7 +115,7 @@ class Navigation extends React.Component {
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
-            '/logout',
+            '/auth/logout',
             'Logout',
             constants.FASIGNALTOUT,
             expirationDate
@@ -176,7 +176,7 @@ class Navigation extends React.Component {
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
-              '/logout',
+              '/auth/logout',
               'Logout',
               constants.FASIGNALTOUT,
               expirationDate

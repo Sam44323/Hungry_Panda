@@ -26,6 +26,9 @@ const EditProfile = React.lazy(() =>
 const Login = React.lazy(() =>
   import('./containers/authentication/Login/Login')
 );
+const Logout = React.lazy(() =>
+  import('./containers/authentication/Logout/Logout.js')
+);
 const NotFoundPage = React.lazy(() => import('./containers/404Page/404Page'));
 
 function App() {
@@ -42,6 +45,7 @@ function App() {
             <Route path='/recipeDetails/:id' component={RecipeDetails} />
             <Route path='/edit-recipe/:id' component={EditRecipes} />
             <Route path='/auth/login' component={Login} />
+            <Route path='/auth/logout' component={Logout} />
             <Route path='/profile' component={MyProfile} />
             <Route path='/edit-profile/:id' component={EditProfile} />
             <Route component={NotFoundPage} />
