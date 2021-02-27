@@ -147,7 +147,7 @@ class Navigation extends React.Component {
         {menu}
         <div className='navigation'>
           <div className='appLogoSection'>
-            <a href='/myrecipes'>
+            <a href={expirationDate ? '/myrecipes' : '/'}>
               <img src={PandaLogo} alt='pic of panda' />
             </a>
           </div>
