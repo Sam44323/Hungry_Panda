@@ -46,6 +46,7 @@ router.post(
 //UPDATING A RECIPE
 router.patch(
   '/updateRecipe/:id',
+  authMiddleware,
   [
     body('cookTime.*.hours')
       .isFloat({ min: 0 })
@@ -68,7 +69,11 @@ router.patch(
 );
 
 //UPDATING THE LIKE COUNTER FOR A RECIPE
-router.patch('/updatelike/:id', recipesControllers.updateLikeValue);
+router.patch(
+  '/updatelike/:id',
+  authMiddleware,
+  recipesControllers.updateLikeValue
+);
 
 //DELETING A RECIPE
 router.delete(

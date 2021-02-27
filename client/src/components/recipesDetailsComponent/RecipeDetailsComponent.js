@@ -34,13 +34,15 @@ const RecipeDetailsComponent = (props) => {
         alt={props.recipe.name}
         className={styles.recipeDetailsImage}
       />
-      <div
-        className={styles.likingContainer}
-        onClick={() => props.likeValueHandler(props.recipe._id)}
-      >
-        <h3 className={styles.loveTitle}>{props.recipe.likes}</h3>
-        <FAICON iconName='faHeart' color='red' />
-      </div>
+      {props.showLikeValue && (
+        <div
+          className={styles.likingContainer}
+          onClick={() => props.likeValueHandler(props.recipe._id)}
+        >
+          <h3 className={styles.loveTitle}>{props.recipe.likes}</h3>
+          <FAICON iconName='faHeart' color='red' />
+        </div>
+      )}
       <h1 className={styles.recipeDetailsUserName}>
         <span style={{ color: 'saddlebrown' }}>Creator |</span> {props.userName}
       </h1>

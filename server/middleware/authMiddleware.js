@@ -10,11 +10,9 @@ module.exports = (req, res, next) => {
   try {
     decodedToken = jwt.verify(token, 'HUNGRY_PANDA_JWT_SECRET');
   } catch (err) {
-    console.log('Error block');
     return next(errorCreator('Unauthenticated User!', 500));
   }
   if (!decodedToken) {
-    console.log('Not decoded block');
     return next(errorCreator('Unauthenticated User!', 500));
   }
   req.userId = decodedToken.userId;

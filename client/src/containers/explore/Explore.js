@@ -16,6 +16,12 @@ class Explore extends React.Component {
   };
 
   componentDidMount() {
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
+      return this.props.history.replace('/auth/login');
+    }
     this.axiosCancelSource = axios.CancelToken.source();
     this.setState({ loading: true });
     axios
@@ -41,10 +47,13 @@ class Explore extends React.Component {
   }
 
   likeValueHandler = (recipeId) => {
-    axios
-      .patch(
-        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`
-      )
+    axios({
+      method: 'PATCH',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((response) => {
         if (response) {
           for (let recipe of response.data.recipes) {

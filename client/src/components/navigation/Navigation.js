@@ -54,12 +54,19 @@ class Navigation extends React.Component {
     });
   }
 
-  createNavLink = (classname, destinationName, linkname, iconName) => {
+  createNavLink = (
+    classname,
+    destinationName,
+    linkname,
+    iconName,
+    showLink
+  ) => {
     return (
       <NavigationLink
         listClass={classname}
         destination={destinationName}
         classValue='navLinks'
+        show={showLink}
       >
         <FAICON iconName={iconName} color='brown' /> {linkname}
       </NavigationLink>
@@ -79,6 +86,9 @@ class Navigation extends React.Component {
         </button>
       );
     }
+    const expirationDate =
+      localStorage.getItem('token') &&
+      new Date(localStorage.getItem('expiresIn')) > new Date();
     let menu = (
       <div className='navigationListMobile' onClick={this.closeBackdrop}>
         <ul className='navLinksMobileList'>
@@ -86,37 +96,43 @@ class Navigation extends React.Component {
             constants.MOBILE_CLASS,
             '/add-recipes',
             'Add',
-            constants.FAPLUS
+            constants.FAPLUS,
+            expirationDate
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
             '/explore',
             'Explore',
-            constants.FACOMPASS
+            constants.FACOMPASS,
+            expirationDate
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
             '/profile',
             'My Profile',
-            constants.FAUSERCIRCLE
+            constants.FAUSERCIRCLE,
+            expirationDate
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
             '/logout',
             'Logout',
-            constants.FASIGNALTOUT
+            constants.FASIGNALTOUT,
+            expirationDate
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
             '/auth/login',
             'Login',
-            constants.FASIGNINALT
+            constants.FASIGNINALT,
+            !expirationDate
           )}
           {this.createNavLink(
             constants.MOBILE_CLASS,
             '/auth/signup',
             'Sign Up',
-            constants.FAUSERPLUS
+            constants.FAUSERPLUS,
+            !expirationDate
           )}
         </ul>
       </div>
@@ -141,37 +157,43 @@ class Navigation extends React.Component {
               constants.DESKTOP_CLASS,
               '/add-recipes',
               'Add',
-              constants.FAPLUS
+              constants.FAPLUS,
+              expirationDate
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
               '/explore',
               'Explore',
-              constants.FACOMPASS
+              constants.FACOMPASS,
+              expirationDate
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
               '/profile',
               'My Profile',
-              constants.FAUSERCIRCLE
+              constants.FAUSERCIRCLE,
+              expirationDate
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
               '/logout',
               'Logout',
-              constants.FASIGNALTOUT
+              constants.FASIGNALTOUT,
+              expirationDate
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
               '/auth/login',
               'Login',
-              constants.FASIGNINALT
+              constants.FASIGNINALT,
+              !expirationDate
             )}
             {this.createNavLink(
               constants.DESKTOP_CLASS,
               '/auth/signup',
               'Sign Up',
-              constants.FAUSERPLUS
+              constants.FAUSERPLUS,
+              !expirationDate
             )}
           </ul>
         </div>

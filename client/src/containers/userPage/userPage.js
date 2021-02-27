@@ -17,10 +17,13 @@ class UserPage extends Component {
   };
 
   componentDidMount() {
-    this.setState({ loading: true });
-    if (!localStorage.getItem('token')) {
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
       return this.props.history.replace('/auth/login');
     }
+    this.setState({ loading: true });
     axios({
       method: 'GET',
       url: `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${localStorage.getItem(

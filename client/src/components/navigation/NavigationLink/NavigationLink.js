@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 import './NavigationLink.css';
 
 const NavigationLink = (props) => {
-  return (
+  return props.show ? (
     <li className={props.listClass}>
       <NavLink
         to={props.destination}
@@ -17,7 +17,7 @@ const NavigationLink = (props) => {
         {props.children}
       </NavLink>
     </li>
-  );
+  ) : null;
 };
 
 export default NavigationLink;

@@ -13,12 +13,15 @@ class RecipeDetails extends Component {
     hasRecipe: false,
     creatorUsername: '',
     error: null,
+    showLikeValue: true,
   };
 
   componentDidMount() {
-    if (localStorage.getItem('token')) {
-      new Date(localStorage.getItem('expiresIn')) < new Date() &&
-        this.props.history.replace('/auth/login');
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
+      return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });
     axios({
@@ -35,6 +38,9 @@ class RecipeDetails extends Component {
             recipe: { ...recipe.data.recipe },
             loading: false,
             hasRecipe: true,
+            showLikeValue:
+              localStorage.getItem('userId') !==
+              recipe.data.recipe.creatorId._id.toString(),
             creatorUsername: recipe.data.recipe.creatorId.userName,
           });
         }
@@ -46,10 +52,13 @@ class RecipeDetails extends Component {
   }
 
   likeValueHandler = (recipeId) => {
-    axios
-      .patch(
-        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`
-      )
+    axios({
+      method: 'PATCH',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    })
       .then((response) => {
         if (response) {
           const recipeIndex = response.data.recipes.findIndex(
@@ -85,6 +94,7 @@ class RecipeDetails extends Component {
               recipe={this.state.recipe}
               userName={this.state.creatorUsername}
               likeValueHandler={this.likeValueHandler}
+              showLikeValue={this.state.showLikeValue}
             />
           ) : null}
         </div>

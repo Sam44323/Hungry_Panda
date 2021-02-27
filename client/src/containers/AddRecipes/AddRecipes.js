@@ -51,9 +51,11 @@ class AddRecipes extends PureComponent {
   };
 
   componentDidMount() {
-    if (localStorage.getItem('token')) {
-      new Date(localStorage.getItem('expiresIn')) < new Date() &&
-        this.props.history.replace('/auth/login');
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
+      return this.props.history.replace('/auth/login');
     }
   }
 

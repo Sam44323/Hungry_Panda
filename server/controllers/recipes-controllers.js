@@ -140,9 +140,8 @@ const updateRecipe = (req, res, next) => {
     });
 };
 
-const updateUser = (updateType) => {
-  console.log(updateType);
-  User.findById(req.userId).then((user) => {
+const updateUser = (updateType, userId) => {
+  User.findById(userId).then((user) => {
     if (updateType === ADD_LIKES) {
       user.totalLikes++;
     } else if (updateType === REMOVE_LIKES) {
@@ -154,8 +153,13 @@ const updateUser = (updateType) => {
 
 const updateLikeValue = (req, res) => {
   let type;
+  let userId;
   Recipe.findById(req.params.id)
     .then((recipe) => {
+      if (!recipe) {
+        return next(errorCreator('No such recipe exits', 404));
+      }
+      userId = recipe.creatorId;
       const includeCurrUser = recipe.likedBy.includes(req.userId);
       if (includeCurrUser) {
         recipe.likedBy = recipe.likedBy.filter((user) => user !== req.userId);
@@ -166,18 +170,17 @@ const updateLikeValue = (req, res) => {
         recipe.likes += 1;
         type = ADD_LIKES;
       }
-      recipe
-        .save()
-        .then(() => {
-          //will refactor this likingContainer
-          return updateUser(type);
-        })
-        .then(() => {
-          return Recipe.find();
-        })
-        .then((recipes) => {
-          res.status(200).json({ recipes });
-        });
+      return recipe.save();
+    })
+    .then(() => {
+      //will refactor this likingContainer
+      return updateUser(type, userId);
+    })
+    .then(() => {
+      return Recipe.find();
+    })
+    .then((recipes) => {
+      res.status(200).json({ recipes });
     })
     .catch((err) => {
       console.log(err);
@@ -186,7 +189,15 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
-  User.findById(req.userId)
+  Recipe.findById(req.params.id)
+    .then((recipe) => {
+      if (recipe.creatorId.toString() !== req.userId.toString()) {
+        return next(
+          errorCreator('You are not authenticated to delete this recipe', 404)
+        );
+      }
+      return User.findById(req.userId);
+    })
     .then((user) => {
       user.recipes = user.recipes.filter(
         (recipe) => recipe.toString() !== req.params.id.toString()

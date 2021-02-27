@@ -14,7 +14,10 @@ class MyProfile extends Component {
     error: null,
   };
   componentDidMount() {
-    if (!localStorage.getItem('token')) {
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
       return this.props.history.replace('/auth/login');
     }
     console.log(localStorage.getItem('token'));

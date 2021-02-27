@@ -32,59 +32,66 @@ class EditRecipes extends Component {
   };
 
   componentDidMount() {
+    if (
+      !localStorage.getItem('token') ||
+      new Date(localStorage.getItem('expiresIn')) < new Date()
+    ) {
+      return this.props.history.replace('/auth/login');
+    }
     this.setState({ loading: true });
-    axios
-      .get(
-        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`
-      )
-      .then((recipe) => {
-        console.log(recipe.data.recipe);
-        if (recipe) {
-          const textFieldName = [
-            getTextField(
-              'Recipe Name',
-              'name',
-              'text',
-              'Enter the recipe name!',
-              true,
-              recipe.data.recipe.name
-            ),
-            getTextField(
-              'Description',
-              'description',
-              'textarea',
-              'Give some recipe description!',
-              true,
-              recipe.data.recipe.description
-            ),
-            getTextField(
-              'Procedure',
-              'procedure',
-              'textarea',
-              'Enter the procedure!',
-              true,
-              recipe.data.recipe.procedure
-            ),
-          ];
-          const numberFieldName = [
-            timeValue('Hours', recipe.data.recipe.cookTime.hours, true),
-            timeValue('Minutes', recipe.data.recipe.cookTime.minutes, true),
-          ];
-          const ingredients = ingObjectCreator(recipe.data.recipe.ingredients);
-          console.log(ingredients);
-          const keyingredients = ingObjectCreator(recipe.data.recipe.keyIngred);
-          console.log(keyingredients);
-          this.setState({
-            recipeId: recipe.data.recipe._id,
-            loading: false,
-            image: getImageField('Image', 'image'),
-            textFieldName,
-            numberFieldName,
-            ingredients,
-            keyingredients,
-          });
-        }
-      });
+    axios({
+      method: 'GET',
+      url: `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    }).then((recipe) => {
+      if (recipe) {
+        const textFieldName = [
+          getTextField(
+            'Recipe Name',
+            'name',
+            'text',
+            'Enter the recipe name!',
+            true,
+            recipe.data.recipe.name
+          ),
+          getTextField(
+            'Description',
+            'description',
+            'textarea',
+            'Give some recipe description!',
+            true,
+            recipe.data.recipe.description
+          ),
+          getTextField(
+            'Procedure',
+            'procedure',
+            'textarea',
+            'Enter the procedure!',
+            true,
+            recipe.data.recipe.procedure
+          ),
+        ];
+        const numberFieldName = [
+          timeValue('Hours', recipe.data.recipe.cookTime.hours, true),
+          timeValue('Minutes', recipe.data.recipe.cookTime.minutes, true),
+        ];
+        const ingredients = ingObjectCreator(recipe.data.recipe.ingredients);
+        console.log(ingredients);
+        const keyingredients = ingObjectCreator(recipe.data.recipe.keyIngred);
+        console.log(keyingredients);
+        this.setState({
+          recipeId: recipe.data.recipe._id,
+          loading: false,
+          image: getImageField('Image', 'image'),
+          textFieldName,
+          numberFieldName,
+          ingredients,
+          keyingredients,
+        });
+      }
+    });
   }
 
   //FOR CHANGING THE VALUE OF THE RECIPE DETAILS
@@ -177,7 +184,10 @@ class EditRecipes extends Component {
       method: 'PATCH',
       url: `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
       data: bodyFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
     }).then((resp) => {
       this.setState({ loading: false });
       if (resp) {
