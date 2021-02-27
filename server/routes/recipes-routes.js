@@ -23,13 +23,6 @@ router.post(
   '/addrecipe',
   authMiddleware,
   [
-    body('cookTime.*.hours')
-      .isFloat({ min: 0 })
-      .withMessage('Please enter a valid value for the hour'),
-    body('cookTime.*.minutes')
-      .notEmpty()
-      .isFloat({ min: 0, max: 59 })
-      .withMessage('Please enter a valid time value for the minute!'),
     body('name').notEmpty().withMessage('Please enter the name of the recipe!'),
     body('description')
       .isLength({ min: 10, max: 400 })
@@ -48,13 +41,6 @@ router.patch(
   '/updateRecipe/:id',
   authMiddleware,
   [
-    body('cookTime.*.hours')
-      .isFloat({ min: 0 })
-      .withMessage('Please enter a valid value for the hour'),
-    body('cookTime.*.minutes')
-      .notEmpty()
-      .isFloat({ min: 0, max: 59 })
-      .withMessage('Please enter a valid time value for the minute!'),
     body('name').notEmpty().withMessage('Please enter the name of the recipe!'),
     body('description')
       .isLength({ min: 10, max: 400 })

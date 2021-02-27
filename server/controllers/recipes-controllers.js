@@ -55,17 +55,27 @@ const getRecipesByUsers = (req, res, next) => {
 };
 
 const addNewRecipe = (req, res, next) => {
+  //refactor this section later
+  const { hours, minutes } = JSON.parse(req.body.cookTime);
   const error = validationResult(req);
-  if (!error.isEmpty() && req.file) {
-    deleteFiles(req.file.path.replace(/\\/g, '/'));
+  if (!error.isEmpty()) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
     return next(errorCreator(error.errors[0].msg, 422));
   } else if (
-    (JSON.parse(req.body.keyIngred).length === 0 ||
-      JSON.parse(req.body.ingredients).length === 0) &&
-    req.file
+    JSON.parse(req.body.keyIngred).length === 0 ||
+    JSON.parse(req.body.ingredients).length === 0
   ) {
-    deleteFiles(req.file.path.replace(/\\/g, '/'));
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
+  } else if (hours < 0 || minutes < 1 || minutes > 59) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
+    return next(errorCreator('Please enter valid preparation time!', 422));
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));
   }
@@ -111,25 +121,48 @@ const addNewRecipe = (req, res, next) => {
 };
 
 const updateRecipe = (req, res, next) => {
+  //refactor this section later
+  const { hours, minutes } = JSON.parse(req.body.cookTime);
   const error = validationResult(req);
   if (!error.isEmpty()) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace());
+    }
     return next(errorCreator(error.errors[0].msg, 422));
   } else if (
     JSON.parse(req.body.keyIngred).length === 0 ||
     JSON.parse(req.body.ingredients).length === 0
   ) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace());
+    }
     return next(errorCreator('Please enter at-least 1 ingredients!', 422));
+  } else if (hours < 0 || minutes < 1 || minutes > 59) {
+    if (req.file) {
+      deleteFiles(req.file.path.replace(/\\/g, '/'));
+    }
+    return next(errorCreator('Please enter valid preparation time!', 422));
   }
+
+  const updateRecipe = {
+    name: req.body.name,
+    cookTime: JSON.parse(req.body.cookTime),
+    description: req.body.description,
+    keyIngred: JSON.parse(req.body.keyIngred),
+    ingredients: JSON.parse(req.body.ingredients),
+    procedure: req.body.procedure,
+  };
 
   Recipe.findById(req.params.id)
     .then((recipe) => {
       if (req.file) {
         deleteFiles(recipe.image);
-        recipe.image = req.file.path.replace(/\\/g, '/');
+        updateRecipe.image = req.file.path.replace(/\\/g, '/');
       }
-      return recipe.save();
+      return Recipe.findByIdAndUpdate(req.params.id, updateRecipe);
     })
     .then(() => {
+      console.log('Updated the recipe');
       res.status(200).json({ message: 'Updated the recipe!' });
     })
     .catch((err) => {
