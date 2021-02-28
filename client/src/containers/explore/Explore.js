@@ -8,6 +8,8 @@ import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 
+//change the background of the like value based on the token user, for whether the user liked or not
+
 class Explore extends React.Component {
   state = {
     recipes: [],

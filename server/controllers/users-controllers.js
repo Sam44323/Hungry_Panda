@@ -30,40 +30,28 @@ const addNewUser = (req, res, next) => {
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));
   }
-  const {
-    name,
-    password,
-    email,
-    userName,
-    age,
-    socialMedia,
-    location,
-  } = req.body;
 
   const image = req.file.path.replace(/\\/g, '/');
 
-  User.findOne({ email })
+  User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
         return next(
           errorCreator('An user already exists with this email!', 409)
         );
       }
-
-      //for hashing the entered passoword by user
-
       bcrypt
-        .hash(password, 12)
+        .hash(req.body.password, 12)
         .then((password) => {
           const newUser = new User({
-            name,
+            name: req.body.name,
             password,
-            email,
-            userName,
-            age: JSON.parse(age),
+            email: req.body.email,
+            userName: req.body.userName,
+            age: JSON.parse(req.body.age),
             image,
-            socialMedia: JSON.parse(socialMedia),
-            location,
+            socialMedia: JSON.parse(req.body.socialMedia),
+            location: req.body.location,
           });
           return newUser.save();
         })

@@ -7,13 +7,34 @@ const { deleteFiles } = require('../constants/fileFunctions');
 
 const Recipe = require('../models/recipes-models');
 
+//helper functions
+
+const errorCreatorFunction = (req, error) => {
+  if (req.file) {
+    deleteFiles(req.file.path.replace(/\\/g, '/'));
+  }
+  return errorCreator(error, 422);
+};
+
+const updateUser = (updateType, userId) => {
+  User.findById(userId).then((user) => {
+    if (updateType === ADD_LIKES) {
+      user.totalLikes++;
+    } else if (updateType === REMOVE_LIKES) {
+      user.totalLikes--;
+    }
+    return user.save();
+  });
+};
+
+//main controller functions
+
 const getAllRecipes = (req, res, next) => {
   Recipe.find({ creatorId: { $ne: req.userId } })
     .then((recipes) => {
       res.status(200).json({ recipes });
     })
     .catch((err) => {
-      console.log(err);
       next(
         errorCreator(
           "Can't fetch the recipes now, please try after some moments!"
@@ -28,7 +49,6 @@ const getRecipe = (req, res, next) => {
     .populate('creatorId', 'userName')
     .exec((err, recipe) => {
       if (err) {
-        console.log(err);
         return next(errorCreator("Can't find the requested recipe!"));
       }
       res.status(200).json({ recipe });
@@ -49,54 +69,39 @@ const getRecipesByUsers = (req, res, next) => {
       res.status(200).json({ recipes });
     })
     .catch((err) => {
-      console.log(err);
       next(errorCreator("Can't find the recipes for the requested user!", 400));
     });
 };
 
 const addNewRecipe = (req, res, next) => {
-  //refactor this section later
-  const { hours, minutes } = JSON.parse(req.body.cookTime);
+  const time = JSON.parse(req.body.cookTime);
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace(/\\/g, '/'));
-    }
-    return next(errorCreator(error.errors[0].msg, 422));
+    return next(errorCreatorFunction(req, error.errors[0].msg));
   } else if (
     JSON.parse(req.body.keyIngred).length === 0 ||
     JSON.parse(req.body.ingredients).length === 0
   ) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace(/\\/g, '/'));
-    }
-    return next(errorCreator('Please enter at-least 1 ingredients!', 422));
-  } else if (hours < 0 || minutes < 1 || minutes > 59) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace(/\\/g, '/'));
-    }
-    return next(errorCreator('Please enter valid preparation time!', 422));
+    return next(
+      errorCreatorFunction(req, 'Please enter at-least 1 ingredients!')
+    );
+  } else if (time.hours < 0 || time.minutes < 1 || time.minutes > 59) {
+    return next(
+      errorCreatorFunction(req, 'Please enter valid preparation time!')
+    );
   } else if (!req.file) {
     return next(errorCreator('Image is required for creating a recipe', 422));
   }
 
-  const {
-    name,
-    cookTime,
-    description,
-    keyIngred,
-    ingredients,
-    procedure,
-  } = req.body;
   const image = req.file.path.replace(/\\/g, '/');
   const newRecipe = new Recipe({
-    name,
+    name: req.body.name,
     image,
-    cookTime: JSON.parse(cookTime),
-    description,
-    keyIngred: JSON.parse(keyIngred),
-    ingredients: JSON.parse(ingredients),
-    procedure,
+    cookTime: time,
+    description: req.body.description,
+    keyIngred: JSON.parse(req.body.keyIngred),
+    ingredients: JSON.parse(req.body.ingredients),
+    procedure: req.body.procedure,
     creatorId: ObjectId(req.userId),
   });
   newRecipe
@@ -111,9 +116,7 @@ const addNewRecipe = (req, res, next) => {
     .then(() => {
       res.status(200).json({ message: 'Created a new recipe!' });
     })
-    .catch((err) => {
-      console.log(err);
-      console.log('New Recipe addition error!');
+    .catch(() => {
       next(
         errorCreator("Can't create a recipe at this moment! please try again")
       );
@@ -121,32 +124,26 @@ const addNewRecipe = (req, res, next) => {
 };
 
 const updateRecipe = (req, res, next) => {
-  //refactor this section later
-  const { hours, minutes } = JSON.parse(req.body.cookTime);
+  const time = JSON.parse(req.body.cookTime);
   const error = validationResult(req);
   if (!error.isEmpty()) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace());
-    }
-    return next(errorCreator(error.errors[0].msg, 422));
+    return next(errorCreatorFunction(req, error.errors[0].msg));
   } else if (
     JSON.parse(req.body.keyIngred).length === 0 ||
     JSON.parse(req.body.ingredients).length === 0
   ) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace());
-    }
-    return next(errorCreator('Please enter at-least 1 ingredients!', 422));
-  } else if (hours < 0 || minutes < 1 || minutes > 59) {
-    if (req.file) {
-      deleteFiles(req.file.path.replace(/\\/g, '/'));
-    }
-    return next(errorCreator('Please enter valid preparation time!', 422));
+    return next(
+      errorCreatorFunction(req, 'Please enter at-least 1 ingredients!')
+    );
+  } else if (time.hours < 0 || time.minutes < 1 || time.minutes > 59) {
+    return next(
+      errorCreatorFunction(req, 'Please enter valid preparation time!')
+    );
   }
 
   const updateRecipe = {
     name: req.body.name,
-    cookTime: JSON.parse(req.body.cookTime),
+    cookTime: time,
     description: req.body.description,
     keyIngred: JSON.parse(req.body.keyIngred),
     ingredients: JSON.parse(req.body.ingredients),
@@ -162,24 +159,11 @@ const updateRecipe = (req, res, next) => {
       return Recipe.findByIdAndUpdate(req.params.id, updateRecipe);
     })
     .then(() => {
-      console.log('Updated the recipe');
       res.status(200).json({ message: 'Updated the recipe!' });
     })
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
       next(errorCreator("Can't updated the requested recipe at this moment"));
     });
-};
-
-const updateUser = (updateType, userId) => {
-  User.findById(userId).then((user) => {
-    if (updateType === ADD_LIKES) {
-      user.totalLikes++;
-    } else if (updateType === REMOVE_LIKES) {
-      user.totalLikes--;
-    }
-    return user.save();
-  });
 };
 
 const updateLikeValue = (req, res) => {
@@ -208,7 +192,7 @@ const updateLikeValue = (req, res) => {
       return updateUser(type, userId);
     })
     .then(() => {
-      return Recipe.find();
+      return Recipe.find({ creatorId: { $ne: req.userId } });
     })
     .then((recipes) => {
       res.status(200).json({ recipes });
