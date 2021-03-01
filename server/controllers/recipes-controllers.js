@@ -218,6 +218,7 @@ const updateLikeValue = (req, res) => {
 };
 
 const deleteRecipe = (req, res, next) => {
+  let recipeLikes;
   Recipe.findById(req.params.id)
     .then((recipe) => {
       if (recipe.creatorId.toString() !== req.userId.toString()) {
@@ -225,6 +226,7 @@ const deleteRecipe = (req, res, next) => {
           errorCreator('You are not authenticated to delete this recipe', 404)
         );
       }
+      recipeLikes = recipe.likes;
       deleteFiles(recipe.image);
       return User.findById(req.userId);
     })
@@ -233,13 +235,19 @@ const deleteRecipe = (req, res, next) => {
         (recipe) => recipe.toString() !== req.params.id.toString()
       );
       user.totalRecipes--;
+      user.totalLikes -= recipeLikes;
       return user.save();
     })
     .then(() => {
-      //add the logic for deleting the images from the file system
-      Recipe.findByIdAndDelete(req.params.id).then(() => {
-        res.status(200).json({ message: 'Successfully deleted the recipe!' });
-      });
+      return User.updateMany(
+        { likedRecipes: req.params.id },
+        { $pull: { likedRecipes: ObjectId(req.params.id) } },
+        { multi: true }
+      );
+    })
+    .then(() => Recipe.findByIdAndDelete(req.params.id))
+    .then(() => {
+      res.status(200).json({ message: 'Successfully deleted the recipe!' });
     })
     .catch((err) => {
       console.log(err);

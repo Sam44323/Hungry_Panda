@@ -5,6 +5,7 @@ import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import Navigation from '../../components/navigation/Navigation';
+import uuid from 'react-uuid';
 
 class LikedRecipes extends PureComponent {
   state = {
@@ -33,25 +34,41 @@ class LikedRecipes extends PureComponent {
           loading: false,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({
-          err: 'Please try again later!',
+          error: 'Please try again later!',
           loading: false,
         });
       });
   }
 
   render() {
-    console.log(this.state.likedRecipesData);
     const LikedRecipes = this.state.likedRecipesData.map((recipe) => (
-      <div className={styles.likedRecipesCard} key={recipe._id}>
-        <h1>{recipe.name}</h1>
-        <h3>{recipe.description}</h3>
+      <div
+        className={styles.likedRecipesCard}
+        key={recipe._id}
+        onClick={() =>
+          this.props.history.replace(`/recipeDetails/${recipe._id}`)
+        }
+      >
+        <h1 className={styles.likedRecipesCardTitle}>{recipe.name}</h1>
+        <h3 className={styles.likedRecipesCardDesc}>{recipe.description}</h3>
+        {recipe.keyIngred.map((item) => (
+          <h1 key={uuid()} className={styles.likedRecipesCardIngreds}>
+            {item}
+          </h1>
+        ))}
       </div>
     ));
     return (
       <React.Fragment>
-        {/* <Navigation /> */}
+        <Navigation />
+        {this.state.error && (
+          <ErrorModal
+            handleModal={() => this.setState({ error: null })}
+            errorMessage={this.state.error}
+          />
+        )}
         {this.state.loading && (
           <div style={{ textAlign: 'center', marginTop: '100px' }}>
             <Loader type='Puff' color='#493323' height={100} width={100} />
