@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from '../shared/sharedStyles/styles.module.css';
+import sharedStyles from '../shared/sharedStyles/styles.module.css';
 
 import Navigation from '../../components/navigation/Navigation';
 import RecipesCard from '../../components/recipesCardView/recipesCard';
@@ -107,7 +107,7 @@ class Explore extends React.Component {
             <Loader type='Puff' color='#493323' height={100} width={100} />
           </div>
         ) : (
-          <div className={styles.recipesCardSection}>{recipesCard}</div>
+          <div className={sharedStyles.recipesCardSection}>{recipesCard}</div>
         )}
         {this.state.recipes.length === 0 && !this.state.loading && (
           <h1

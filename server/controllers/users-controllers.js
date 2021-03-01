@@ -20,6 +20,17 @@ const getUserData = (req, res, next) => {
     });
 };
 
+const LikedRecipes = (req, res, next) => {
+  User.findById(req.userId)
+    .populate('likedRecipes')
+    .exec((err, user) => {
+      if (err) {
+        return next(errorCreator("Can't find the requested user!"));
+      }
+      res.status(200).json({ user });
+    });
+};
+
 const addNewUser = (req, res, next) => {
   const error = validationResult(req);
   if (!error.isEmpty()) {
@@ -158,6 +169,7 @@ const deleteUserAccount = (req, res, next) => {
 };
 
 exports.getUserData = getUserData;
+exports.LikedRecipes = LikedRecipes;
 exports.addNewUser = addNewUser;
 exports.editUserData = editUserData;
 exports.loginUser = loginUser;

@@ -7,6 +7,9 @@ const authMiddleware = require('../middleware/authMiddleware');
 //GETTING AN USER'S DATA
 router.get('/myprofile/:id', authMiddleware, userController.getUserData);
 
+//GETTING THE LIKED RECIPES OF THE USER
+router.get('/getLikedRecipes', authMiddleware, userController.LikedRecipes);
+
 //ADDING A NEW USER(SIGN UP)
 router.post(
   '/signup',

@@ -74,9 +74,7 @@ class MyProfile extends Component {
               location={this.state.userData.location}
               likedRecipes={this.state.userData.likedRecipes.length}
               likedRecipesHandler={() =>
-                this.props.history.push(
-                  `/liked-recipes/${this.state.userData._id}`
-                )
+                this.props.history.push('/liked-recipes')
               }
               likes={this.state.userData.totalLikes}
               recipes={this.state.userData.totalRecipes}

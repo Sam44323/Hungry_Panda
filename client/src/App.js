@@ -48,7 +48,7 @@ function App() {
             <Route path='/recipeDetails/:id' component={RecipeDetails} />
             <Route path='/edit-recipe/:id' component={EditRecipes} />
             <Route path='/edit-profile/:id' component={EditProfile} />
-            <Route path='/liked-recipes/:uid' component={LikedRecipes} />
+            <Route path='/liked-recipes' component={LikedRecipes} />
             <Route path='/auth/login' component={Login} />
             <Route path='/auth/logout' component={Logout} />
             <Route path='/profile' component={MyProfile} />
