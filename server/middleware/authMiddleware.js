@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const errorCreator = require('../errorCreator/errorCreator');
 
+//FOR AUTHENTICATION PURPOSES
+
 module.exports = (req, res, next) => {
   if (!req.get('Authorization')) {
     return next(errorCreator('Unauthenticated User!', 500));
