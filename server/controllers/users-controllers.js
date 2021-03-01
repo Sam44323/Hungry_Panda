@@ -36,6 +36,7 @@ const addNewUser = (req, res, next) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
+        deleteFiles(req.file.path.replace(/\\/g, '/'));
         return next(
           errorCreator('An user already exists with this email!', 409)
         );

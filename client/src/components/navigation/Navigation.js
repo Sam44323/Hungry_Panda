@@ -6,10 +6,8 @@ import PandaLogo from '../../assets/images/panda.svg';
 import FAICON from '../FontAwesome/FontAwesome';
 import * as constants from '../Constants/uiconstants';
 
-/*
-Logout will be a form with a button for posting a post request with the hidden input value of the user id
-we'll fix it later
-*/
+//WILL REFACTOR THE NAVLINK CREATION PROCESS
+
 class Navigation extends React.Component {
   state = {
     backdrop: false,
@@ -26,33 +24,6 @@ class Navigation extends React.Component {
   closeBackdrop = () => {
     this.setState({ backdrop: false, showmenu: false });
   };
-
-  changeElementStyle = (color, shadow, height, width) => {
-    const element = document.querySelector('.navigation');
-    const appLogo = document.querySelector('.appLogoSection');
-    element.style.backgroundColor = color;
-    element.style.boxShadow = shadow;
-    appLogo.style.height = height;
-    appLogo.style.width = width;
-  };
-
-  componentDidMount() {
-    //for editing the size and the visibility of the navigation items according the scrolling position of the user
-    this.scrollBackground = document.addEventListener('scroll', (e) => {
-      let scrolled = document.scrollingElement.scrollTop;
-
-      if (scrolled >= 70) {
-        this.changeElementStyle('transparent', 'none', '40px', '40px');
-      } else {
-        this.changeElementStyle(
-          '#faebd7',
-          '0px 0px 11px 0px rgba(0, 0, 0, 0.76)',
-          '70px',
-          '70px'
-        );
-      }
-    });
-  }
 
   createNavLink = (
     classname,

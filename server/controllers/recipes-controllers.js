@@ -169,11 +169,13 @@ const updateRecipe = (req, res, next) => {
 const updateLikeValue = (req, res) => {
   let type;
   let userId;
+  let recipeId;
   Recipe.findById(req.params.id)
     .then((recipe) => {
       if (!recipe) {
-        return next(errorCreator('No such recipe exits', 404));
+        return next(errorCreator('No such recipe exists!', 404));
       }
+      recipeId = recipe._id;
       userId = recipe.creatorId;
       const includeCurrUser = recipe.likedBy.includes(req.userId);
       if (includeCurrUser) {
@@ -188,8 +190,20 @@ const updateLikeValue = (req, res) => {
       return recipe.save();
     })
     .then(() => {
-      //will refactor this likingContainer
       return updateUser(type, userId);
+    })
+    .then(() => {
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      if (type === ADD_LIKES) {
+        user.likedRecipes.push(recipeId);
+      } else {
+        user.likedRecipes = user.likedRecipes.filter(
+          (rId) => rId.toString() !== recipeId.toString()
+        );
+      }
+      return user.save();
     })
     .then(() => {
       return Recipe.find({ creatorId: { $ne: req.userId } });
