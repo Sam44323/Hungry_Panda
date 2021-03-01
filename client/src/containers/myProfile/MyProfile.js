@@ -20,7 +20,6 @@ class MyProfile extends Component {
     ) {
       return this.props.history.replace('/auth/login');
     }
-    console.log(localStorage.getItem('token'));
     axios({
       method: 'GET',
       url: `http://localhost:5000/hungrypandaAPI/users/myprofile/${localStorage.getItem(
@@ -46,7 +45,7 @@ class MyProfile extends Component {
   }
 
   editProfile = () =>
-    this.props.history.push(`edit-profile/${this.state.userData._id}`);
+    this.props.history.push(`/edit-profile/${this.state.userData._id}`);
 
   render() {
     return (
@@ -73,6 +72,12 @@ class MyProfile extends Component {
               age={this.state.userData.age}
               socialMedia={this.state.userData.socialMedia}
               location={this.state.userData.location}
+              likedRecipes={this.state.userData.likedRecipes.length}
+              likedRecipesHandler={() =>
+                this.props.history.push(
+                  `/liked-recipes/${this.state.userData._id}`
+                )
+              }
               likes={this.state.userData.totalLikes}
               recipes={this.state.userData.totalRecipes}
             />

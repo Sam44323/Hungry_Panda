@@ -44,6 +44,14 @@ const ProfileMain = (props) => {
           <h1 className={styles.recipesLove}>{props.recipes} Recipes</h1>
           <h1 className={styles.recipesLove}>{props.likes} Loves</h1>
         </div>
+        {props.likedRecipes ? (
+          <h1
+            className={styles.likedRecipesStyles}
+            onClick={props.likedRecipesHandler}
+          >
+            {props.likedRecipes} <FAICON iconName='faHeart' color='coral' />
+          </h1>
+        ) : null}
         <div className={styles.editButtonSection}>
           <button
             className={styles.userProfileButton}

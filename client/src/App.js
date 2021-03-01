@@ -23,6 +23,9 @@ const MyProfile = React.lazy(() => import('./containers/myProfile/MyProfile'));
 const EditProfile = React.lazy(() =>
   import('./containers/EditProfile/EditProfile')
 );
+const LikedRecipes = React.lazy(() =>
+  import('./containers/LikedRecipes/LikedRecipes.js')
+);
 const Login = React.lazy(() =>
   import('./containers/authentication/Login/Login')
 );
@@ -44,10 +47,11 @@ function App() {
             <Route path='/myrecipes' component={UserPage} />
             <Route path='/recipeDetails/:id' component={RecipeDetails} />
             <Route path='/edit-recipe/:id' component={EditRecipes} />
+            <Route path='/edit-profile/:id' component={EditProfile} />
+            <Route path='/liked-recipes/:uid' component={LikedRecipes} />
             <Route path='/auth/login' component={Login} />
             <Route path='/auth/logout' component={Logout} />
             <Route path='/profile' component={MyProfile} />
-            <Route path='/edit-profile/:id' component={EditProfile} />
             <Route component={NotFoundPage} />
           </Switch>
         </Suspense>
