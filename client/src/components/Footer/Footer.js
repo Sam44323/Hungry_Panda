@@ -10,7 +10,7 @@ const footer = () => (
         </a>
       </p>
       <h1 className={styles.copyrighTitle}>
-        All &copy; are reserved by Sam44323
+        All rights are reserved by Sam44323
       </h1>
     </div>
   </React.Fragment>

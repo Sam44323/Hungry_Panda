@@ -7,6 +7,7 @@ import tokenChecker from '../util/tokenCheckFunction';
 import Navigation from '../../components/navigation/Navigation';
 import ProfileMain from '../../components/ProfileComponent/ProfileMain';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class MyProfile extends Component {
   state = {
@@ -18,15 +19,18 @@ class MyProfile extends Component {
     if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
-    axios({
-      method: 'GET',
-      url: `http://localhost:5000/hungrypandaAPI/users/myprofile/${localStorage.getItem(
-        'userId'
-      )}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'GET',
+        `http://localhost:5000/hungrypandaAPI/users/myprofile/${localStorage.getItem(
+          'userId'
+        )}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((user) => {
         if (user) {
           user.data.user.image = `http://localhost:5000/${user.data.user.image}`;
@@ -41,9 +45,6 @@ class MyProfile extends Component {
         this.setState({ loading: false, error: err.response.data.message });
       });
   }
-
-  editProfile = () =>
-    this.props.history.push(`/edit-profile/${this.state.userData._id}`);
 
   render() {
     return (
@@ -62,7 +63,11 @@ class MyProfile extends Component {
         ) : this.state.userData ? (
           <div className={styles.userMainSectionDiv}>
             <ProfileMain
-              editHandler={this.editProfile}
+              editHandler={() =>
+                this.props.history.push(
+                  `/edit-profile/${this.state.userData._id}`
+                )
+              }
               image={this.state.userData.image}
               name={this.state.userData.name}
               email={this.state.userData.email}

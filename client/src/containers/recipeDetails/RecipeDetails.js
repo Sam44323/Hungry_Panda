@@ -6,6 +6,7 @@ import Navigation from '../../components/navigation/Navigation';
 import tokenChecker from '../util/tokenCheckFunction';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import RecipeDetailsComponent from '../../components/recipesDetailsComponent/RecipeDetailsComponent';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class RecipeDetails extends Component {
   state = {
@@ -22,13 +23,16 @@ class RecipeDetails extends Component {
       return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });
-    axios({
-      method: 'GET',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'GET',
+        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((recipe) => {
         if (recipe) {
           recipe.data.recipe.image = `http://localhost:5000/${recipe.data.recipe.image}`;
@@ -43,20 +47,22 @@ class RecipeDetails extends Component {
           });
         }
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         this.setState({ loading: false });
       });
   }
 
   likeValueHandler = (recipeId) => {
-    axios({
-      method: 'PATCH',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'PATCH',
+        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((response) => {
         if (response) {
           const recipeIndex = response.data.recipes.findIndex(
@@ -69,7 +75,6 @@ class RecipeDetails extends Component {
         }
       })
       .catch((err) => {
-        console.log(err);
         this.setState({ error: 'Please try again after some time!' });
       });
   };

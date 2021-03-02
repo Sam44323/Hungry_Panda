@@ -11,6 +11,7 @@ import Navigation from '../../../components/navigation/Navigation';
 import ProfileForm from '../../../components/ProfileForm/ProfileForm';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
+import axiosMethod from '../../util/axiosMethodCreator';
 
 class Signup extends PureComponent {
   state = {
@@ -102,17 +103,15 @@ class Signup extends PureComponent {
         },
       ])
     );
-    axios({
-      method: 'POST',
-      url: 'http://localhost:5000/hungrypandaAPI/users/signup',
-      data: bodyFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    }).then((response) => {
-      this.setState({ loading: false });
-      if (response) {
-        this.props.history.push('/auth/login');
-      }
-    });
+
+    axios(
+      axiosMethod(
+        'POST',
+        'http://localhost:5000/hungrypandaAPI/users/signup',
+        bodyFormData,
+        { 'Content-Type': 'multipart/form-data' }
+      )
+    );
   };
   render() {
     return (

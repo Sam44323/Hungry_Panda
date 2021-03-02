@@ -15,6 +15,7 @@ import Navigation from '../../components/navigation/Navigation';
 import Form from '../../components/Form/Form';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class AddRecipes extends PureComponent {
   state = {
@@ -143,15 +144,18 @@ class AddRecipes extends PureComponent {
         this.state.ingredients.ing.map((item) => item.value.trim())
       )
     );
-    axios({
-      method: 'POST',
-      url: 'http://localhost:5000/hungrypandaAPI/recipes/addrecipe',
-      data: bodyFormData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((resp) => {
+
+    axios(
+      axiosMethod(
+        'POST',
+        'http://localhost:5000/hungrypandaAPI/recipes/addrecipe',
+        bodyFormData,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      )
+    ).then((resp) => {
       this.setState({ loading: false });
       if (resp) {
         this.props.history.push('/myrecipes');

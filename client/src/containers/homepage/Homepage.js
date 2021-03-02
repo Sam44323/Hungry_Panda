@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import styles from './Homepage.module.css';
 import Navigation from '../../components/navigation/Navigation';
@@ -43,18 +44,18 @@ const Homepage = () => {
       <div className={styles.hompageCTA}>
         <h1 className={styles.hompageCTATitle}>Excited! Let's go</h1>
         <p className={styles.CTApara}>
-          <a href='/auth/signup' className={styles.homepageCTALink}>
+          <NavLink to='/auth/signup' className={styles.homepageCTALink}>
             Create An Account
-          </a>
+          </NavLink>
         </p>
         <div className={styles.homepageCTALoginSection}>
           <h3 className={styles.homepageCTASubTitle}>
             Already have an account? Login
           </h3>
           <p className={styles.CTApara}>
-            <a href='/auth/login' className={styles.homepageCTALink}>
+            <NavLink to='/auth/login' className={styles.homepageCTALink}>
               Login
-            </a>
+            </NavLink>
           </p>
         </div>
       </div>

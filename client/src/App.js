@@ -32,7 +32,9 @@ const Login = React.lazy(() =>
 const Logout = React.lazy(() =>
   import('./containers/authentication/Logout/Logout.js')
 );
-const NotFoundPage = React.lazy(() => import('./containers/404Page/404Page'));
+const NotFoundPage = React.lazy(() =>
+  import('./containers/ErrorPage/ErrorPage.js')
+);
 
 function App() {
   return (

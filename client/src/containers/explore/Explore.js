@@ -9,6 +9,7 @@ import tokenChecker from '../util/tokenCheckFunction';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import axiosMethod from '../util/axiosMethodCreator';
 
 //change the background of the like value based on the token user, for whether the user liked or not
 
@@ -25,13 +26,16 @@ class Explore extends React.Component {
     }
     this.axiosCancelSource = axios.CancelToken.source();
     this.setState({ loading: true });
-    axios({
-      method: 'GET',
-      url: 'http://localhost:5000/hungrypandaAPI/recipes/explore',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'GET',
+        'http://localhost:5000/hungrypandaAPI/recipes/explore',
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((recipes) => {
         if (recipes) {
           for (let recipe of recipes.data.recipes) {
@@ -43,30 +47,31 @@ class Explore extends React.Component {
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ loading: false, error: 'Network error!' });
-        console.log(err);
       });
   }
 
   likeValueHandler = (recipeId) => {
-    axios({
-      method: 'PATCH',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'PATCH',
+        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((response) => {
         if (response) {
           for (let recipe of response.data.recipes) {
-            console.log(recipe);
             recipe.image = `http://localhost:5000/${recipe.image}`;
           }
           this.setState({ recipes: response.data.recipes });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         this.setState({ error: 'Please try again after some time!' });
       });
   };

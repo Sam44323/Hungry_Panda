@@ -15,6 +15,7 @@ import axios from 'axios';
 import Form from '../../components/Form/Form';
 import Navigation from '../../components/navigation/Navigation';
 import Loader from 'react-loader-spinner';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class EditRecipes extends Component {
   state = {
@@ -37,13 +38,16 @@ class EditRecipes extends Component {
       return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });
-    axios({
-      method: 'GET',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((recipe) => {
+    axios(
+      axiosMethod(
+        'GET',
+        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    ).then((recipe) => {
       if (recipe) {
         const textFieldName = [
           getTextField(
@@ -76,9 +80,7 @@ class EditRecipes extends Component {
           timeValue('Minutes', recipe.data.recipe.cookTime.minutes, true),
         ];
         const ingredients = ingObjectCreator(recipe.data.recipe.ingredients);
-        console.log(ingredients);
         const keyingredients = ingObjectCreator(recipe.data.recipe.keyIngred);
-        console.log(keyingredients);
         this.setState({
           recipeId: recipe.data.recipe._id,
           loading: false,
@@ -178,15 +180,18 @@ class EditRecipes extends Component {
         this.state.ingredients.ing.map((item) => item.value.trim())
       )
     );
-    axios({
-      method: 'PATCH',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
-      data: bodyFormData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((resp) => {
+
+    axios(
+      axiosMethod(
+        'PATCH',
+        `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
+        bodyFormData,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      )
+    ).then((resp) => {
       this.setState({ loading: false });
       if (resp) {
         this.props.history.push('/myrecipes');

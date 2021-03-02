@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import Navigation from '../../components/navigation/Navigation';
 import uuid from 'react-uuid';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class LikedRecipes extends PureComponent {
   state = {
@@ -19,13 +20,16 @@ class LikedRecipes extends PureComponent {
     if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
-    axios({
-      method: 'GET',
-      url: 'http://localhost:5000/hungrypandaAPI/users/getLikedRecipes',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'GET',
+        'http://localhost:5000/hungrypandaAPI/users/getLikedRecipes',
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((response) => {
         this.setState({
           likedRecipesData: response.data.user.likedRecipes,

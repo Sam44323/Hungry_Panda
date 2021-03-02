@@ -140,3 +140,9 @@
 .homepageCTALink:hover {
   background-color: white;
 }
+
+@media (min-width: 745px) {
+  .hompageCTA {
+    margin: 30px auto;
+  }
+}

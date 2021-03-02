@@ -13,6 +13,7 @@ import ProfileForm from '../../components/ProfileForm/ProfileForm';
 import Navigation from '../../components/navigation/Navigation';
 import axios from 'axios';
 import formErrorHandlerHOC from '../../HOC/formErrorHandlerHOC';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class EditProfile extends PureComponent {
   state = {
@@ -37,13 +38,18 @@ class EditProfile extends PureComponent {
       return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });
-    axios({
-      method: 'GET',
-      url: `http://localhost:5000/hungrypandaAPI/users/myprofile/${this.props.match.params.id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((user) => {
+
+    axios(
+      axiosMethod(
+        'GET',
+        `http://localhost:5000/hungrypandaAPI/users/myprofile/${this.props.match.params.id}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      )
+    ).then((user) => {
       if (user) {
         const userData = {
           name: userInputDetailState(
@@ -173,15 +179,18 @@ class EditProfile extends PureComponent {
         },
       ])
     );
-    axios({
-      method: 'PATCH',
-      url: `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
-      data: bodyFormData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }).then((response) => {
+
+    axios(
+      axiosMethod(
+        'PATCH',
+        `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
+        bodyFormData,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      )
+    ).then((response) => {
       this.setState({ loading: false });
       if (response) {
         this.props.history.push('/profile');

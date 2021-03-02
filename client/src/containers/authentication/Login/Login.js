@@ -10,6 +10,7 @@ import Loader from 'react-loader-spinner';
 import axios from 'axios';
 import Input from '../../../components/ProfileForm/ProfileInput/ProfileInput';
 import formErrorHandlerHOC from '../../../HOC/formErrorHandlerHOC';
+import axiosMethod from '../../util/axiosMethodCreator';
 
 class Login extends PureComponent {
   state = {
@@ -51,20 +52,28 @@ class Login extends PureComponent {
       email: this.state.email.value,
       password: this.state.password.value,
     };
-    axios
-      .post('http://localhost:5000/hungrypandaAPI/users/login', data)
-      .then((response) => {
-        if (response) {
-          const expiresTime = new Date();
-          expiresTime.setHours(expiresTime.getHours() + 1); // setting the expire time for the token of 1hour from the time it was created
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('expiresIn', expiresTime.toISOString());
-          localStorage.setItem('userId', response.data.userId);
-          this.props.history.replace('/myrecipes');
-        } else {
-          this.setState({ loading: false });
+
+    axios(
+      axiosMethod(
+        'POST',
+        'http://localhost:5000/hungrypandaAPI/users/login',
+        data,
+        {
+          'Content-Type': 'application/json',
         }
-      });
+      )
+    ).then((response) => {
+      if (response) {
+        const expiresTime = new Date();
+        expiresTime.setHours(expiresTime.getHours() + 1); // setting the expire time for the token of 1hour from the time it was created
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('expiresIn', expiresTime.toISOString());
+        localStorage.setItem('userId', response.data.userId);
+        this.props.history.replace('/myrecipes');
+      } else {
+        this.setState({ loading: false });
+      }
+    });
   };
 
   render() {

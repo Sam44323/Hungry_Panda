@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './Navigation.css';
 import NavigationLink from './NavigationLink/NavigationLink';
@@ -118,9 +119,9 @@ class Navigation extends React.Component {
         {menu}
         <div className='navigation'>
           <div className='appLogoSection'>
-            <a href={expirationDate ? '/myrecipes' : '/'}>
+            <Link to={expirationDate ? '/myrecipes' : '/'}>
               <img src={PandaLogo} alt='pic of panda' />
-            </a>
+            </Link>
           </div>
           {showButtonMenu}
           <ul className='navigationList'>

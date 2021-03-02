@@ -8,6 +8,7 @@ import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import tokenChecker from '../util/tokenCheckFunction';
+import axiosMethod from '../util/axiosMethodCreator';
 
 class UserPage extends Component {
   state = {
@@ -21,17 +22,19 @@ class UserPage extends Component {
     if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
-    console.log('My recipes');
     this.setState({ loading: true });
-    axios({
-      method: 'GET',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${localStorage.getItem(
-        'userId'
-      )}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    })
+    axios(
+      axiosMethod(
+        'GET',
+        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${localStorage.getItem(
+          'userId'
+        )}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
       .then((recipesData) => {
         if (recipesData) {
           for (let recipe of recipesData.data.recipes) {
@@ -64,18 +67,17 @@ class UserPage extends Component {
       recipes: [...recipesArray],
       hasRecipe: recipesArray.length > 0 ? true : false,
     });
-    axios({
-      method: 'DELETE',
-      url: `http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    axios
-      .delete(`http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`)
-      .then((response) => {
-        console.log(response);
-      })
+    axios(
+      axiosMethod(
+        'DELETE',
+        `http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`,
+        null,
+        {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      )
+    )
+      .then(() => {})
       .catch(() => {
         this.setState({ loading: false });
       });
@@ -94,7 +96,6 @@ class UserPage extends Component {
         desc={recipe.description}
         loves={-1}
         creator={recipe.creator}
-        //USE QUERY PARAMS FOR SHOWING THE LIKE VALUE ACCORDINGLY THE PAGES
         showRecipeDetails={() =>
           this.props.history.push(`/recipeDetails/${recipe._id}`)
         }
