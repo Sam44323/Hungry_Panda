@@ -65,11 +65,4 @@ router.post('/login', userController.loginUser);
 //LOGGING OUT AN USER
 router.post('/logout', userController.logUserOut);
 
-//DELETE USER ACCOUNT
-router.delete(
-  '/delete-account',
-  authMiddleware,
-  userController.deleteUserAccount
-);
-
 module.exports = router;

@@ -156,22 +156,9 @@ const logUserOut = (req, res, next) => {
   res.status(200).json({ message: 'You are logged out!' });
 };
 
-const deleteUserAccount = (req, res, next) => {
-  const userId = req.query.uid;
-  User.findByIdAndDelete(userId)
-    .then(() => {
-      res.status(200).json('Your account was deleted!');
-    })
-    .catch((err) => {
-      console.log(err);
-      next(errorCreator("Can't delete the account at this moment!"));
-    });
-};
-
 exports.getUserData = getUserData;
 exports.LikedRecipes = LikedRecipes;
 exports.addNewUser = addNewUser;
 exports.editUserData = editUserData;
 exports.loginUser = loginUser;
 exports.logUserOut = logUserOut;
-exports.deleteUserAccount = deleteUserAccount;

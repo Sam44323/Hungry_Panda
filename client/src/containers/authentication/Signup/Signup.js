@@ -111,7 +111,9 @@ class Signup extends PureComponent {
         bodyFormData,
         { 'Content-Type': 'multipart/form-data' }
       )
-    );
+    ).then(() => {
+      this.props.history.push('/auth/login');
+    });
   };
   render() {
     return (
