@@ -83,7 +83,11 @@ const RecipesCard = React.memo((props) => {
       </div>
       {props.loves >= 0 ? (
         <div
-          className={styles.likingContainer}
+          className={
+            props.includesUser
+              ? styles.userInLikingContainer
+              : styles.likingContainer
+          }
           onClick={() => props.likeValueHandler(props.id)}
         >
           {likedValue}

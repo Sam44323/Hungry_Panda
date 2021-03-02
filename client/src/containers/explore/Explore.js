@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
 
@@ -13,7 +13,7 @@ import axiosMethod from '../util/axiosMethodCreator';
 
 //change the background of the like value based on the token user, for whether the user liked or not
 
-class Explore extends React.Component {
+class Explore extends PureComponent {
   state = {
     recipes: [],
     loading: false,
@@ -76,6 +76,9 @@ class Explore extends React.Component {
       });
   };
 
+  checkUserInLikes = (likedArray) =>
+    likedArray.includes(localStorage.getItem('userId'));
+
   render() {
     const recipesCard = this.state.recipes.map((recipe) => {
       return (
@@ -86,6 +89,7 @@ class Explore extends React.Component {
           cooktime={recipe.cookTime}
           imageUrl={recipe.image}
           keyIngrd={recipe.keyIngred}
+          includesUser={this.checkUserInLikes(recipe.likedBy)}
           showRecipeDetails={() =>
             this.props.history.push(`/recipeDetails/${recipe._id}`)
           }
