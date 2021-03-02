@@ -3,6 +3,7 @@ import Loader from 'react-loader-spinner';
 import axios from 'axios';
 
 import Navigation from '../../components/navigation/Navigation';
+import tokenChecker from '../util/tokenCheckFunction';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import RecipeDetailsComponent from '../../components/recipesDetailsComponent/RecipeDetailsComponent';
 
@@ -17,10 +18,7 @@ class RecipeDetails extends Component {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });

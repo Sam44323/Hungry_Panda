@@ -3,6 +3,7 @@ import axios from 'axios';
 import Loader from 'react-loader-spinner';
 
 import styles from './MyProfile.module.css';
+import tokenChecker from '../util/tokenCheckFunction';
 import Navigation from '../../components/navigation/Navigation';
 import ProfileMain from '../../components/ProfileComponent/ProfileMain';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
@@ -14,10 +15,7 @@ class MyProfile extends Component {
     error: null,
   };
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
     axios({

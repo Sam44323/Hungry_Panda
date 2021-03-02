@@ -10,6 +10,7 @@ import {
 } from '../../components/Constants/utilityFunction/createStateValue';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
+import tokenChecker from '../util/tokenCheckFunction';
 import axios from 'axios';
 import Form from '../../components/Form/Form';
 import Navigation from '../../components/navigation/Navigation';
@@ -32,10 +33,7 @@ class EditRecipes extends Component {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
     this.setState({ loading: true });

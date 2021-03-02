@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import styles from './LikedRecipes.module.css';
+import tokenChecker from '../util/tokenCheckFunction';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
@@ -15,10 +16,7 @@ class LikedRecipes extends PureComponent {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
     axios({

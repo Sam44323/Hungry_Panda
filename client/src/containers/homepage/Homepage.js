@@ -2,27 +2,63 @@ import React from 'react';
 
 import styles from './Homepage.module.css';
 import Navigation from '../../components/navigation/Navigation';
-
-//Will complete this at the end so that we can attach some videos of the app working in real time
+import * as constants from '../../components/Constants/uiconstants';
+import FAICON from '../../components/FontAwesome/FontAwesome';
+import Footer from '../../components/Footer/Footer';
 
 const Homepage = () => {
   return (
     <React.Fragment>
+      <Navigation />
       <div className={styles.homepageHeader}>
-        <Navigation />
-      </div>
-      <div className={styles.homepageMain}>
         <h1 className={styles.homepageTitle}>Hungry Panda!</h1>
+        <p className={styles.homepageHeaderPara}>
+          For all the food lovers and aspiring chef's out there!
+        </p>
+      </div>
+      <div className={styles.homepageFeaturesMain}>
+        <h1 className={styles.homepageFeaturesTitle}>What you'll get?</h1>
         <div className={styles.homepageFeatures}>
-          <h1>features</h1>
-        </div>
-        <div className={styles.hompageCTA}>
-          <h1>create an account</h1>
+          <h1 className={styles.features}>
+            <span className={styles.featuresIcon}>
+              <FAICON iconName={constants.FAEDIT} color='brown' />
+            </span>
+            Create Your own recipes
+          </h1>
+          <h1 className={styles.features}>
+            <span className={styles.featuresIcon}>
+              <FAICON iconName={constants.FACOMPASS} color='brown' />
+            </span>
+            Explore new recipes by others!
+          </h1>
+          <h1 className={styles.features}>
+            <span className={styles.featuresIcon}>
+              <FAICON iconName='faHeart' color='brown' />
+            </span>
+            Love a recipe?
+            <br /> Just like it and you'll get to see it later!
+          </h1>
         </div>
       </div>
-      <div className={styles.footerSection}>
-        <h1>footer</h1>
+      <div className={styles.hompageCTA}>
+        <h1 className={styles.hompageCTATitle}>Excited! Let's go</h1>
+        <p className={styles.CTApara}>
+          <a href='/auth/signup' className={styles.homepageCTALink}>
+            Create An Account
+          </a>
+        </p>
+        <div className={styles.homepageCTALoginSection}>
+          <h3 className={styles.homepageCTASubTitle}>
+            Already have an account? Login
+          </h3>
+          <p className={styles.CTApara}>
+            <a href='/auth/login' className={styles.homepageCTALink}>
+              Login
+            </a>
+          </p>
+        </div>
       </div>
+      <Footer />
     </React.Fragment>
   );
 };

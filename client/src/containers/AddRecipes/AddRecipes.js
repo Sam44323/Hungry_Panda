@@ -9,6 +9,7 @@ import {
 } from '../../components/Constants/utilityFunction/createStateValue';
 
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
+import tokenChecker from '../util/tokenCheckFunction';
 import formErrorHandlerHOC from '../../HOC/formErrorHandlerHOC';
 import Navigation from '../../components/navigation/Navigation';
 import Form from '../../components/Form/Form';
@@ -51,10 +52,7 @@ class AddRecipes extends PureComponent {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
   }

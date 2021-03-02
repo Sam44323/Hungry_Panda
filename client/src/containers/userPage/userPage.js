@@ -7,6 +7,7 @@ import RecipesCard from '../../components/recipesCardView/recipesCard';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
+import tokenChecker from '../util/tokenCheckFunction';
 
 class UserPage extends Component {
   state = {
@@ -17,12 +18,10 @@ class UserPage extends Component {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
+    console.log('My recipes');
     this.setState({ loading: true });
     axios({
       method: 'GET',

@@ -3,7 +3,9 @@ import React from 'react';
 import sharedStyles from '../shared/sharedStyles/styles.module.css';
 
 import Navigation from '../../components/navigation/Navigation';
+
 import RecipesCard from '../../components/recipesCardView/recipesCard';
+import tokenChecker from '../util/tokenCheckFunction';
 import axios from 'axios';
 import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
@@ -18,10 +20,7 @@ class Explore extends React.Component {
   };
 
   componentDidMount() {
-    if (
-      !localStorage.getItem('token') ||
-      new Date(localStorage.getItem('expiresIn')) < new Date()
-    ) {
+    if (tokenChecker()) {
       return this.props.history.replace('/auth/login');
     }
     this.axiosCancelSource = axios.CancelToken.source();
