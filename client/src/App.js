@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
+
 import Fallback from './fallback';
 
 import Homepage from './containers/homepage/Homepage';
