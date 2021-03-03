@@ -16,17 +16,6 @@ const errorCreatorFunction = (req, error) => {
   return errorCreator(error, 422);
 };
 
-const updateUser = (updateType, userId) => {
-  User.findById(userId).then((user) => {
-    if (updateType === ADD_LIKES) {
-      user.totalLikes++;
-    } else if (updateType === REMOVE_LIKES) {
-      user.totalLikes--;
-    }
-    return user.save();
-  });
-};
-
 //main controller functions
 
 const getAllRecipes = (req, res, next) => {
@@ -188,9 +177,6 @@ const updateLikeValue = (req, res) => {
         type = ADD_LIKES;
       }
       return recipe.save();
-    })
-    .then(() => {
-      return updateUser(type, userId);
     })
     .then(() => {
       return User.findById(req.userId);
