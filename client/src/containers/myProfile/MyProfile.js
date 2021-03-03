@@ -34,7 +34,10 @@ class MyProfile extends Component {
       .then((user) => {
         if (user) {
           user.data.user.image = `http://localhost:5000/${user.data.user.image}`;
-          this.setState({ userData: user.data.user, loading: false });
+          this.setState({
+            userData: { ...user.data.user, totalLikes: user.data.totalLikes },
+            loading: false,
+          });
         }
       })
       .catch((err) => {

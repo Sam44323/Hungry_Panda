@@ -58,10 +58,6 @@ const userSchema = new Schema({
       default: [],
     },
   ],
-  totalLikes: {
-    type: Number,
-    default: 0,
-  },
   totalRecipes: {
     type: Number,
     default: 0,

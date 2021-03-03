@@ -9,11 +9,16 @@ const Recipes = require('../models/recipes-models');
 
 const getUserData = (req, res, next) => {
   User.findById(req.params.id)
+    .populate('recipes', 'likes')
+    .exec()
     .then((user) => {
       if (!user) {
         return next(errorCreator('No such user exists!'));
       }
-      res.status(200).json({ user });
+      const totalLikes = user.recipes.reduce((prev, curr) => {
+        return prev + curr.likes;
+      }, 0);
+      res.status(200).json({ user, totalLikes });
     })
     .catch((err) => {
       console.log(err);
