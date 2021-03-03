@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { deleteFiles } = require('../constants/fileFunctions');
 
 const User = require('../models/users-models');
+const Recipes = require('../models/recipes-models');
 
 const getUserData = (req, res, next) => {
   User.findById(req.params.id)
@@ -156,9 +157,35 @@ const logUserOut = (req, res, next) => {
   res.status(200).json({ message: 'You are logged out!' });
 };
 
+const deleteUser = (req, res, next) => {
+  let recipesId;
+  User.findById(req.params.id)
+    .distinct('recipes')
+    .then((recipes) => {
+      recipesId = recipes;
+      return Recipes.find({ _id: { $in: recipes } }).distinct('image');
+    })
+    .then((image) => {
+      for (let item of image) {
+        deleteFiles(item);
+      }
+      return User.updateMany(
+        { likedRecipes: { $in: recipesId } },
+        { $pullAll: { likedRecipes: recipesId } }
+      );
+    })
+    .then(() => Recipes.deleteMany({ _id: { $in: recipesId } }))
+    .then(() => User.findByIdAndDelete(req.params.id))
+    .then(() => res.status(201).json({ message: 'Deleted the user!' }))
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 exports.getUserData = getUserData;
 exports.LikedRecipes = LikedRecipes;
 exports.addNewUser = addNewUser;
 exports.editUserData = editUserData;
 exports.loginUser = loginUser;
 exports.logUserOut = logUserOut;
+exports.deleteUser = deleteUser;
