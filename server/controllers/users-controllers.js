@@ -159,11 +159,12 @@ const logUserOut = (req, res, next) => {
 
 const deleteUser = (req, res, next) => {
   let recipesId;
-  User.findById(req.params.id)
-    .distinct('recipes')
-    .then((recipes) => {
-      recipesId = recipes;
-      return Recipes.find({ _id: { $in: recipes } }).distinct('image');
+  User.findById(req.userId)
+    .select({ recipes: 1, image: 1, _id: 0 })
+    .then((data) => {
+      recipesId = data.recipes;
+      deleteFiles(data.image);
+      return Recipes.find({ _id: { $in: data.recipes } }).distinct('image');
     })
     .then((image) => {
       for (let item of image) {
@@ -174,11 +175,17 @@ const deleteUser = (req, res, next) => {
         { $pullAll: { likedRecipes: recipesId } }
       );
     })
+    .then(() =>
+      Recipes.updateMany(
+        { likedBy: req.userId },
+        { $pull: { likedBy: req.userId }, $inc: { likes: -1 } }
+      )
+    )
     .then(() => Recipes.deleteMany({ _id: { $in: recipesId } }))
-    .then(() => User.findByIdAndDelete(req.params.id))
+    .then(() => User.findByIdAndDelete(req.userId))
     .then(() => res.status(201).json({ message: 'Deleted the user!' }))
-    .catch((err) => {
-      console.log(err);
+    .catch(() => {
+      return next(errorCreator('Please try again!'));
     });
 };
 

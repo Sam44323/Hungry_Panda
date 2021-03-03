@@ -12,3 +12,4 @@ export const FATIMESCIRCLE = 'faTimesCircle';
 export const FAEMAIL = 'faEnvelopeSquare';
 export const FACLOCK = 'faClock';
 export const FAEDIT = 'faEdit';
+export const FADELETE = 'faTrashAlt';
