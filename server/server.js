@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
-const apiKeys = require('../config');
+const apiKeys = require('./config');
 const multer = require('multer');
 
 const app = express();
@@ -47,6 +47,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/nice/api', (req, res) => {
+  res.status(200).json({ message: 'This is a nice api!' });
+});
+
 app.use('/hungrypandaAPI/recipes', recipesRoutes);
 app.use('/hungrypandaAPI/users', usersRoutes);
 
@@ -71,7 +75,7 @@ mongoose
   })
   .then(() => {
     console.log('Connected to the database');
-    app.listen(5000, () => {
+    app.listen(process.env.PORT || 5000, () => {
       console.log('Connected to the server!');
     });
   })

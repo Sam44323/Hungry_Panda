@@ -26,9 +26,9 @@ class UserPage extends Component {
     axios(
       axiosMethod(
         'GET',
-        `http://localhost:5000/hungrypandaAPI/recipes/myrecipes/${localStorage.getItem(
-          'userId'
-        )}`,
+        `${
+          process.env.REACT_APP_BACKEND_URL_RECIPES
+        }/myrecipes/${localStorage.getItem('userId')}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -38,7 +38,7 @@ class UserPage extends Component {
       .then((recipesData) => {
         if (recipesData) {
           for (let recipe of recipesData.data.recipes) {
-            recipe.image = `http://localhost:5000/${recipe.image}`;
+            recipe.image = `${process.env.REACT_APP_ASSET_URL}/${recipe.image}`;
           }
           this.setState({
             recipes: [...recipesData.data.recipes],
@@ -70,7 +70,7 @@ class UserPage extends Component {
     axios(
       axiosMethod(
         'DELETE',
-        `http://localhost:5000/hungrypandaAPI/recipes/deleterecipe/${id}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/deleterecipe/${id}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

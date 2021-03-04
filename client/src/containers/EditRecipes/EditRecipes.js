@@ -41,7 +41,7 @@ class EditRecipes extends Component {
     axios(
       axiosMethod(
         'GET',
-        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/recipe/${this.props.match.params.id}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -184,7 +184,7 @@ class EditRecipes extends Component {
     axios(
       axiosMethod(
         'PATCH',
-        `http://localhost:5000/hungrypandaAPI/recipes/updateRecipe/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/updateRecipe/${this.props.match.params.id}`,
         bodyFormData,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

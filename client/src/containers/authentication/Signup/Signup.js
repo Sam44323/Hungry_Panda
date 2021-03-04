@@ -107,7 +107,7 @@ class Signup extends PureComponent {
     axios(
       axiosMethod(
         'POST',
-        'http://localhost:5000/hungrypandaAPI/users/signup',
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/signup`,
         bodyFormData,
         { 'Content-Type': 'multipart/form-data' }
       )

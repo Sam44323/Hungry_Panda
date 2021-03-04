@@ -11,8 +11,6 @@ import Loader from 'react-loader-spinner';
 import ErrorModal from '../../components/ErrorModal/ErrorModal';
 import axiosMethod from '../util/axiosMethodCreator';
 
-//change the background of the like value based on the token user, for whether the user liked or not
-
 class Explore extends PureComponent {
   state = {
     recipes: [],
@@ -29,7 +27,7 @@ class Explore extends PureComponent {
     axios(
       axiosMethod(
         'GET',
-        'http://localhost:5000/hungrypandaAPI/recipes/explore',
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/explore`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -39,7 +37,7 @@ class Explore extends PureComponent {
       .then((recipes) => {
         if (recipes) {
           for (let recipe of recipes.data.recipes) {
-            recipe.image = `http://localhost:5000/${recipe.image}`;
+            recipe.image = `${process.env.REACT_APP_ASSET_URL}/${recipe.image}`;
           }
           this.setState({
             recipes: recipes.data.recipes,
@@ -56,7 +54,7 @@ class Explore extends PureComponent {
     axios(
       axiosMethod(
         'PATCH',
-        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/updatelike/${recipeId}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -66,7 +64,7 @@ class Explore extends PureComponent {
       .then((response) => {
         if (response) {
           for (let recipe of response.data.recipes) {
-            recipe.image = `http://localhost:5000/${recipe.image}`;
+            recipe.image = `${process.env.REACT_APP_ASSET_URL}/${recipe.image}`;
           }
           this.setState({ recipes: response.data.recipes });
         }

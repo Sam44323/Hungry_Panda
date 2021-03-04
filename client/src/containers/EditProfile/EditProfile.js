@@ -42,7 +42,7 @@ class EditProfile extends PureComponent {
     axios(
       axiosMethod(
         'GET',
-        `http://localhost:5000/hungrypandaAPI/users/myprofile/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/myprofile/${this.props.match.params.id}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -183,7 +183,7 @@ class EditProfile extends PureComponent {
     axios(
       axiosMethod(
         'PATCH',
-        `http://localhost:5000/hungrypandaAPI/users/editprofile/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/editprofile/${this.props.match.params.id}`,
         bodyFormData,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

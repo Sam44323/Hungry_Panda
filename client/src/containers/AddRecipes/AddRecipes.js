@@ -148,7 +148,7 @@ class AddRecipes extends PureComponent {
     axios(
       axiosMethod(
         'POST',
-        'http://localhost:5000/hungrypandaAPI/recipes/addrecipe',
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/addrecipe`,
         bodyFormData,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

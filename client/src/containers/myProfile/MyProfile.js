@@ -22,9 +22,9 @@ class MyProfile extends Component {
     axios(
       axiosMethod(
         'GET',
-        `http://localhost:5000/hungrypandaAPI/users/myprofile/${localStorage.getItem(
-          'userId'
-        )}`,
+        `${
+          process.env.REACT_APP_BACKEND_URL_USERS
+        }/myprofile/${localStorage.getItem('userId')}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -33,7 +33,7 @@ class MyProfile extends Component {
     )
       .then((user) => {
         if (user) {
-          user.data.user.image = `http://localhost:5000/${user.data.user.image}`;
+          user.data.user.image = `${process.env.REACT_APP_ASSET_URL}/${user.data.user.image}`;
           this.setState({
             userData: { ...user.data.user, totalLikes: user.data.totalLikes },
             loading: false,
@@ -57,7 +57,7 @@ class MyProfile extends Component {
     axios(
       axiosMethod(
         'DELETE',
-        'http://localhost:5000/hungrypandaAPI/users/delete-account',
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/delete-account`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

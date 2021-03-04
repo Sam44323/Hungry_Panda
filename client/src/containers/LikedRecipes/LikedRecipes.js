@@ -23,7 +23,7 @@ class LikedRecipes extends PureComponent {
     axios(
       axiosMethod(
         'GET',
-        'http://localhost:5000/hungrypandaAPI/users/getLikedRecipes',
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/getLikedRecipes`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -26,7 +26,7 @@ class RecipeDetails extends Component {
     axios(
       axiosMethod(
         'GET',
-        `http://localhost:5000/hungrypandaAPI/recipes/recipe/${this.props.match.params.id}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/recipe/${this.props.match.params.id}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -35,7 +35,7 @@ class RecipeDetails extends Component {
     )
       .then((recipe) => {
         if (recipe) {
-          recipe.data.recipe.image = `http://localhost:5000/${recipe.data.recipe.image}`;
+          recipe.data.recipe.image = `${process.env.REACT_APP_ASSET_URL}/${recipe.data.recipe.image}`;
           this.setState({
             recipe: { ...recipe.data.recipe },
             loading: false,
@@ -56,7 +56,7 @@ class RecipeDetails extends Component {
     axios(
       axiosMethod(
         'PATCH',
-        `http://localhost:5000/hungrypandaAPI/recipes/updatelike/${recipeId}`,
+        `${process.env.REACT_APP_BACKEND_URL_RECIPES}/updatelike/${recipeId}`,
         null,
         {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -70,7 +70,7 @@ class RecipeDetails extends Component {
           );
           response.data.recipes[
             recipeIndex
-          ].image = `http://localhost:5000/${response.data.recipes[recipeIndex].image}`;
+          ].image = `${process.env.REACT_APP_ASSET_URL}/${response.data.recipes[recipeIndex].image}`;
           this.setState({ recipe: response.data.recipes[recipeIndex] });
         }
       })

@@ -56,7 +56,7 @@ class Login extends PureComponent {
     axios(
       axiosMethod(
         'POST',
-        'http://localhost:5000/hungrypandaAPI/users/login',
+        `${process.env.REACT_APP_BACKEND_URL_USERS}/login`,
         data,
         {
           'Content-Type': 'application/json',
