@@ -27,17 +27,6 @@
 - React.js
 - CSS_modules
 
-**Back-end**
-
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
-- bcrypt
-- uuid
-- express-validators
-
 ### Clone the repository and run the following commnad in your **command-line**
 
 ```bash

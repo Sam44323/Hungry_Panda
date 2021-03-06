@@ -22,11 +22,6 @@
 
 **Tech-stacks in this project**
 
-**Front-end**
-
-- React.js
-- CSS_modules
-
 **Back-end**
 
 - Node.js
